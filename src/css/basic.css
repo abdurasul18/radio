@@ -1,0 +1,146 @@
+body {
+  @apply bg-gray-50 text-grey-900;
+  font-family: 'Inter', sans-serif;
+}
+
+.v-toast {
+  z-index: 999999 !important;
+}
+
+.title {
+  @apply text-xl font-semibold;
+}
+
+.one-line {
+  @apply whitespace-nowrap overflow-hidden overflow-ellipsis;
+}
+
+.c-table2 {
+  @apply w-full text-sm;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.c-table2 th {
+  @apply border-t border-grey-100 bg-grey-50 font-semibold text-left;
+}
+
+.c-table2 td:first-child,
+.c-table2 th:first-child {
+  @apply border-l border-r border-grey-100;
+}
+
+.c-table2 td,
+.c-table2 th {
+  @apply border-b border-r border-grey-100 px-3 py-4;
+}
+
+.c-table2 tr:last-child td:first-child {
+  border-radius: 0 0 0 20px;
+  border-top: 0;
+}
+
+.c-table2 tr:last-child td:last-child {
+  border-radius: 0 0 20px 0;
+  border-top: 0;
+}
+
+.c-table2.all-rounded tr:first-child th:first-child {
+  border-radius: 20px 0 0 0;
+  border-top: 0;
+}
+
+.c-table2.all-rounded tr:first-child th:last-child {
+  border-radius: 0 20px 0  0;
+  border-top: 0;
+}
+
+.c-table2 .app-not-found {
+  border-radius: 0 0 20px 20px;
+}
+
+.base-table {
+  @apply w-full text-sm;
+  border-collapse: collapse;
+}
+
+.base-table thead {
+  @apply text-left;
+}
+
+.base-table thead tr th {
+  @apply bg-grey-50 font-semibold border border-grey-100 px-3 py-4;
+}
+
+.base-table td,
+.base-table th {
+  @apply border border-grey-100 px-3 py-4;
+}
+
+.c-icon {
+  @apply w-9 h-9 rounded-full border border-grey-100 bg-grey-50 flex justify-center items-center mr-3 object-contain;
+}
+
+.c-table {
+  @apply w-full border-collapse;
+}
+
+.c-table th {
+  @apply bg-grey-50;
+}
+
+.c-table td,
+.c-table th {
+  @apply border border-grey-100 px-3 py-4 text-left;
+}
+
+.c-table tr:hover {
+  @apply bg-blue-50 bg-opacity-50;
+}
+
+.c-table.no-hoverable tr {
+  @apply bg-transparent;
+}
+
+.c-table.small td {
+  @apply px-2 py-[4px];
+}
+
+.c-table td:first-child,
+.c-table th:first-child {
+  border-left: 0;
+}
+
+.c-table .action {
+  border-right: 0;
+  border-left: 0;
+  padding-left: 0;
+  padding-right: 36px;
+}
+
+.c-table .table-filter:hover {
+  @apply bg-white;
+}
+
+.c-table .table-filter td {
+  @apply border border-grey-100 p-[6px];
+}
+
+.c-table .actions {
+  text-align: right !important;
+  border-left: none;
+}
+
+.c-table .no-border-r {
+  border-right: none;
+}
+
+.c-table.action-mode td:last-child, .c-table.action-mode th:last-child {
+  text-align: right !important;
+  border-left: none;
+}
+
+.c-table.action-mode td:nth-last-child(2), .c-table.action-mode th:nth-last-child(2) {
+  border-right: none;
+}
+/*# sourceMappingURL=basic.css.map */

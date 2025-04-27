@@ -1,0 +1,121 @@
+import { NDateLocale, NLocale } from 'naive-ui'
+
+export const uzCr: NLocale = {
+  name: 'uzCr',
+  global: {
+    undo: 'Бекор қилиш',
+    redo: 'Қайта бажариш',
+    confirm: 'Тасдиқлаш',
+    clear: 'Тозалаш',
+  },
+  Popconfirm: {
+    positiveText: 'Тасдиқлаш',
+    negativeText: 'Бекор қилиш',
+  },
+  Cascader: {
+    placeholder: 'Танланг',
+    loading: 'Кутин',
+    loadingRequiredMessage: (v) => v,
+  },
+  Time: {
+    dateFormat: 'yyyy-MM-dd',
+    dateTimeFormat: 'yyyy-MM-dd HH:mm:ss',
+  },
+  DatePicker: {
+    yearFormat: 'yyyy',
+    monthFormat: 'MMM',
+    dayFormat: 'eeeeee',
+    yearTypeFormat: 'yyyy',
+    monthTypeFormat: 'yyyy-MM',
+    dateFormat: 'yyyy-MM-dd',
+    dateTimeFormat: 'yyyy-MM-dd HH:mm:ss',
+    quarterFormat: 'yyyy-qqq',
+    clear: 'Тозалаш',
+    now: 'Ҳозирги вақт',
+    confirm: 'Тасдиқлаш',
+    selectTime: 'Вақтни танлан',
+    selectDate: 'Санани танланг',
+    datePlaceholder: 'Санани танланг',
+    datetimePlaceholder: 'Сана ва вақтни танланг',
+    monthPlaceholder: 'Ойни танланг',
+    yearPlaceholder: 'Йилни танланг',
+    quarterPlaceholder: 'Ярим йилликни танланг',
+    startDatePlaceholder: 'Бошланиш санаси',
+    endDatePlaceholder: 'Тугаш санаси',
+    startDatetimePlaceholder: 'Бошланиш санаси ва вақти',
+    endDatetimePlaceholder: 'Тугаш санаси ва вақти',
+    startMonthPlaceholder: 'Boshlanish oyi',
+    endMonthPlaceholder: 'Tugash oyi',
+    monthBeforeYear: true,
+    firstDayOfWeek: 6,
+    today: 'Бугун',
+  },
+  DataTable: {
+    checkTableAll: 'Ҳаммасини танлаш',
+    uncheckTableAll: 'Танлашни бекор қилиш',
+    confirm: 'Тасдиқлаш',
+    clear: 'Тозалаш',
+  },
+  LegacyTransfer: {
+    sourceTitle: 'Manba',
+    targetTitle: 'Target',
+  },
+  Transfer: {
+    selectAll: 'Ҳаммасини танлаш',
+    unselectAll: 'Танлашни бекор қилиш',
+    clearAll: 'Тозалаш',
+    total: (v) => String(v),
+    selected: (v) => String(v),
+  },
+  Empty: {
+    description: 'Маълумот топилмади',
+  },
+  Select: {
+    placeholder: 'Танланг',
+  },
+  TimePicker: {
+    placeholder: 'Вақтни танлан',
+    positiveText: 'OK',
+    negativeText: 'Бекор қилиш',
+    now: 'Ҳозирги вақт',
+  },
+  Pagination: {
+    goto: "кейингисига ўтиш",
+    selectionSuffix: 'Саҳифа',
+  },
+  DynamicTags: {
+    add: 'Қўшиш',
+  },
+  Log: {
+    loading: 'Кутинг',
+  },
+  Input: {
+    placeholder: 'Киритинг',
+  },
+  InputNumber: {
+    placeholder: 'Киритинг',
+  },
+  DynamicInput: {
+    create: 'Яратиш',
+  },
+  ThemeEditor: {
+    title: 'Theme Editor',
+    clearAllVars: 'Тозалаш All Variables',
+    clearSearch: 'Тозалаш Search',
+    filterCompName: 'Filter Component Name',
+    filterVarName: 'Filter Variable Name',
+    import: 'Import',
+    export: 'Export',
+    restore: 'Reset to Default',
+  },
+  Image: {
+    tipPrevious: 'Олдинги расм (←)',
+    tipNext: 'Кейинги расм (→)',
+    tipCounterclockwise: 'Counterclockwise',
+    tipClockwise: 'Clockwise',
+    tipZoomOut: 'Узоқлаштириш',
+    tipZoomIn: 'Яқинлаштириш',
+    tipClose: 'Ёпиш (Esc)',
+    tipOriginalSize: 'Асил ҳолати',
+  },
+}
