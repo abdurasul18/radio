@@ -20,10 +20,10 @@ async function getCurrentUser() {
   }
 }
 onMounted(() => {
-  getCurrentUser();
+  // getCurrentUser();
 });
 watchEffect(() => {
-  getCurrentUser();
+  // getCurrentUser();
 });
 </script>
 <template>

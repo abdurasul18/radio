@@ -15,7 +15,7 @@ const AuthService = {
    * @throws AuthenticationError
    **/
   login: async function (userData: any) {
-    return ApiService.post(`/user/login`, userData)
+    return ApiService.post(`/admin/login`, userData)
   },
 
 }

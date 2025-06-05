@@ -278,3 +278,6 @@ export function formatDate(date:Date) {
       hour12: false
   }).format(date).replace(',', '');
 }
+export function dateToYMD(date: Date) {
+  return moment(date).format('YYYY-MM-DD')
+}

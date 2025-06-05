@@ -1,57 +1,60 @@
 <script lang="ts" setup>
-import { FileService } from "/@src/services/file";
 import { fileToBase64 } from "/@src/utils";
 let props = defineProps<{
   value?: any;
   schema?: any;
+  isBase64?: boolean;
 }>();
-let emits = defineEmits(["update:value", "update:loading"]);
+let emits = defineEmits(["update:value"]);
 let fileInpRef = ref<HTMLInputElement | null>(null);
 const handleFileInput = () => {
   fileInpRef.value?.click();
 };
-let fileVal = ref<File | null>(null);
 let id = Math.random().toString(36).substring(7);
+let base64 = ref("");
+let url = ref("");
 let compValue = computed({
   get: () => props.value,
   set: (val) => {
     emits("update:value", val);
   },
 });
-
+onMounted(() => {
+  if (props.isBase64) {
+    base64.value = props.value;
+  }
+});
 async function uploadFile(e: Event) {
   let file = (e.target as HTMLInputElement).files?.[0];
-  fileVal.value = file || null;
+  if (file) {
+    base64.value = await fileToBase64(file);
+  } else {
+    base64.value = "";
+  }
+  if (props.isBase64) {
+    compValue.value = base64.value;
+  } else {
+    compValue.value = file || "";
+  }
 }
 function cancelUpload() {
-  compValue.value = "";
+  base64.value = "";
+  url.value = "";
   if (fileInpRef.value) {
     fileInpRef.value.value = "";
   }
 }
-watch(
-  () => fileVal.value,
-  async (val) => {
-    if (val) {
-      emits("update:loading", true);
-      let res = await FileService.upload(val);
-      compValue.value = res.data.file?.url;
-      emits("update:loading", false);
-    } else {
-      compValue.value = "";
-    }
-  }
-);
 </script>
 <template>
   <div class="relative">
     <label :for="id" class="photo-upload relative" v-bind="$attrs">
       <img
-        v-if="compValue"
+        v-if="base64"
         class="object-cover w-full h-full"
-        :src="$withBaseUrl(compValue)"
+        :src="`data:image/png;base64,${base64}`"
         alt=""
       />
+      <img v-else-if="url" class="object-cover w-full h-full" :src="url" alt="" />
       <div v-else class="flex flex-col justify-center items-center text-center">
         <CIcon class="mb-2" height="40" name="upload" />
         <div class="text-xs leading-[1]">{{ $t("info.dropFile") }}</div>
@@ -66,7 +69,7 @@ watch(
       />
     </label>
     <CIcon
-      v-if="compValue"
+      v-if="base64 || url"
       @click="cancelUpload"
       class="absolute top-0 right-0 error-svg cursor-pointer"
       name="times"

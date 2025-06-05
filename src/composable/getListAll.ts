@@ -22,16 +22,14 @@ export function useApiServiceAll<T>(apiMethod: (query?: any, body?: any) => Axio
     loading.value = true
     try {
       const response = await apiMethod(params.value.query, params.value.body)
-      list.value = response.data || [] as any
+      list.value = response.data.data || [] as any
     } finally {
       loading.value = false
     }
   }
-  watch(() => search.value, () => {
+  watch(() =>[search.value, params.value], () => {
     fetchData()
-    router.replace({ query: { ...route.query, search: search.value } })
-
-  })
+   }, {deep:true})
   return {
     loading,
     list,

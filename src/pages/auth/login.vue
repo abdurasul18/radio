@@ -46,27 +46,17 @@ async function login() {
       <div
         class="col-span-7 h-full bg-no-repeat bg-contain hidden xl:flex justify-center items-center bg-[#F5F5F5] rounded-xl"
       >
-        <img class="w-24" src="/img/logo-blue.svg" alt="" />
-        <div class="text-[#0a2457] text-5xl font-bold ml-6" style="line-height: 1.1">
-          University of Business <br />
-          and Science
-        </div>
+        <img class="w-[220px]" src="/img/logo.png" alt="" />
+       
       </div>
       <div class="col-span-12 xl:col-span-5 flex flex-col justify-between relative">
         <div class="flex sm:hidden justify-center items-center mb-4">
-          <img class="w-16" src="/img/logo-blue.svg" alt="" />
-          <div
-            class="text-[#0a2457] text-[26px] font-bold ml-6 text-left"
-            style="line-height: 1.1"
-          >
-            University of Business <br />
-            and Science
-          </div>
+          <img class="w-32" src="/img/logo.png" alt="" />
         </div>
         <div class="flex flex-col h-full justify-center -mt-32 sm:-mt-0">
           <div class="text-center mt-2 2xl:mt-12">
             <div class="text-[42px] text-grey-900 font-bold" style="line-height: 1.1">
-              Monitoring tizimi
+              AMUR FM
             </div>
             <p class="text-xl text-grey-500 mt-2">Tizimga kirish</p>
           </div>
@@ -96,7 +86,7 @@ async function login() {
             }}</CButton>
           </div>
         </div>
-        <div class="text-center">©2025 UBS. All rights reserved.</div>
+        <div class="text-center">©2025 AMUR FM. All rights reserved.</div>
       </div>
     </div>
     <!-- <Signature v-model:show="signShow" /> -->

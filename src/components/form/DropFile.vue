@@ -9,7 +9,7 @@ let props = withDefaults(
     accept?: string;
   }>(),
   {
-    accept: ".jpg, .jpeg, .png, .svg, .docx, .doc, .pdf, .xlsx, .xls",
+    accept: ".jpg, .jpeg, .png, .svg",
   }
 );
 let emits = defineEmits(["update:value"]);

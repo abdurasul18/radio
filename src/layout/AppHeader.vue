@@ -11,7 +11,7 @@ let { locale, t } = useI18n();
 let { user } = toRefs(useAuthStore());
 const { getCurrentUser } = useAuthStore();
 onMounted(() => {
-  getCurrentUser();
+  // getCurrentUser();
 });
 let options = [
   {
@@ -66,23 +66,11 @@ let showMenu = ref(false);
     <div v-if="showHeader" class="text-xl font-semibold" id="appTitle"></div>
     <div class="md:hidden">
       <RouterLink to="/">
-        <img class="w-10" src="/img/logo-blue.svg" alt="" />
+        <img class="w-10" src="/img/logo.png" alt="" />
       </RouterLink>
     </div>
     <div class="flex justify-end items-center">
-      <n-tooltip placement="bottom-end" trigger="hover" :show-arrow="false" raw>
-        <template #trigger>
-          <n-badge class="notification-badge mr-6 hidden md:block" processing type="info">
-            <button class="flex items-center text-sm font-semibold pr-4">
-              <CIcon name="notification" class="mr-3" />
-              {{ $t("notification") }}
-            </button>
-          </n-badge>
-        </template>
-        <div class="w-[300px] p-2 bg-white text-grey-900">
-          <n-scrollbar style="max-height: 400px" trigger="none"> </n-scrollbar>
-        </div>
-      </n-tooltip>
+     
       <n-divider vertical />
       <!-- <n-dropdown trigger="click" :options="options" :on-select="changeLocale">
         <button class="flex items-center text-sm font-semibold mx-6">
@@ -91,7 +79,7 @@ let showMenu = ref(false);
           <CIcon name="down" class="ml-1" />
         </button>
       </n-dropdown> -->
-      <n-divider vertical />
+      <!-- <n-divider vertical /> -->
       <div class="flex gap-1">
         <n-tooltip placement="bottom" trigger="click" :show-arrow="false" raw>
           <template #trigger>
@@ -114,7 +102,7 @@ let showMenu = ref(false);
           </template>
           <div class="w-[200px] p-2 bg-white">
             <n-list hoverable clickable>
-              <n-list-item style="padding: 0">
+              <!-- <n-list-item style="padding: 0">
                 <RouterLink class="flex px-3 py-3" to="/profile">
                   <CIcon class="mr-2" name="user" />
                   <span>{{ $t("employee.profile") }}</span>
@@ -124,7 +112,7 @@ let showMenu = ref(false);
                 <a href="javascript:void(0)" class="flex gap-2 px-3 py-3">
                   <CIcon name="lock" width="20" /> <span>Parolni tahrirlash</span>
                 </a>
-              </n-list-item>
+              </n-list-item> -->
               <n-list-item style="padding: 0" @click="logout">
                 <a href="javascript:void(0)" class="flex px-3 py-3">
                   <span>{{ $t("actions.logout") }}</span>
