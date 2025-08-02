@@ -14,7 +14,6 @@ let form = ref({
   title: "",
   description: "",
   key: "",
-  type: 100,
 });
 const rules = {
   title: { required },
@@ -31,11 +30,10 @@ onMounted(() => {
     form.value.title = props.item?.title || "";
     form.value.description = props.item?.description || "";
     form.value.key = props.item?.key || "";
-    form.value.type = props.item?.type || 100;
     uploadedFile.value = props.item?.icon;
   }
   else {
-    form.value.type = Number(props.type) || 100;
+   
   }
 });
 let loading = ref(false);
@@ -47,6 +45,7 @@ async function save() {
       let payload = {
         ...form.value,
         icon: files.value?.[0] || null,
+        type:props.type
       };
       if (uploadedFile.value) {
         delete payload.icon;
@@ -86,13 +85,13 @@ let types = [
         :schema="v$.title"
         label="Sarlavha"
       />
-       <CSelect
+       <!-- <CSelect
         v-model:value="form.type"
         :options="types"
         icon="category"
         label="Turini tanlang"
         :schema="v$.type"
-      />
+      /> -->
       <CInput
         v-model:value="form.description"
         :schema="v$.description"

@@ -65,6 +65,24 @@ export const useAuthStore = defineStore('auth', () => {
         text: "Kontaktlar",
         to: "/contact",
       },
+        {
+        name: "services",
+        icon: "geometric",
+        text: "Xizmat turlari",
+        to: "/services",
+      },
+      //  {
+      //   name: "category",
+      //   icon: "category",
+      //   text: "Kategoriyalar",
+      //   to: "/category",
+      // },
+      //  {
+      //   name: "organization",
+      //   icon: "department",
+      //   text: "Xizmatlar",
+      //   to: "/organization",
+      // },
     ];
 
   return {

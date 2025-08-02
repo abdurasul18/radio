@@ -11,7 +11,7 @@ import { ddmmyyyy } from "/@src/utils/date";
 const { user } = toRefs(useAuthStore());
 let modal = useModal();
 let route = useRoute();
-let type = ref(100);
+let type = ref(Number(route.query.type || 0) || 100);
 let paramsAdd = computed(() => {
   return {
     query: {
@@ -186,7 +186,7 @@ let types = [
 
     <CModal
       v-model:show="addShow"
-      :title="mode === 'create' ? 'Kontakt qo\'shish' : 'Kontakt tahrirlash'"
+      :title="mode === 'create' ? 'Qo\'shish' : 'Tahrirlash'"
       class="max-w-[600px]"
     >
       <AddUpContact

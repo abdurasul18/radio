@@ -24,6 +24,12 @@ let activeRoute = computed(() => {
     return "notification";
   } else if (route.fullPath.startsWith("/contact")) {
     return "contact";
+  } else if (route.fullPath.startsWith("/services")) {
+    return "services";
+  } else if (route.fullPath.startsWith("/category")) {
+    return "category";
+  } else if (route.fullPath.startsWith("/organization")) {
+    return "organization";
   } else {
     return "";
   }
@@ -41,7 +47,6 @@ onMounted(() => {
   activeSidebar.value = activeRoute.value;
 });
 //
-
 </script>
 <template>
   <div class="relative z-50" ref="sidebarRef">
@@ -51,14 +56,18 @@ onMounted(() => {
       <div class="relative">
         <RouterLink
           to="/"
-          class="flex gap-2 text-[#0a2457] text-lg   justify-center items-center font-bold "
+          class="flex gap-2 text-[#0a2457] text-lg justify-center items-center font-bold"
           style="line-height: 1"
         >
           <img class="w-[120px]" src="/img/logo.png" alt="" />
         </RouterLink>
-        <n-divider style="margin: 10px;"/>
+        <n-divider style="margin: 10px" />
         <ul class="flex flex-col mt-4">
-          <li class="py-[2px] border-b border-grey-50" v-for="(item, index) in routes" :key="index">
+          <li
+            class="py-[2px] border-b border-grey-50"
+            v-for="(item, index) in routes"
+            :key="index"
+          >
             <RouterLink
               :to="item.to"
               class="nav-link"
@@ -69,7 +78,6 @@ onMounted(() => {
               {{ item.text }}
             </RouterLink>
           </li>
-         
         </ul>
       </div>
     </div>
@@ -81,7 +89,8 @@ onMounted(() => {
     @apply bg-blue-100;
   }
   &.nav-link-active {
-    path {
+    path,
+    circle {
       stroke: #fff !important;
     }
     @apply bg-blue-500 text-white;
@@ -92,7 +101,8 @@ onMounted(() => {
   @apply py-2 flex px-2 pl-4 rounded-lg text-grey-900 gap-2  items-center;
 
   svg {
-    path {
+    path,
+    circle {
       stroke: #141b34;
     }
   }

@@ -2,8 +2,7 @@ import { Ref } from 'vue'
 const locale = useStorage('locale', 'lt') as Ref<'lt' | 'uz' | 'eng' | 'ru'>
 const Util = {
     withBaseUrl(url?: string) {
-        if(!url) return '/img/user.jpg'
-        if (url.startsWith('/')) {
+        if (url?.startsWith('/')) {
             url = url.substring(1)
         }
         return `${import.meta.env. VITE_API_IMG_URL}${url}`
