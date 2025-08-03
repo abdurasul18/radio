@@ -11,7 +11,6 @@ import { useAuthStore } from './store/auth'
 import ApiService from './services/api'
 import "vue-toast-notification/dist/theme-sugar.css";
 import Maska from 'maska'
-
 const pinia = createPinia()
 
 const app = createApp(App)

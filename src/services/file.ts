@@ -1,9 +1,11 @@
 import ApiService from "./api";
 
 export const FileService = {
-    upload(file: File) {
+    upload(files: File[]) {
         let formData = new FormData();
-        formData.append("file", file);
+       files.forEach(el=>{
+         formData.append("files", el);
+       })
         return ApiService.formData(`file/upload`, formData);
     },
 };

@@ -9,7 +9,9 @@ export function createQuery(data: any) {
   if (!data || typeof data != 'object') return ''
   let query = ''
   for (const key in data) {
-    query += `&${key}=${data[key] || ''}`
+    if(data[key]!==''){
+      query += `&${key}=${data[key] || ''}`
+    }
   }
   if (query.startsWith('&')) query = query.substring(1)
   return query

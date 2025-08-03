@@ -126,7 +126,7 @@ let showMenu = ref(false);
     </div>
   </div>
   <CModal v-model:show="isUpPassShow" title="Parolni o'zgartirish" class="max-w-[500px]">
-    <UpdatePasswordOwn @close="isUpPassShow = false" @success="updatePass" />
+    <!-- <UpdatePasswordOwn @close="isUpPassShow = false" @success="updatePass" /> -->
   </CModal>
   <n-drawer v-model:show="showMenu" :width="300">
     <div class="w-[300px] bg-grey-50 h-full" @close="showMenu = false" :closable="true" title="Menyu">

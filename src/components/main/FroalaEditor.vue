@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import "froala-editor/css/froala_editor.pkgd.min.css";
 // allowJS
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min.js";
@@ -30,7 +29,7 @@ function initFroala() {
     },
     embedlyScriptPath: "",
     imageInsertButtons: ["imageUpload", "|", "imageByURL"],
-    htmlAllowedEmptyTags : ["span"],
+    htmlAllowedEmptyTags: ["span"],
     language: "ru",
     events: {
       "image.beforeUpload": function (files: any) {
@@ -72,7 +71,6 @@ function initFroala() {
           undo: true,
           refreshAfterCallback: false,
           callback: function () {
-            
             editor.value?.selection?.restore?.();
             editor.value?.html?.insert(
               "<span style='width:32pt;display:inline-block;'></span>"
@@ -247,7 +245,6 @@ onUnmounted(() => {
   editor.value = null;
 });
 //
-
 </script>
 <template>
   <div
@@ -263,8 +260,9 @@ onUnmounted(() => {
       <textarea :value="props.value" :id="props.id"></textarea>
     </div>
   </div>
-
 </template>
 <style lang="scss">
-
+.fr-wrapper {
+  height: 400px !important;
+}
 </style>

@@ -35,7 +35,7 @@ function showOrDownload() {
 function download() {
   let link = document.createElement("a") as HTMLAnchorElement;
   link.download = `${props.data.name || "file"}`;
-  link.href = `${baseUrl}/${props.data.uploadPath}`;
+  link.href = `${baseUrl}/${props.data.uploadPath || props.data.path}`;
   link.target = "_blank";
   document.body.appendChild(link);
   link.click();
@@ -58,13 +58,17 @@ function download() {
           class="flex items-center justify-center bg-blue-50 w-12 h-12"
           v-else-if="fileType == 'image'"
         >
-          <n-image v-if="data.uploadPath" :src="$withBaseUrl(data.uploadPath)" />
+          <n-image
+            class="n-contain"
+            v-if="data.uploadPath || data.path"
+            :src="$withBaseUrl(data.uploadPath || data.path)"
+          />
         </div>
         <div class="flex items-center justify-center bg-blue-50 w-12 h-12" v-else>
           <CIcon class="info-svg" name="file" />
         </div>
       </div>
-      <div class="text-sm">
+      <div class="text-sm max-w-[70%]">
         <div class="font-semibold">{{ data.name }}</div>
         <!-- <div class="text-grey-500">17.38 Kb</div> -->
       </div>
@@ -78,7 +82,7 @@ function download() {
   <CModal v-model:show="showPdf" :title="data.name">
     <iframe
       width="100%"
-      :src="`${$baseUrl}/${data.uploadPath}`"
+      :src="`${$baseUrl}/${data.uploadPath ||data.path}`"
       style="min-height: 80vh; background-color: #ffffff"
       frameborder="0"
       webkitallowfullscreen
@@ -87,4 +91,10 @@ function download() {
     />
   </CModal>
 </template>
-<style lang="scss"></style>
+<style lang="scss">
+.n-contain {
+  img {
+    object-fit: contain !important;
+  }
+}
+</style>

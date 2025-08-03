@@ -5,6 +5,9 @@ const Util = {
         if (url?.startsWith('/')) {
             url = url.substring(1)
         }
+        if(url?.startsWith('uploads')){
+            url = url.replace('uploads', '')
+        }
         return `${import.meta.env. VITE_API_IMG_URL}${url}`
     },
     paginate(index: number, page: number, limit: number) {

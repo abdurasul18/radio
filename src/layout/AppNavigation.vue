@@ -24,12 +24,14 @@ let activeRoute = computed(() => {
     return "notification";
   } else if (route.fullPath.startsWith("/contact")) {
     return "contact";
-  } else if (route.fullPath.startsWith("/services")) {
-    return "services";
+  } else if (route.fullPath.startsWith("/service")) {
+    return "service";
   } else if (route.fullPath.startsWith("/category")) {
     return "category";
   } else if (route.fullPath.startsWith("/organization")) {
     return "organization";
+  } else if (route.fullPath.startsWith("/region")) {
+    return "region";
   } else {
     return "";
   }

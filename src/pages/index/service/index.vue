@@ -7,18 +7,20 @@ import { RoleType } from "/@src/services/auth";
 import { useAuthStore } from "/@src/store/auth";
 import { useApiServiceAll } from "/@src/composable/getListAll";
 import { ddmmyyyy } from "/@src/utils/date";
-import { CategoryService, ICategory } from "/@src/services/category";
+import { ServiceService, IService } from "/@src/services/service";
 const { user } = toRefs(useAuthStore());
 let modal = useModal();
 let route = useRoute();
-
+let category_id = ref(route.query.category_id ? Number(route.query.category_id) : "");
 let paramsAdd = computed(() => {
   return {
-    query: {},
+    query: {
+      category_id: category_id.value,
+    },
   };
 });
-const { list, loading, search, fetchData } = useApiServiceAll<ICategory>(
-  CategoryService.getList,
+const { list, loading, search, fetchData } = useApiServiceAll<IService>(
+  ServiceService.getList,
   paramsAdd
 );
 
@@ -28,12 +30,12 @@ onMounted(() => {
 //
 let addShow = ref(false);
 let mode = ref<"create" | "update">("create");
-let currentItem = ref<ICategory | null>(null);
+let currentItem = ref<IService | null>(null);
 //
-async function deleteItem(item: ICategory) {
+async function deleteItem(item: IService) {
   let isConfirmed = await confirmDelete(modal);
   if (isConfirmed) {
-    await CategoryService.delete(item.id!);
+    await ServiceService.delete(item.id!);
     fetchData();
     toastSuccess();
   }
@@ -42,24 +44,25 @@ async function deleteItem(item: ICategory) {
 
 <template>
   <n-spin :show="loading">
-    <AppTitle> Kategoriyalar </AppTitle>
+    <AppTitle> Xizmat turlari </AppTitle>
     <div
       class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between"
     >
       <div class="flex flex-col sm:flex-row gap-2">
-        <div class="flex justify-between">
+        <div class="flex gap-4 flex-wrap items-center">
           <n-input
             v-model:value="search"
             clearable
             size="large"
             :placeholder="$t('actions.search')"
-            class="search-input min-w-[400px]"
+            class="search-input w-[300px]"
           >
             <template #prefix>
               <CIcon name="search" class="mr-4" />
             </template>
           </n-input>
         </div>
+        <SelectCategory class="w-[300px]" v-model:value="category_id" />
       </div>
       <div class="flex gap-2">
         <CButton
@@ -76,7 +79,7 @@ async function deleteItem(item: ICategory) {
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" v-if="list.length">
       <div
         v-for="item in list"
-        @click="$router.push(`/service?category_id=${item.id}`)"
+        @click="$router.push(`/organization?service_id=${item.id}`)"
         class="flex p-5 rounded-2xl border border-grey-100 bg-white cursor-pointer hover:shadow-md hover:bg-blue-50 transition-all duration-200 relative"
       >
         <div class="absolute top-2 right-2">
@@ -85,10 +88,10 @@ async function deleteItem(item: ICategory) {
               <CActionIcon icon="more" @click.stop />
             </template>
             <n-list hoverable clickable>
-              <n-list-item @click="$router.push(`/service?category_id=${item.id}`)">
+              <n-list-item @click="$router.push(`/organization?service_id=${item.id}`)">
                 <div class="flex">
                   <CIcon class="w-4 mr-2" name="eye" />
-                  Xizmat turlari
+                  Xizmatlar
                 </div>
               </n-list-item>
               <n-list-item
@@ -125,9 +128,10 @@ async function deleteItem(item: ICategory) {
     :title="mode == 'create' ? 'Qo\'shish' : 'Tahrirlash'"
     class="max-w-[500px]"
   >
-    <AddUpCategory
+    <AddUpService
       :mode="mode"
       :item="currentItem!"
+      :category_id="category_id"
       @success="
         addShow = false;
         fetchData();

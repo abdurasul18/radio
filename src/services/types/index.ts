@@ -29,7 +29,8 @@ export type IResponseAxios<T = any> = AxiosPromise<IResponse<T>>
 
 export interface IFile {
   extension: string
-  id: string
+  id?: string
   name: string
   uploadPath: string
+  path?: string
 }

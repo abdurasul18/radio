@@ -72,8 +72,12 @@
 
 .search-input {
   --n-height: 48px !important;
-}
+    border-radius: 8px!important;
 
+}
+.search-input .n-input-wrapper {
+  border-radius: 8px!important;
+}
 .search-input .n-input__border,
 .search-input .n-input__state-border {
   @apply border border-grey-100;
