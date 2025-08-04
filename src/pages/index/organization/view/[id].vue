@@ -26,9 +26,9 @@ onMounted(getData);
       <template #cover>
         <div class="cursor-default" @click.stop>
           <n-carousel show-arrow draggable slides-per-view="1" :space-between="10">
-            <img
+            <n-image
               v-for="(file, fileIndex) in data?.files"
-              class="w-full h-[400px] object-contain rounded-2xl overflow-hidden"
+              class="w-full h-[400px] n-img-cover  rounded-2xl overflow-hidden"
               :src="$withBaseUrl(file.file?.path)"
             />
           </n-carousel>

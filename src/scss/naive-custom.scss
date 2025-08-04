@@ -231,3 +231,9 @@
         }
     }
 }
+
+.n-img-cover {
+    img {
+        object-fit: cover !important;
+    }
+}
