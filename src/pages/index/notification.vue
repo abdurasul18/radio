@@ -111,7 +111,11 @@ let excelLoading = ref(false);
                 <tr v-for="(item, i) in list" :key="i">
                   <td>{{ i + 1 }}</td>
                   <td>{{ item.title }}</td>
-                  <td>{{ item.description }}</td>
+                  <td>
+                    <n-scrollbar class="max-h-[100px]" trigger="none">
+                      {{ item.description }}
+                    </n-scrollbar>
+                  </td>
                   <td>{{item.published_at ? ddmmyyyy( new Date(item.published_at)) : '-' }}</td>
                   <td>{{item.created_at ? ddmmyyyy( new Date(item.created_at)) : '-' }}</td>
                   <!-- <td>{{item.updated_at ? ddmmyyyy( new Date(item.updated_at)) : '-' }}</td> -->

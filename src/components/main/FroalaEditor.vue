@@ -265,4 +265,9 @@ onUnmounted(() => {
 .fr-wrapper {
   height: 400px !important;
 }
+// hide no-lisense
+div.fr-wrapper > div > a {
+  opacity: 0;
+  pointer-events: none;
+}
 </style>

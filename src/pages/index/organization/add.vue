@@ -7,6 +7,8 @@ import { toastSuccess } from "/@src/plugins/toast";
 import { IFile } from "/@src/services/types";
 const route = useRoute();
 const router = useRouter();
+const defaultContent = `<p data-f-id="pbf" style="text-align: center; font-size: 14px; margin-top: 30px; opacity: 0.65; font-family: sans-serif;">Powered by <a href="https://www.froala.com/wysiwyg-editor?pb=1" title="Froala Editor">Froala Editor</a></p>`;
+
 let form = ref({
   name: "",
   description: "",
@@ -37,6 +39,7 @@ async function save() {
       lat: form.value.lat ? String(form.value.lat) : null,
       lon: form.value.lon ? String(form.value.lon) : null,
       file_ids: uploadedFiles.value.map((el) => el.id),
+      description : form.value.description.replaceAll(defaultContent, ""),
     };
     if (files.value.length > 0) {
       let res = await FileService.upload(files.value);

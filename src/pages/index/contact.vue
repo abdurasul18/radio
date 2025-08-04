@@ -126,9 +126,9 @@ let types = [
                   <td>{{ i + 1 }}</td>
                   <td class="one-line">{{ item.title }}</td>
                   <td>
-                    <div class="max-w-[600px]">
-                    {{ item.description }}
-                    </div>
+                     <n-scrollbar class="max-h-[100px]" trigger="none">
+                      {{ item.description }}
+                    </n-scrollbar>
                   </td>
                   <td>{{ item.key }}</td>
                   <td>
