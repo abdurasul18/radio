@@ -114,7 +114,7 @@ async function deleteItem(item: ICategory) {
         </div>
         <div class="flex gap-4 items-center">
           <img class="w-[60px]" :src="$withBaseUrl(item.file?.path)" alt="" />
-          <div class="font-semibold text-lg leading-5">{{ item.name }}</div>
+          <div class="font-semibold text-lg leading-5">{{ item.name_uz }}</div>
         </div>
       </div>
     </div>

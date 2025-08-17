@@ -21,9 +21,11 @@ let props = withDefaults(
     disabled?: boolean;
     small?: boolean;
     medium?: boolean;
+    labelField?: string;
   }>(),
   {
     medium: true,
+    labelField: "name",
   }
 );
 let emits = defineEmits(["update:value", "search", "update:show", "update:valueObj"]);
@@ -90,7 +92,6 @@ let optionsComp = computed(() => {
           remote
           show-on-focus
           value-field="id"
-          label-field="name"
           :status="schema?.$error ? 'error' : ''"
           :render-option="renderOption"
           :id="id"

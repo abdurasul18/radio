@@ -17,6 +17,7 @@ onMounted(() => {
     icon="category"
     :options="list"
     :loading="loading"
+    label-field="name_uz"
     v-bind="$attrs"
   />
 </template>

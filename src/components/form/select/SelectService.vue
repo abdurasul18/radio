@@ -22,6 +22,7 @@ onMounted(() => {
   <CSelect
     label="Xizmat turi"
     icon="geometric"
+    label-field="name_uz"
     :options="list"
     :loading="loading"
     v-bind="$attrs"

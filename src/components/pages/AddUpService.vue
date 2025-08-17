@@ -13,11 +13,15 @@ let props = defineProps<{
   category_id?: any;
 }>();
 let form = ref({
-  name: "",
+  name_uz: "",
+  name_ru: "",
+  name_en: "",
   category_id: "",
 });
 const rules = {
-  name: { required },
+  name_uz: { required },
+  name_ru: { required },
+  name_en: { required },
   category_id: { required },
 };
 let files = ref([]);
@@ -28,7 +32,9 @@ async function validate() {
 let uploadedFile = ref();
 onMounted(() => {
   if (props.mode === "update") {
-    form.value.name = props.item?.name || "";
+    form.value.name_uz = props.item?.name_uz || "";
+    form.value.name_ru = props.item?.name_ru || "";
+    form.value.name_en = props.item?.name_en || "";
     uploadedFile.value = props.item?.file.path || null;
     form.value.category_id = props.item?.category_id || "";
   }
@@ -69,7 +75,9 @@ async function save() {
 <template>
   <div>
     <div class="grid gap-4">
-      <CInput icon="draft" v-model:value="form.name" :schema="v$.name" label="Nomi" />
+      <CInput icon="draft" v-model:value="form.name_uz" :schema="v$.name_uz" label="Nomi (O'zbekcha)" />
+      <CInput icon="draft" v-model:value="form.name_ru" :schema="v$.name_ru" label="Nomi (Русский)" />
+      <CInput icon="draft" v-model:value="form.name_en" :schema="v$.name_en" label="Nomi (English)" />
       <SelectCategory v-model:value="form.category_id" :schema="v$.category_id" />
       <FileShow
         v-if="uploadedFile"

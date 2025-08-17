@@ -121,7 +121,21 @@ onMounted(async () => {
     </n-card>
     <n-card class="base-card" :bordered="false">
       <SelectLocation v-model:lat="form.lat" v-model:lon="form.lon" />
-      {{ form.lat }} : {{ form.lon }}
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <CInput
+          v-model:value="form.lat"
+          label="Kenglik"
+          type="number"
+          icon="hashtag"
+        />
+        <CInput
+          v-model:value="form.lon"
+          label="Uzunlik"
+          type="number"
+          icon="hashtag"
+        />
+      
+      </div>
     </n-card>
     <div class="flex justify-end mt-8 gap-4">
       <CButton @click="$router.back()" type="default"> Bekor qilish </CButton>

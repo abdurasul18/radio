@@ -5,11 +5,13 @@ import { IUser } from "./user";
 export interface IService {
     file_id: string
     id: string
-    name: string
     order: number
     status: 1 | 0
     file:IFile
     category_id: string
+    name_uz: string
+    name_ru: string
+    name_en: string
 }
 
 export const ServiceService = {

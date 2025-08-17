@@ -5,7 +5,9 @@ import { IUser } from "./user";
 export interface ICategory {
     file_id: string
     id: string
-    name: string
+    name_uz: string
+    name_ru: string
+    name_en: string
     order: number
     status: 1 | 0
     file:IFile
