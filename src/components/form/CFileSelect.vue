@@ -10,7 +10,7 @@ type PropType = {
   message?: string;
 };
 let props = withDefaults(defineProps<PropType>(), {
-  accept: ".jpg, .jpeg, .png, .docx, .doc, .pdf",
+  accept: ".jpg, .jpeg, .png",
 });
 const uploadRef: Ref<File[]> = ref([]);
 watch(

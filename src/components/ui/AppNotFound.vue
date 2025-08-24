@@ -12,6 +12,7 @@ let props = withDefaults(
   <div
     v-if="mode == 'card'"
     class="flex flex-col w-full justify-center items-center text-center min-h-[300px]"
+    
   >
     <div class="mb-6"><img src="/img/not-found.png" alt="" /></div>
     <div class="font-semibold">Ma'lumot topilmadi</div>

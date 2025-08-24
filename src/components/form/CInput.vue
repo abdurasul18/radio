@@ -16,6 +16,7 @@ let props = withDefaults(
     medium?: boolean;
     placeholder?: string;
     simple?: boolean;
+    rows?: number;
   }>(),
   {
     label: "",

@@ -32,7 +32,11 @@ let activeRoute = computed(() => {
     return "organization";
   } else if (route.fullPath.startsWith("/region")) {
     return "region";
-  } else {
+  }
+   else if (route.fullPath.startsWith("/education")) {
+    return "education";
+  }
+  else {
     return "";
   }
 });

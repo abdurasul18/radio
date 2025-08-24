@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { EmployeeService, IEmployee } from '../services/employee'
 import { AuthService } from '../services/auth'
 import ApiService from '../services/api'
 import { IconName } from '../components/ui/CIcon.vue'
@@ -17,7 +16,7 @@ interface IUser {
 export const useAuthStore = defineStore('auth', () => {
   const user = useStorage<Partial<IUser>>('user', {})
   const token = useStorage("access_token", "")
-  const employee = useStorage<IEmployee>("employee", null)
+  const employee = useStorage<any>("employee", null)
   const isAuthenticated = computed(() => !!token.value)
   const login = (data: any) => {
     user.value = jwtDecode(data.token)
@@ -65,7 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
         text: "Kontaktlar",
         to: "/contact",
       },
-       {
+      {
         name: "category",
         icon: "category",
         text: "Kategoriyalar",
@@ -84,19 +83,68 @@ export const useAuthStore = defineStore('auth', () => {
       //   to: "/organization",
       // },
       {
+        name: "education",
+        icon: "education",
+        text: "Ta'lim",
+        to: "/education",
+      },
+      {
         name: "region",
         icon: "location",
         text: "Shtatlar",
         to: "/region",
       },
     ];
+  // 
+  const educations = [
+    {
+      name: "DMV practice test",
+      code: "1",
+      img: "/img/1.png",
+    },
+    {
+      name: "CDL permite test",
+      code: "2",
+      img: "/img/2.png",
+    },
+    {
+      name: "Traffic signs for truck drivers",
+      code: "3",
+      img: "/img/3.png",
+    },
+    {
+      name: "Easy english",
+      code: "4",
+      img: "/img/4.png",
+    },
+  ];
 
+  // 
+  const testTypes = [
+    {
+      name: "Belgilar orqali test ishlash",
+      code: "1",
+      img: "/img/t1.png",
+    },
+    {
+      name: "Savollar orqali test ishlash",
+      code: "2",
+      img: "/img/t2.png",
+    },
+    {
+      name: "Savol-javob orqali test ishlash",
+      code: "3",
+      img: "/img/t3.png",
+    },
+  ]
   return {
     user,
     token,
     isAuthenticated,
     login,
     logout,
+    educations,
+    testTypes,
     getCurrentUser,
     employee,
     routes

@@ -15,6 +15,7 @@ declare module 'vue' {
     AddUpNotification: typeof import('./src/components/pages/AddUpNotification.vue')['default']
     AddUpRegion: typeof import('./src/components/pages/AddUpRegion.vue')['default']
     AddUpService: typeof import('./src/components/pages/AddUpService.vue')['default']
+    AddUpSubject: typeof import('./src/components/pages/AddUpSubject.vue')['default']
     AppNotFound: typeof import('./src/components/ui/AppNotFound.vue')['default']
     AppTitle: typeof import('./src/components/ui/AppTitle.vue')['default']
     CActionIcon: typeof import('./src/components/ui/CActionIcon.vue')['default']
