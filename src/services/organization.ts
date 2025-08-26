@@ -7,10 +7,10 @@ export interface IOrganization {
     address: string
     description: string
     files: {
-        id:string
+        id: string
         file_id: string
         product_id: string
-        file : IFile
+        file: IFile
     }[]
     id: string
     lat: string
@@ -22,6 +22,11 @@ export interface IOrganization {
     service: IService
     service_id: string
     status: string
+    details: {
+        title: string
+        file_id: string | null
+        file: IFile | null
+    }[]
 }
 
 export const OrganizationService = {
@@ -37,7 +42,7 @@ export const OrganizationService = {
     update(id: string, data: any) {
         return ApiService.post(`product/update?id=${id}`, data)
     },
-    getById(id:string):AxiosPromise<{data:IOrganization}>{
+    getById(id: string): AxiosPromise<{ data: IOrganization }> {
         return ApiService.get(`/product/view?id=${id}`)
     }
     // 

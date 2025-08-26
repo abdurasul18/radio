@@ -20,15 +20,15 @@ onMounted(getData);
 </script>
 <template>
   <n-spin :show="loading">
-  <AppTitle> {{ data?.name }} </AppTitle>
-  <CButton type="default" @click="$router.back()"> Orqaga</CButton>
+    <AppTitle> {{ data?.name }} </AppTitle>
+    <CButton type="default" @click="$router.back()"> Orqaga</CButton>
     <n-card class="base-card base-card-hover overflow-hidden max-w-[600px] mx-auto">
       <template #cover>
         <div class="cursor-default" @click.stop>
           <n-carousel show-arrow draggable slides-per-view="1" :space-between="10">
             <n-image
               v-for="(file, fileIndex) in data?.files"
-              class="w-full h-[400px] n-img-cover  rounded-2xl overflow-hidden"
+              class="w-full h-[400px] n-img-cover rounded-2xl overflow-hidden"
               :src="$withBaseUrl(file.file?.path)"
             />
           </n-carousel>
@@ -45,6 +45,15 @@ onMounted(getData);
         </div>
         <div class="flex gap-2">
           <CIcon class="info-svg" width="20" name="location" /> {{ data?.address }}
+        </div>
+            <n-divider />
+
+        <div class="grid gap-4">
+          <div v-for="item in data?.details">
+            <div class="font-semibold text-base mb-2">{{ item.title }}</div>
+            <div><n-image :src="$withBaseUrl(item.file?.path)" /></div>
+            <n-divider />
+          </div>
         </div>
         <n-divider />
         <div v-html="data?.description"></div>
