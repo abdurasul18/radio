@@ -9,6 +9,7 @@ export interface IQuestion {
     menu: string
     id: string
     file: IFile
+    sub_menu:any
     answer: {
         is_correct: 1 | 0
         title: string
@@ -18,7 +19,40 @@ export interface IQuestion {
     }[]
 
 }
-
+ export const subMenus = [
+    {
+        name : "Genaral Knowledge",
+        id: 100
+    },
+    {
+        name : "Air Brakes",
+        id:200
+    },
+    {
+        name : "Combination Vehicles",
+        id:300
+    },
+   {
+    name : "Transporting Passengers",
+    id:400
+   },
+   {
+    name : "Hazardous Materials",
+    id:500
+   },
+   {
+    name : "Tank Vehicles",
+    id:600
+   },
+   {
+    name : "Doubles/Triple",
+    id:700
+   },
+   {
+    name : "School Bus",
+    id:800
+   }
+]
 export const QuestionService = {
     getList(query: QueryType) {
         return ApiService.get(`question/index?${createQuery(query)}`);

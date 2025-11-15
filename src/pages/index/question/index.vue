@@ -4,8 +4,9 @@ import { useApiService } from "/@src/composable/getList";
 import { useApiServiceAll } from "/@src/composable/getListAll";
 import { confirmDelete } from "/@src/composable/helpers";
 import { toastSuccess } from "/@src/plugins/toast";
-import { IQuestion, QuestionService } from "/@src/services/question";
+import { IQuestion, QuestionService, subMenus } from "/@src/services/question";
 import { useAuthStore } from "/@src/store/auth";
+import { ITestCategory, TestCategoryService } from "/@src/services/test-category";
 const { educations, testTypes } = toRefs(useAuthStore());
 let modal = useModal();
 let route = useRoute();
@@ -14,6 +15,8 @@ const educationName = computed(() => {
   return education ? education.name : "";
 });
 let menu = ref(route.query.menu ? Number(route.query.menu) : null);
+let group_id = ref(route.query.group_id ? Number(route.query.group_id) : null);
+let sub_menu = ref(route.query.sub_menu ? Number(route.query.sub_menu) : null);
 let limit = ref(
   route.query.limit && !isNaN(Number(route.query.limit)) ? Number(route.query.limit) : 20
 );
@@ -24,6 +27,8 @@ let paramsAdd = computed(() => {
     query: {
       menu: menu.value,
       type: type.value,
+      sub_menu: sub_menu.value,
+      group_id: group_id.value,
       offset: (page.value - 1) * limit.value,
       limit: limit.value,
     },
@@ -52,6 +57,13 @@ async function deleteItem(item: IQuestion) {
     toastSuccess();
   }
 }
+let groupData = ref<ITestCategory | null>(null);
+onMounted(async () => {
+  if (group_id.value) {
+    let res = await TestCategoryService.view(String(group_id.value));
+    groupData.value = res.data?.data;
+  }
+});
 </script>
 <template>
   <div>
@@ -60,6 +72,9 @@ async function deleteItem(item: IQuestion) {
         <n-breadcrumb-item @click="$router.push(`/education`)">
           <div class="text-lg">{{ educationName }}</div>
         </n-breadcrumb-item>
+        <n-breadcrumb-item @click="$router.push(`/test-category?menu=${menu}`)"
+          ><div class="text-lg">{{ groupData?.name }}</div></n-breadcrumb-item
+        >
         <n-breadcrumb-item><div class="text-lg">Test savollari</div></n-breadcrumb-item>
       </n-breadcrumb>
     </AppTitle>
@@ -68,7 +83,7 @@ async function deleteItem(item: IQuestion) {
         class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between"
       >
         <div class="flex flex-col sm:flex-row gap-2">
-          <div class="flex justify-between">
+          <div class="grid grid-cols-2 gap-4">
             <n-input
               v-model:value="search"
               clearable
@@ -80,12 +95,15 @@ async function deleteItem(item: IQuestion) {
                 <CIcon name="search" class="mr-4" />
               </template>
             </n-input>
+            <SelectSubMenu v-if="menu == 2" v-model:value="sub_menu" label="Sub menu" />
           </div>
         </div>
         <div class="flex gap-2">
           <CButton
             icon="plus"
-            @click="$router.push(`/question/add?menu=${menu}&type=${type}`)"
+            @click="
+              $router.push(`/question/add?menu=${menu}&type=${type}&group_id=${group_id}`)
+            "
           >
             {{ $t("actions.add") }}
           </CButton>
@@ -104,7 +122,7 @@ async function deleteItem(item: IQuestion) {
       <div class="pt-3">
         <div class="grid gap-4" v-if="list.length">
           <n-card class="base-card" v-for="(item, index) in list" :key="item.id">
-            <div class="mb-4 flex justify-between gap-4">
+            <div class="mb-2 flex justify-between gap-4">
               <div class="title flex gap-2 items-center">
                 {{ $paginate(index, page, limit) }}.
                 <img
@@ -123,6 +141,10 @@ async function deleteItem(item: IQuestion) {
                 />
                 <CIconButton type="error" @click="deleteItem(item)" icon="delete" />
               </div>
+            </div>
+            <div class="mb-4 text-blue-600" v-if="menu == 2">
+              <strong>Sub menu:</strong>
+              {{ subMenus.find((sm) => sm.id == item.sub_menu)?.name || "-" }}
             </div>
             <n-list hoverable>
               <n-list-item v-for="answer in item.answer">

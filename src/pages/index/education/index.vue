@@ -25,7 +25,7 @@ const { educations } = useAuthStore();
                   Ta’lim
                 </div>
               </n-list-item>
-              <n-list-item @click="$router.push(`/question?menu=${item.code}`)">
+              <n-list-item @click="$router.push(`/test-category?menu=${item.code}`)">
                 <div class="flex text-base">
                   <img class="w-6 mr-4 object-contain" src="/img/test.png" alt="" />
                   Test

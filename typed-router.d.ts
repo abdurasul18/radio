@@ -36,6 +36,7 @@ declare module 'vue-router/auto-routes' {
     '//question/add': RouteRecordInfo<'//question/add', '/question/add', Record<never, never>, Record<never, never>>,
     '//region': RouteRecordInfo<'//region', '/region', Record<never, never>, Record<never, never>>,
     '//service/': RouteRecordInfo<'//service/', '/service', Record<never, never>, Record<never, never>>,
+    '//test-category/': RouteRecordInfo<'//test-category/', '/test-category', Record<never, never>, Record<never, never>>,
     '/[...all]': RouteRecordInfo<'/[...all]', '/:all(.*)', { all: ParamValue<true> }, { all: ParamValue<false> }>,
     '/auth/login': RouteRecordInfo<'/auth/login', '/auth/login', Record<never, never>, Record<never, never>>,
     '/auth/login-with-token': RouteRecordInfo<'/auth/login-with-token', '/auth/login-with-token', Record<never, never>, Record<never, never>>,

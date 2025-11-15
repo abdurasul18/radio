@@ -20,6 +20,7 @@ let form = ref({
     },
   ],
   correctIndex: null as any,
+  sub_menu: null as any,
 });
 const rules = {
   title: { required },
@@ -28,6 +29,10 @@ const v$ = useVuelidate(rules, form);
 async function validate() {
   return await v$.value.$validate();
 }
+let menuId = computed(() => {
+  return String(route.query.menu);
+});
+
 const files = ref<File[]>([]);
 let uploadedFile = ref<IFile | null>(null);
 let loading = ref(false);
@@ -47,6 +52,7 @@ onMounted(async () => {
       (answer) => answer.is_correct == 1
     );
     uploadedFile.value = res.data.data.file;
+    form.value.sub_menu = res.data.data.sub_menu;
   }
 });
 
@@ -57,6 +63,7 @@ async function save() {
     let payload = {
       ...form.value,
       type: +form.value.type,
+      group_id: route.query.group_id ? Number(route.query.group_id) : null,
       answers: form.value.answers.map((answer, index) => ({
         title: answer.title,
         file_id: answer.file_id ? answer.file_id : null,
@@ -107,6 +114,13 @@ async function save() {
           </template>
         </n-tab-pane>
       </n-tabs>
+      <SelectSubMenu
+        class="mb-4"
+        v-if="menuId == '2'"
+        v-model:value="form.sub_menu"
+        label="Sub menu"
+        :schema="v$.sub_menu"
+      />
       <div class="grid gap-4 mb-3">
         <CInput
           v-model:value="form.title"
