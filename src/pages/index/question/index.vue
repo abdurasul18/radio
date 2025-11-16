@@ -72,8 +72,8 @@ onMounted(async () => {
         <n-breadcrumb-item @click="$router.push(`/education`)">
           <div class="text-lg">{{ educationName }}</div>
         </n-breadcrumb-item>
-        <n-breadcrumb-item @click="$router.push(`/test-category?menu=${menu}`)"
-          ><div class="text-lg">{{ groupData?.name }}</div></n-breadcrumb-item
+        <n-breadcrumb-item v-if="groupData?.id"  @click="$router.push(`/test-category?menu=${menu}`)"
+          ><div class="text-lg">{{ groupData?.name_uz }}</div></n-breadcrumb-item
         >
         <n-breadcrumb-item><div class="text-lg">Test savollari</div></n-breadcrumb-item>
       </n-breadcrumb>
@@ -102,7 +102,7 @@ onMounted(async () => {
           <CButton
             icon="plus"
             @click="
-              $router.push(`/question/add?menu=${menu}&type=${type}&group_id=${group_id}`)
+              $router.push(`/question/add?menu=${menu}&type=${type}&group_id=${group_id || ''}`)
             "
           >
             {{ $t("actions.add") }}

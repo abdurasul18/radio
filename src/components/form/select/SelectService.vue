@@ -17,13 +17,21 @@ let { loading, list, search, fetchData } = useApiServiceAll<IService>(
 onMounted(() => {
   fetchData();
 });
+let options = computed(() => {
+  return list.value.map((el) => {
+    return {
+      ...el,
+      id: el.id,
+      name: el.name_uz,
+    };
+  });
+});
 </script>
 <template>
   <CSelect
     label="Xizmat turi"
     icon="geometric"
-    label-field="name_uz"
-    :options="list"
+    :options="options"
     :loading="loading"
     v-bind="$attrs"
   />

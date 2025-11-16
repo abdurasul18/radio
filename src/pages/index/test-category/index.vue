@@ -90,9 +90,12 @@ async function deleteItem(item: ITestCategory) {
       <div
         @click="$router.push(`/question?group_id=${item.id}&menu=${routeId}`)"
         v-for="(item, index) in list"
-        class="flex flex-col p-5 rounded-2xl border border-grey-100 bg-white relative hover:shadow-lg transition-shadow duration-200 hover:border-blue-400 cursor-pointer"
+        class="flex flex-col p-5 rounded-2xl border border-grey-100 bg-white cursor-pointer hover:shadow-md hover:bg-blue-50 transition-all duration-200 relative"
       >
-        <div class="title">{{ item.name }}</div>
+        <div class="flex gap-4 items-center">
+          <img class="w-[60px] max-h-[60px] object-contain" :src="$withBaseUrl(item.file?.path)" alt="" />
+          <div class="font-semibold text-lg leading-5">{{ item.name_uz }}</div>
+        </div>
         <div class="flex justify-end">
           <CActionIcon
             @click.stop="

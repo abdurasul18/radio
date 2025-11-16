@@ -31,7 +31,6 @@ declare module 'vue' {
     CInputNumber: typeof import('./src/components/form/CInputNumber.vue')['default']
     CLoader: typeof import('./src/components/ui/CLoader.vue')['default']
     CModal: typeof import('./src/components/ui/CModal.vue')['default']
-    copy: typeof import('./src/components/pages/AddUpSubject copy.vue')['default']
     CPhotoSelect: typeof import('./src/components/form/CPhotoSelect.vue')['default']
     CSelect: typeof import('./src/components/form/CSelect.vue')['default']
     CTag: typeof import('./src/components/ui/CTag.vue')['default']

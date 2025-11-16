@@ -25,7 +25,13 @@ const { educations } = useAuthStore();
                   Ta’lim
                 </div>
               </n-list-item>
-              <n-list-item @click="$router.push(`/test-category?menu=${item.code}`)">
+              <n-list-item v-if="item.code=='1'" @click="$router.push(`/test-category?menu=${item.code}`)">
+                <div class="flex text-base">
+                  <img class="w-6 mr-4 object-contain" src="/img/test.png" alt="" />
+                  Test
+                </div>
+              </n-list-item>
+              <n-list-item v-else @click="$router.push(`/question?menu=${item.code}`)">
                 <div class="flex text-base">
                   <img class="w-6 mr-4 object-contain" src="/img/test.png" alt="" />
                   Test

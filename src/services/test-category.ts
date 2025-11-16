@@ -4,9 +4,14 @@ import { IFile, IResponse, QueryType } from "./types";
 import { IUser } from "./user";
 import { ILesson } from "./lesson";
 export interface ITestCategory {
+    file_id: string
     id: string
-    name :string
-    menu: string
+    name_uz: string
+    name_ru: string
+    name_en: string
+    order: number
+    file: IFile
+    menu : string
 }
 
 export const TestCategoryService = {

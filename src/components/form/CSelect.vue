@@ -49,7 +49,7 @@ function renderOption({ node, option }: { node: VNode; option: SelectOption }) {
       { class: "select-tooltip", placement: "right" },
       {
         trigger: () => node,
-        default: () => `${option.name}`,
+        default: () => `${option[props.labelField as string]}`,
       }
     );
   }
