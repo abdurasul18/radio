@@ -22,16 +22,24 @@ export interface IOrganization {
     service: IService
     service_id: string
     status: string
-    details: {
-        title: string
-        file_id: string | null
-        file: IFile | null
-    }[]
+    category_id: string
+    contact_name: string
+    is_24_7: boolean
+    work_time_from: string
+    website: string
+    work_time_to: string
+    email: string
+    salary : string
+    position : string
+    salary_type : any
 }
 
 export const OrganizationService = {
     getList(query: QueryType) {
         return ApiService.get(`product/index?${createQuery(query)}`);
+    },
+    getListAll(query: QueryType) {
+        return ApiService.get(`product/moderate?${createQuery(query)}`);
     },
     delete(id: string) {
         return ApiService.delete(`product/delete?id=${id}`);
@@ -40,10 +48,10 @@ export const OrganizationService = {
         return ApiService.post(`product/create`, data)
     },
     update(id: string, data: any) {
-        return ApiService.post(`product/update?id=${id}`, data)
+        return ApiService.post(`product/update/${id}`, data)
     },
     getById(id: string): AxiosPromise<{ data: IOrganization }> {
-        return ApiService.get(`/product/view?id=${id}`)
+        return ApiService.get(`/product/view/${id}`)
     }
     // 
 

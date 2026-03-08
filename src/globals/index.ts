@@ -1,3 +1,4 @@
+import { IFile } from '../services/types'
 import Util from './global-methods'
 declare module 'vue' {
   interface ComponentCustomProperties {
@@ -6,6 +7,7 @@ declare module 'vue' {
     $dec: (val: string | number) => string
     $baseUrl: string
     $withBaseUrl: (url?: string) => string
+    $withBaseUrl2: (file: IFile | null) => string
     $params: {
       page: number,
       limit: number
@@ -19,6 +21,6 @@ export default (app: any) => {
     }
   }
   app.config.globalProperties.$params = { page: 0, limit: 20 }
-  app.config.globalProperties.$baseUrl = import.meta.env. VITE_API_IMG_URL
+  app.config.globalProperties.$baseUrl = import.meta.env.VITE_API_IMG_URL
   
 }

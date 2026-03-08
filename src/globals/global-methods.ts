@@ -1,14 +1,19 @@
 import { Ref } from 'vue'
+import { IFile } from '../services/types'
 const locale = useStorage('locale', 'lt') as Ref<'lt' | 'uz' | 'eng' | 'ru'>
 const Util = {
     withBaseUrl(url?: string) {
         if (url?.startsWith('/')) {
             url = url.substring(1)
         }
-        if(url?.startsWith('uploads')){
+        if (url?.startsWith('uploads')) {
             url = url.replace('uploads', '')
         }
-        return `${import.meta.env. VITE_API_IMG_URL}${url}`
+        return `${import.meta.env.VITE_API_IMG_URL}${url}`
+    },
+    withBaseUrl2(file?: IFile) {
+        if (!file || !file.path) return ''
+        return `${file.base_url}/${file.path}`
     },
     paginate(index: number, page: number, limit: number) {
         return index + 1 + (page - 1) * limit

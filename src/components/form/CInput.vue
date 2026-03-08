@@ -4,8 +4,8 @@ import { IconName } from "../ui/CIcon.vue";
 let props = withDefaults(
   defineProps<{
     label: string;
-    type: string;
-    clearable: boolean;
+    type?: string;
+    clearable?: boolean;
     showPasswordOn?: "click" | "mousedown";
     icon?: IconName;
     schema?: any;
@@ -62,7 +62,7 @@ function focus() {
         <CIcon :width="!medium ? 24 : 20" :height="!medium ? 24 : 20" :name="icon" />
       </div>
       <div class="relative w-full">
-        <div v-if="!simple" class="text">{{ label }}</div>
+        <div v-if="!simple" class="text">{{ label }} <span v-if="schema?.required" class="text-error ml-1">*</span></div>
         <n-input
           :id="id"
           class="-mb-2"

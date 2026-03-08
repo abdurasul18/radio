@@ -31,7 +31,7 @@ onMounted(() => {
     form.value.name_uz = props.item?.name_uz || "";
     form.value.name_ru = props.item?.name_ru || "";
     form.value.name_en = props.item?.name_en || "";
-    uploadedFile.value = props.item?.file?.path || null;
+    uploadedFile.value = props.item?.file || null;
   }
 });
 let loading = ref(false);
@@ -89,11 +89,7 @@ async function save() {
 
       <FileShow
         v-if="uploadedFile"
-        :data="{
-          uploadPath: uploadedFile,
-          extension: uploadedFile.split('.').pop(),
-          name: item?.file?.name!,
-        }"
+        :data="uploadedFile"
         @delete="uploadedFile = null"
       />
       <DropFile v-else v-model:value="files" :not-multiple="true" />

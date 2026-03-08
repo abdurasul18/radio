@@ -85,7 +85,7 @@ let optionsComp = computed(() => {
         <CIcon :name="icon" width="20" height="20" />
       </div>
       <div class="relative w-full">
-        <div class="text">{{ label }}</div>
+        <div class="text">{{ label }}<span v-if="schema?.required" class="text-error ml-1">*</span></div>
         <n-select
           filterable
           clearable

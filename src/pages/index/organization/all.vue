@@ -18,15 +18,16 @@ let paramsAdd = computed(() => {
       service_id: service_id.value,
       offset: (page.value - 1) * limit.value,
       limit: limit.value,
+      status: 1
     },
   };
 });
 const { list, loading, search, fetchData, total } = useApiServiceAll<IOrganization>(
-  OrganizationService.getList,
+  OrganizationService.getListAll,
   paramsAdd
 );
 watch(
-  () => [search.value, service_id.value],
+  ()=>[search.value, service_id.value],
   (v) => {
     page.value = 1;
   },
@@ -47,7 +48,7 @@ async function deleteItem(item: IOrganization) {
 </script>
 <template>
   <div>
-    <AppTitle> Xizmatlar </AppTitle>
+    <AppTitle> Xizmatlar  </AppTitle>
     <n-spin :show="loading" size="large">
       <div
         class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between"
@@ -85,7 +86,7 @@ async function deleteItem(item: IOrganization) {
           >
             <template #cover>
               <div class="cursor-default" @click.stop>
-                <n-carousel show-arrow draggable :slides-per-view="1">
+                <n-carousel show-arrow draggable :slides-per-view="3" :space-between="10">
                   <img
                     v-for="(file, fileIndex) in item.files"
                     class="w-full h-[200px] object-cover rounded-2xl overflow-hidden"
@@ -100,13 +101,11 @@ async function deleteItem(item: IOrganization) {
                   {{ item.name }}
                 </div>
               </div>
-
               <div class="flex gap-2">
-                <CIcon class="info-svg flex-shrink-0" width="16" name="location" />
-                {{ item.address }}
+                <CIcon class="info-svg" width="20" name="phone" /> {{ item.phone_number }}
               </div>
               <div class="flex gap-2">
-                <CIcon class="info-svg" width="16" name="phone" /> {{ item.phone_number }}
+                <CIcon class="info-svg" width="20" name="location" /> {{ item.address }}
               </div>
             </div>
             <n-divider />

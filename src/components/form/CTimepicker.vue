@@ -4,9 +4,7 @@ import { IconName } from "../ui/CIcon.vue";
 let props = withDefaults(
   defineProps<{
     label: string;
-    type: string;
     clearable: boolean;
-    showPasswordOn?: "click" | "mousedown";
     schema?: any;
     value?: any;
     simple?: boolean;
@@ -15,10 +13,10 @@ let props = withDefaults(
     medium?: boolean;
   }>(),
   {
-    label: "",
-    type: "text",
-    clearable: true,
     medium: true,
+    label: "",
+    type: "date",
+    clearable: true,
   }
 );
 let emits = defineEmits(["update:value"]);
@@ -44,7 +42,7 @@ function focus() {
   <div>
     <label
       :for="id"
-      class="base-datepicker flex items-center w-full bg-grey-50 rounded-[10px]"
+      class="base-datepicker flex items-center w-full bg-grey-50 p-4 rounded-[10px]"
       :class="[
         focused || compVal ? 'base-datepicker-focus' : '',
         focused ? 'base-datepicker-border' : '',
@@ -59,17 +57,15 @@ function focus() {
       </div>
       <div class="relative w-full">
         <div class="text">{{ label }}<span v-if="schema?.required" class="text-error ml-1">*</span></div>
-        <n-date-picker
-          class=""
+        <n-time-picker
+          class="-mb-2"
           v-model:formatted-value="compVal"
-          type="date"
           :actions="null"
-          :format="'yyyy-MM-dd'"
-          value-format="yyyy-MM-dd"
-          :placeholder="focused || simple ? 'yyyy-MM-dd' : ' '"
-          v-maska="'####-##-##'"
+          :format="'HH:mm'"
+          value-format="HH:mm"
+          :placeholder="focused || simple ? 'HH:mm' : ' '"
+          v-maska="'##:##'"
           :status="schema?.$error ? 'error' : 'success'"
-          :first-day-of-week="0"
           @focus="focused = true"
           @blur="focused = false"
           clearable
@@ -92,10 +88,6 @@ function focus() {
 <style lang="scss">
 .base-datepicker {
   @apply border border-grey-100;
-  padding: 16px;
-  .n-date-picker {
-    margin-bottom: -8px;
-  }
   &.error {
     @apply border border-red-500;
   }

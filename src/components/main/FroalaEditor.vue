@@ -92,7 +92,6 @@ function initFroala() {
         });
       },
     },
-    documentReady: true,
     fontSize: [
       "3",
       "4",
@@ -231,7 +230,7 @@ function initFroala() {
         ],
     charCounterCount: false,
     tabSpaces: 4,
-    height: 600,
+    height: 200,
     fontSizeUnit: "pt",
     placeholderText: "",
     fontFamilySelection: true,
@@ -262,9 +261,7 @@ onUnmounted(() => {
   </div>
 </template>
 <style lang="scss">
-.fr-wrapper {
-  height: 400px !important;
-}
+
 // hide no-lisense
 div.fr-wrapper > div > a {
   opacity: 0;

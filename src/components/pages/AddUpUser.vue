@@ -2,25 +2,20 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { toastSuccess } from "/@src/plugins/toast";
-import { NotificationService } from "/@src/services/notification";
-import { dateToYMD, dmyToYMD } from "/@src/utils/date";
+import { IUserListItem, UserService } from "/@src/services/user";
 import { FileService } from "/@src/services/file";
-import { ISubject, SubjectService } from "/@src/services/subject";
 let emits = defineEmits(["success", "close"]);
 let props = defineProps<{
-  item?: ISubject;
-  menu: any;
+  item?: IUserListItem;
   mode: "create" | "update";
 }>();
 let form = ref({
-  title_uz: "",
-  title_ru: "",
-  title_en: "",
+  first_name: "",
+  last_name: "",
 });
 const rules = {
-  title_uz: { required },
-  title_ru: { required },
-  title_en: { required },
+  first_name: { required },
+  last_name: { required },
 };
 let files = ref([]);
 const v$ = useVuelidate(rules, form.value);
@@ -30,10 +25,9 @@ async function validate() {
 let uploadedFile = ref();
 onMounted(() => {
   if (props.mode === "update") {
-    form.value.title_uz = props.item?.title_uz || "";
-    form.value.title_ru = props.item?.title_ru || "";
-    form.value.title_en = props.item?.title_en || "";
-    uploadedFile.value = props.item?.file || null;
+    form.value.first_name = props.item?.first_name || "";
+    form.value.last_name = props.item?.last_name || "";
+    uploadedFile.value = props.item?.avatar;
   }
 });
 let loading = ref(false);
@@ -44,17 +38,16 @@ async function save() {
       loading.value = true;
       let payload = {
         ...form.value,
-        menu: +props.menu,
-        file_id: uploadedFile.value ? props.item?.file.id || null : null,
+        avatar_id: uploadedFile.value ? props.item?.avatar?.id || null : null,
       };
       if (files.value.length) {
         let res = await FileService.upload(files.value);
-        payload.file_id = res.data.data?.[0]?.id || null;
+        payload.avatar_id = res.data.data?.[0]?.id || null;
       }
       if (props.mode === "update") {
-        await SubjectService.update(props.item?.id!, payload);
+        await UserService.update(props.item?.id!, payload);
       } else {
-        await SubjectService.create(payload);
+        await UserService.create(payload);
       }
       //
       emits("success");
@@ -71,29 +64,18 @@ async function save() {
   <div>
     <div class="grid gap-4">
       <CInput
-        icon="draft"
-        v-model:value="form.title_uz"
-        :schema="v$.title_uz"
-        label="Nomi (O'zbekcha)"
+        icon="user"
+        v-model:value="form.last_name"
+        :schema="v$.last_name"
+        label="Familiya"
       />
       <CInput
-        icon="draft"
-        v-model:value="form.title_ru"
-        :schema="v$.title_ru"
-        label="Nomi (Русский)"
+        icon="user"
+        v-model:value="form.first_name"
+        :schema="v$.first_name"
+        label="Ism"
       />
-      <CInput
-        icon="draft"
-        v-model:value="form.title_en"
-        :schema="v$.title_en"
-        label="Nomi (English)"
-      />
-
-      <FileShow
-        v-if="uploadedFile"
-        :data="uploadedFile"
-        @delete="uploadedFile = null"
-      />
+      <FileShow v-if="uploadedFile" :data="uploadedFile" @delete="uploadedFile = null" />
       <DropFile v-else v-model:value="files" :not-multiple="true" />
     </div>
     <div class="mt-5">

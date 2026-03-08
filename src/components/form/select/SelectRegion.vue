@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 <template>
   <CSelect
-    label="Shtatlar"
+    label="Hudud"
     icon="location"
     :options="list"
     :loading="loading"

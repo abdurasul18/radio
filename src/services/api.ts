@@ -9,7 +9,7 @@ export function createQuery(data: any) {
   if (!data || typeof data != 'object') return ''
   let query = ''
   for (const key in data) {
-    if(data[key]!==''){
+    if (data[key] !== '') {
       query += `&${key}=${data[key] || ''}`
     }
   }
@@ -24,6 +24,14 @@ function addLangParam(url: string) {
   } else {
     return url + `?lang=${lang}`
   }
+}
+export function ifNullDeleteIt(obj: any) {
+  for (const key in obj) {
+    if (obj[key] === null || obj[key] === undefined) {
+      delete obj[key]
+    }
+  }
+  return obj
 }
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_API_URL
@@ -116,6 +124,9 @@ const ApiService = {
           } else {
             if (error.response.statusCode != 200 && error.response.statusCode != 417) {
               let message = Object.values(error.response.data.errors || {})[0] || error.response.data.message || error.response.data.error || error.response.data || 'Something went wrong'
+              if (message.message && message.field) {
+                message = `${message.field}: ${message.message}`
+              }
               toast.error(message)
               throw error
             }

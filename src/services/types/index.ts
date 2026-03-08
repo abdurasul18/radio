@@ -33,4 +33,5 @@ export interface IFile {
   name: string
   uploadPath: string
   path?: string
+  base_url?: string
 }

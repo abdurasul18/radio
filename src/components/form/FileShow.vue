@@ -7,9 +7,8 @@ let props = defineProps<{
   deletable?: boolean;
 }>();
 let emits = defineEmits(["delete"]);
-const baseUrl = import.meta.env.VITE_API_IMG_URL;
 let extension = computed(() => {
-  return props.data.name.split(".").pop()?.toLowerCase() || "";
+  return props.data.path!.split(".").pop()?.toLowerCase() || "";
 });
 let fileType = computed(() => {
   if (imgFormat.includes(extension.value)) {
@@ -35,7 +34,7 @@ function showOrDownload() {
 function download() {
   let link = document.createElement("a") as HTMLAnchorElement;
   link.download = `${props.data.name || "file"}`;
-  link.href = `${baseUrl}/${props.data.uploadPath || props.data.path}`;
+  link.href = `${props.data.base_url}/${props.data.uploadPath || props.data.path}`;
   link.target = "_blank";
   document.body.appendChild(link);
   link.click();
