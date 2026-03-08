@@ -1,7 +1,7 @@
 import { AxiosPromise } from "axios";
 import ApiService, { createQuery } from "./api";
 import { IFile, IResponse, QueryType } from "./types";
-import { IUser } from "./user";
+import { IUser, IUserListItem } from "./user";
 import { IService } from "./service";
 export interface IOrganization {
     address: string
@@ -21,7 +21,7 @@ export interface IOrganization {
     region_id: string
     service: IService
     service_id: string
-    status: string
+    status: 1 | 0
     category_id: string
     contact_name: string
     is_24_7: boolean
@@ -29,11 +29,17 @@ export interface IOrganization {
     website: string
     work_time_to: string
     email: string
-    salary : string
-    position : string
-    salary_type : any
+    salary: string
+    position: string
+    salary_type: any
 }
 
+export interface IComment {
+    id: string,
+    text: string,
+    created_at: string,
+    user: IUserListItem
+}
 export const OrganizationService = {
     getList(query: QueryType) {
         return ApiService.get(`product/index?${createQuery(query)}`);
@@ -52,7 +58,13 @@ export const OrganizationService = {
     },
     getById(id: string): AxiosPromise<{ data: IOrganization }> {
         return ApiService.get(`/product/view/${id}`)
-    }
+    },
     // 
+     getComments(query: QueryType) {
+        return ApiService.get(`admin/comment/index?${createQuery(query)}`);
+    },
+    deleteComment(id: string) {
+        return ApiService.delete(`admin/comment/delete/${id}`);
+     }  
 
 };

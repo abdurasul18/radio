@@ -80,8 +80,9 @@ async function deleteItem(item: IOrganization) {
       <div class="pt-3">
         <TransitionGroup name="list" tag="div" class="grid grid-cols-4 gap-5">
           <n-card
-            class="base-card base-card-hover overflow-hidden"
+            class="base-card base-card-hover overflow-hidden hover:bg-blue-50 cursor-pointer"
             v-for="(item, index) in list"
+            @click="$router.push(`/organization/view/${item.id}`)"
           >
             <template #cover>
               <div class="cursor-default" @click.stop>
@@ -111,14 +112,14 @@ async function deleteItem(item: IOrganization) {
             </div>
             <n-divider />
             <div class="flex justify-end gap-2">
-              <CActionIcon @click="deleteItem(item)" icon="delete" class="error-svg" />
+              <CActionIcon @click.stop="deleteItem(item)" icon="delete" class="error-svg" />
               <CActionIcon
-                @click="$router.push(`/organization/add?id=${item.id}`)"
+                @click.stop="$router.push(`/organization/add?id=${item.id}`)"
                 class="info-svg"
                 icon="edit"
               />
               <CActionIcon
-                @click="$router.push(`/organization/view/${item.id}`)"
+                @click.stop="$router.push(`/organization/view/${item.id}`)"
                 icon="eye"
               />
             </div>

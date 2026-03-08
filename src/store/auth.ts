@@ -99,6 +99,12 @@ export const useAuthStore = defineStore('auth', () => {
         icon : "users",
         text : "Foydalanuvchilar",
         to : "/user",
+      },
+       {
+        name : "chat",
+        icon : "comment",
+        text : "Chat",
+        to : "/chat",
       }
     ];
   // 

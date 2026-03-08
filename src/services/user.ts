@@ -10,6 +10,7 @@ export interface IUser {
   id: string
   last_name: string
   username: string
+  avatar:IFile | null
 }
 export interface IUserDocument {
   comment: string

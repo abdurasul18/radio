@@ -45,6 +45,7 @@ declare module 'vue' {
     EmployeeSelect: typeof import('./src/components/form/select/EmployeeSelect.vue')['default']
     FileShow: typeof import('./src/components/form/FileShow.vue')['default']
     FroalaEditor: typeof import('./src/components/main/FroalaEditor.vue')['default']
+    ProductComment: typeof import('./src/components/pages/ProductComment.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectAllRef: typeof import('./src/components/form/SelectAllRef.vue')['default']

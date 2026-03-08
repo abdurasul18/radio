@@ -36,6 +36,8 @@ let activeRoute = computed(() => {
     return "education";
   } else if (route.fullPath.startsWith("/user")) {
     return "user";
+  } else if (route.fullPath.startsWith("/chat")) {
+    return "chat";
   } else {
     return "";
   }

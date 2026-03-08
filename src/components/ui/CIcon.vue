@@ -84,7 +84,8 @@ export type IconName =
   | "tick2x"
   | "right"
   | "home"
-  | "education";
+  | "education"
+  | "comment"
 let props = withDefaults(
   defineProps<{
     name: IconName;
