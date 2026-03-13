@@ -3,6 +3,11 @@ import ApiService, { createQuery } from "./api";
 import { IFile, IResponse, QueryType } from "./types";
 import { IUser, IUserListItem } from "./user";
 import { IService } from "./service";
+export const ProductStatus = {
+    1: 'WAITING',
+    2: 'ACTIVE',
+    3: 'REJECT',
+}
 export interface IOrganization {
     address: string
     description: string
@@ -60,11 +65,11 @@ export const OrganizationService = {
         return ApiService.get(`/product/view/${id}`)
     },
     // 
-     getComments(query: QueryType) {
+    getComments(query: QueryType) {
         return ApiService.get(`admin/comment/index?${createQuery(query)}`);
     },
     deleteComment(id: string) {
         return ApiService.delete(`admin/comment/delete/${id}`);
-     }  
+    }
 
 };

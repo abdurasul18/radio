@@ -138,8 +138,7 @@ onMounted(getData);
           <div v-if="data?.status" class="flex items-center gap-2 text-sm">
             <CIcon class="info-svg flex-shrink-0" width="20" name="info" />
             <span class="text-gray-500 font-medium">Holat:</span>
-            <CTag type="success" v-if="data?.status == 1"> ACTIVE </CTag>
-            <CTag type="error" v-else> INACTIVE </CTag>
+            <StatusTag :status="data.status" />
           </div>
 
           <n-divider v-if="data?.description" class="!my-1" />

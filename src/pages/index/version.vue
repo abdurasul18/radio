@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { NotificationService, INotification, NotificationType } from "/@src/services/notification";
 import { useApiService } from "/@src/composable/getList";
 import { confirmDelete } from "/@src/composable/helpers";
 import { toastSuccess } from "/@src/plugins/toast";
@@ -8,23 +7,20 @@ import { RoleType } from "/@src/services/auth";
 import { useAuthStore } from "/@src/store/auth";
 import { useApiServiceAll } from "/@src/composable/getListAll";
 import { ddmmyyyy } from "/@src/utils/date";
+import { IVersion, VersionService } from "/@src/services/version";
 const { user } = toRefs(useAuthStore());
 let modal = useModal();
 let route = useRoute();
 
 let paramsAdd = computed(() => {
   return {
-    query: {
-
-    },
+    query: {},
   };
 });
-const {
-  list,
-  loading,
-  search,
-  fetchData,
-} = useApiServiceAll<INotification>(NotificationService.getList, paramsAdd);
+const { list, loading, search, fetchData } = useApiServiceAll<IVersion>(
+  VersionService.getList,
+  paramsAdd
+);
 
 onMounted(() => {
   fetchData();
@@ -32,54 +28,30 @@ onMounted(() => {
 
 let addShow = ref(false);
 let mode = ref<"create" | "update">("create");
-let currentItem = ref<INotification | null>(null);
+let currentItem = ref<IVersion | null>(null);
 
-async function deleteItem(item: INotification) {
+async function deleteItem(item: IVersion) {
   let isConfirmed = await confirmDelete(modal);
   if (isConfirmed) {
-    await NotificationService.delete(item.id!);
+    await VersionService.delete(item.id!);
     fetchData();
     toastSuccess();
   }
 }
 let excelLoading = ref(false);
-
 </script>
 
 <template>
   <div>
-    <AppTitle>Bildirishnomalar</AppTitle>
+    <AppTitle>Versiya</AppTitle>
 
     <n-spin :show="loading">
       <n-card class="base-card" :bordered="false">
         <div
           class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between"
         >
-          <div class="flex flex-col sm:flex-row gap-2">
-            <div class="flex">
-              <!-- <n-input
-                v-model:value="search"
-                clearable
-                size="large"
-                :placeholder="$t('actions.search')"
-                class="search-input min-w-[200px]"
-              >
-                <template #prefix>
-                  <CIcon name="search" class="mr-4" />
-                </template>
-              </n-input> -->
-             
-            </div>
-          </div>
+          <div class="flex flex-col sm:flex-row gap-2"></div>
           <div class="flex gap-2">
-            <!-- <CButton
-              :loading="excelLoading"
-              class="text-green-500"
-              type="default"
-            >
-              <img class="mr-3" src="/@src/assets/img/excel.png" alt="" />Excelga
-              ko'chirish</CButton
-            > -->
             <CButton
               icon="plus"
               @click="
@@ -97,38 +69,24 @@ let excelLoading = ref(false);
               <thead>
                 <tr>
                   <th style="width: 80px">№</th>
-                  <th>Sarlavha</th>
-                  <th class="w-1/4">Matni</th>
-                  <th>E'lon qilingan sana</th>
-                  <th>Yaratilgan sana</th>
-                  <!-- <th>Tahrirlangan sana</th> -->
-                  <th class="one-line">Poster</th>
-                  <th class="one-line">Turi</th>
-                  <!-- <th>Status</th> -->
+                  <th>Platform</th>
+                  <th>Version</th>
+                  <th>Build number</th>
+                  <th>Message</th>
+                  <th>Url</th>
+                  <th>Force update</th>
                   <th class="min-w-[120px] text-right">Amallar</th>
                 </tr>
               </thead>
               <tbody v-if="list.length">
                 <tr v-for="(item, i) in list" :key="i">
                   <td>{{ i + 1 }}</td>
-                  <td>{{ item.title }}</td>
-                  <td>
-                    <n-scrollbar class="max-h-[100px]" trigger="none">
-                      {{ item.description }}
-                    </n-scrollbar>
-                  </td>
-                  <td>{{item.published_at ? ddmmyyyy( new Date(item.published_at)) : '-' }}</td>
-                  <td>{{item.created_at ? ddmmyyyy( new Date(item.created_at)) : '-' }}</td>
-                  <!-- <td>{{item.updated_at ? ddmmyyyy( new Date(item.updated_at)) : '-' }}</td> -->
-                  <td>
-                    <n-image
-                    class="max-w-[100px] max-h-[100px]"
-                      :src="$withBaseUrl(item.poster)"
-                    />
-                  </td>
-                  <td>
-                    <CTag>{{ NotificationType[item.type] }}</CTag>
-                  </td>
+                  <td>{{ item.platform }}</td>
+                  <td>{{ item.version }}</td>
+                  <td>{{ item.build_number }}</td>
+                  <td>{{ item.message }}</td>
+                  <td>{{ item.url }}</td>
+                  <td><n-switch :value="item.force_update" disabled /> </td>
                   <td>
                     <div class="grid grid-cols-3 gap-1">
                       <CTooltip>
@@ -181,7 +139,7 @@ let excelLoading = ref(false);
       :title="mode === 'create' ? 'Bildirishnoma qo\'shish' : 'Bildirishnoma tahrirlash'"
       class="max-w-[600px]"
     >
-      <AddUpNotification
+      <AddUpVersion
         :mode="mode"
         :item="currentItem!"
         @close="addShow = false"

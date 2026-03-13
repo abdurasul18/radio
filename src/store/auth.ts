@@ -79,7 +79,7 @@ export const useAuthStore = defineStore('auth', () => {
        {
         name: "organization",
         icon: "folder",
-        text: "Barcha Xizmatlar",
+        text: "Moderatsiya",
         to: "/organization/all",
       },
       {
@@ -105,6 +105,12 @@ export const useAuthStore = defineStore('auth', () => {
         icon : "comment",
         text : "Chat",
         to : "/chat",
+      },
+       {
+        name : "version",
+        icon : "list-number",
+        text : "Versiya",
+        to : "/version",
       }
     ];
   // 

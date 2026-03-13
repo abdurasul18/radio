@@ -38,7 +38,11 @@ let activeRoute = computed(() => {
     return "user";
   } else if (route.fullPath.startsWith("/chat")) {
     return "chat";
-  } else {
+  }
+  else if (route.fullPath.startsWith("/version")) {
+    return "version";
+  }
+  else {
     return "";
   }
 });

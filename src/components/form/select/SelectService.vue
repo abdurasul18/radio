@@ -2,7 +2,7 @@
 import { useApiServiceAll } from "/@src/composable/getListAll";
 import { ServiceService, IService } from "/@src/services/service";
 let props = defineProps<{
-  category_id?: string;
+  category_id?: any;
 }>();
 let paramsAdd = computed(() => {
   return {

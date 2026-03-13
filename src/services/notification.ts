@@ -11,14 +11,19 @@ export interface INotification {
   status: string
   title: string
   updated_at: string
+  type: number
 }
-
+export const NotificationType = {
+    1: 'General',
+    2: 'Personal',
+    3: 'System',
+}
 export const NotificationService = {
   getList(query: QueryType) {
     return ApiService.get(`notification/index?${createQuery(query)}&expand=createdBy`);
   },
   delete(id: string) {
-    return ApiService.delete(`notification/delete?id=${id}`);
+    return ApiService.delete(`notification/delete/${id}`);
   },
   create(data: any) {
     let formData = new FormData();
@@ -32,7 +37,7 @@ export const NotificationService = {
     for (const key in data) {
       formData.append(key, data[key]);
     }
-    return ApiService.formData(`notification/update?id=${id}`, formData)
+    return ApiService.formData(`notification/update/${id}`, formData)
   },
   // 
 

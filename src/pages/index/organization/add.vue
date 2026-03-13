@@ -159,17 +159,7 @@ const CATEGORY_TYPE = computed(() => {
     <n-card class="base-card" :bordered="false">
       <div class="flex justify-between items-center">
         <div class="font-semibold text-lg">Holati</div>
-        <n-radio-group
-          class="c-radiogroup"
-          v-model:value="form.status"
-          name="radiobuttonStatus"
-          size="large"
-        >
-          <n-radio-button :value="1"> ACTIVE </n-radio-button>
-          <n-radio-button :value="0" style="--n-button-color-active: #ff4d4f !important">
-            INACTIVE
-          </n-radio-button>
-        </n-radio-group>
+       <SelectStatus class="w-[250px]" v-model:value="form.status" :schema="v$.status" />
       </div>
     </n-card>
     <n-card class="base-card" :bordered="false">

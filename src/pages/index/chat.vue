@@ -131,10 +131,10 @@ async function handleDelete(item: IChat) {
                     target="_blank"
                     class="text-xs text-indigo-600 hover:underline truncate max-w-[200px]"
                   >
-                    {{ item.file.name }}
+                    File
                   </a>
                   <span v-else class="text-xs text-gray-500 truncate max-w-[200px]">
-                    {{ item.file.name }}
+                    File
                   </span>
                 </div>
               </div>

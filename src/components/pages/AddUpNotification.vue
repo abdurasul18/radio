@@ -13,11 +13,13 @@ let form = ref({
   title: "",
   description: "",
   published_at: "",
+  type: 1,
 });
 const rules = {
   title: { required },
   description: { required },
   published_at: { required },
+  type: { required },
 };
 let files = ref([]);
 const v$ = useVuelidate(rules, form.value);
@@ -31,8 +33,10 @@ onMounted(() => {
       ? dateToYMD(new Date(props.item.published_at))
       : "";
     form.value.title = props.item?.title || "";
+    form.value.type = props.item?.type || 1;
     form.value.description = props.item?.description || "";
     uploadedFile.value = props.item?.poster;
+
   }
 });
 let loading = ref(false);
@@ -84,12 +88,14 @@ async function save() {
         label="Sana"
         :schema="v$.published_at"
       />
+      <SelectNotificationType v-model:value="form.type" :schema="v$.type" />
       <FileShow
         v-if="uploadedFile"
         :data="{
-          uploadPath: uploadedFile,
+          path: uploadedFile,
           extension: uploadedFile.split('.').pop(),
           name: uploadedFile,
+          base_url: $baseUrl
         }"
         @delete="uploadedFile = null"
       />

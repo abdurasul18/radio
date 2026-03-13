@@ -18,6 +18,7 @@ declare module 'vue' {
     AddUpSubject: typeof import('./src/components/pages/AddUpSubject.vue')['default']
     AddUpTestCategory: typeof import('./src/components/pages/AddUpTestCategory.vue')['default']
     AddUpUser: typeof import('./src/components/pages/AddUpUser.vue')['default']
+    AddUpVersion: typeof import('./src/components/pages/AddUpVersion.vue')['default']
     AppNotFound: typeof import('./src/components/ui/AppNotFound.vue')['default']
     AppTitle: typeof import('./src/components/ui/AppTitle.vue')['default']
     CActionIcon: typeof import('./src/components/ui/CActionIcon.vue')['default']
@@ -32,6 +33,7 @@ declare module 'vue' {
     CInputNumber: typeof import('./src/components/form/CInputNumber.vue')['default']
     CLoader: typeof import('./src/components/ui/CLoader.vue')['default']
     CModal: typeof import('./src/components/ui/CModal.vue')['default']
+    copy: typeof import('./src/components/form/select/SelectRole copy.vue')['default']
     CPhotoSelect: typeof import('./src/components/form/CPhotoSelect.vue')['default']
     CSelect: typeof import('./src/components/form/CSelect.vue')['default']
     CTag: typeof import('./src/components/ui/CTag.vue')['default']
@@ -50,9 +52,12 @@ declare module 'vue' {
     SelectCategory: typeof import('./src/components/form/select/SelectCategory.vue')['default']
     SelectCategoryType: typeof import('./src/components/form/select/SelectCategoryType.vue')['default']
     SelectLocation: typeof import('./src/components/form/SelectLocation.vue')['default']
+    SelectNotificationType: typeof import('./src/components/form/select/SelectNotificationType.vue')['default']
     SelectRegion: typeof import('./src/components/form/select/SelectRegion.vue')['default']
     SelectRole: typeof import('./src/components/form/select/SelectRole.vue')['default']
     SelectService: typeof import('./src/components/form/select/SelectService.vue')['default']
+    SelectStatus: typeof import('./src/components/form/select/SelectStatus.vue')['default']
     SelectSubMenu: typeof import('./src/components/form/select/SelectSubMenu.vue')['default']
+    StatusTag: typeof import('./src/components/form/StatusTag.vue')['default']
   }
 }

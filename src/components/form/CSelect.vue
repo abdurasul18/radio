@@ -22,10 +22,12 @@ let props = withDefaults(
     small?: boolean;
     medium?: boolean;
     labelField?: string;
+    clearable?: boolean;
   }>(),
   {
     medium: true,
     labelField: "name",
+    clearable: true,
   }
 );
 let emits = defineEmits(["update:value", "search", "update:show", "update:valueObj"]);
@@ -88,7 +90,6 @@ let optionsComp = computed(() => {
         <div class="text">{{ label }}<span v-if="schema?.required" class="text-error ml-1">*</span></div>
         <n-select
           filterable
-          clearable
           remote
           show-on-focus
           value-field="id"
