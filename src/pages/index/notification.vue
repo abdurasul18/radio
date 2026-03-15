@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import { NotificationService, INotification, NotificationType } from "/@src/services/notification";
+import {
+  NotificationService,
+  INotification,
+  NotificationType,
+} from "/@src/services/notification";
 import { useApiService } from "/@src/composable/getList";
 import { confirmDelete } from "/@src/composable/helpers";
 import { toastSuccess } from "/@src/plugins/toast";
@@ -11,21 +15,27 @@ import { ddmmyyyy } from "/@src/utils/date";
 const { user } = toRefs(useAuthStore());
 let modal = useModal();
 let route = useRoute();
-
+let limit = ref(
+  route.query.limit && !isNaN(Number(route.query.limit)) ? Number(route.query.limit) : 20
+);
+let page = ref(Number(route.query.offset || 0) / limit.value + 1);
+let type = ref(route.query.type ? Number(route.query.type) : null);
 let paramsAdd = computed(() => {
   return {
     query: {
-
+       offset: (page.value - 1) * limit.value,
+      limit: limit.value,
+      type: type.value,
     },
   };
 });
-const {
-  list,
-  loading,
-  search,
-  fetchData,
-} = useApiServiceAll<INotification>(NotificationService.getList, paramsAdd);
-
+const { list, loading, search, fetchData, total } = useApiServiceAll<INotification>(
+  NotificationService.getList,
+  paramsAdd
+);
+watch([type], () => {
+  page.value = 1;
+});
 onMounted(() => {
   fetchData();
 });
@@ -43,7 +53,6 @@ async function deleteItem(item: INotification) {
   }
 }
 let excelLoading = ref(false);
-
 </script>
 
 <template>
@@ -57,6 +66,10 @@ let excelLoading = ref(false);
         >
           <div class="flex flex-col sm:flex-row gap-2">
             <div class="flex">
+            <SelectNotificationType
+              v-model:value="type"
+              clearable
+            />
               <!-- <n-input
                 v-model:value="search"
                 clearable
@@ -68,7 +81,6 @@ let excelLoading = ref(false);
                   <CIcon name="search" class="mr-4" />
                 </template>
               </n-input> -->
-             
             </div>
           </div>
           <div class="flex gap-2">
@@ -110,19 +122,23 @@ let excelLoading = ref(false);
               </thead>
               <tbody v-if="list.length">
                 <tr v-for="(item, i) in list" :key="i">
-                  <td>{{ i + 1 }}</td>
+                  <td>{{ $paginate(i, page, limit) }}</td>
                   <td>{{ item.title }}</td>
                   <td>
                     <n-scrollbar class="max-h-[100px]" trigger="none">
                       {{ item.description }}
                     </n-scrollbar>
                   </td>
-                  <td>{{item.published_at ? ddmmyyyy( new Date(item.published_at)) : '-' }}</td>
-                  <td>{{item.created_at ? ddmmyyyy( new Date(item.created_at)) : '-' }}</td>
+                  <td>
+                    {{ item.published_at ? ddmmyyyy(new Date(item.published_at)) : "-" }}
+                  </td>
+                  <td>
+                    {{ item.created_at ? ddmmyyyy(new Date(item.created_at)) : "-" }}
+                  </td>
                   <!-- <td>{{item.updated_at ? ddmmyyyy( new Date(item.updated_at)) : '-' }}</td> -->
                   <td>
                     <n-image
-                    class="max-w-[100px] max-h-[100px]"
+                      class="max-w-[100px] max-h-[100px]"
                       :src="$withBaseUrl(item.poster)"
                     />
                   </td>
@@ -167,12 +183,12 @@ let excelLoading = ref(false);
         </div>
       </n-card>
       <div class="mt-5 ml-4 mb-5">
-        <!-- <n-pagination
-          class="c-pagination"
-          v-model:page="page"
-          v-model:page-size="per_page"
-          :page-count="Math.ceil(total / per_page)"
-        /> -->
+        <n-pagination
+            class="c-pagination"
+            :page-count="Math.ceil(total / limit)"
+            :page-size="limit"
+            v-model:page="page"
+          />
       </div>
     </n-spin>
 

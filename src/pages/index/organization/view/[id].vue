@@ -18,6 +18,11 @@ async function getData() {
 }
 onMounted(getData);
 // 
+const salaryTypes = [
+  { id: 1, name: "Soatbay" },
+  { id: 2, name: "Kunlik" },
+  { id: 3, name: "Oylik" },
+];
 
 </script>
 
@@ -113,7 +118,7 @@ onMounted(getData);
             <span class="text-gray-500 font-medium">Maosh:</span>
             <span>
               {{ data.salary }}
-              <span v-if="data.salary_type"> ({{ data.salary_type }})</span>
+              <span v-if="data.salary_type"> ({{ salaryTypes.find((t) => t.id === data?.salary_type)?.name }})</span>
             </span>
           </div>
 

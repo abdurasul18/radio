@@ -58,6 +58,12 @@ export const useAuthStore = defineStore('auth', () => {
         text: "Bildirishnomalar",
         to: "/notification",
       },
+       {
+        name: "banner",
+        icon: "file",
+        text: "Banner",
+        to: "/banner",
+      },
       {
         name: "contact",
         icon: "users",

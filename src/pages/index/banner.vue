@@ -7,9 +7,7 @@ import { RoleType } from "/@src/services/auth";
 import { useAuthStore } from "/@src/store/auth";
 import { useApiServiceAll } from "/@src/composable/getListAll";
 import { ddmmyyyy } from "/@src/utils/date";
-import { IRegion, RegionService } from "/@src/services/region";
-import { IUser, IUserListItem, UserService } from "/@src/services/user";
-
+import { BannerService, IBanner } from "/@src/services/banner";
 const { user } = toRefs(useAuthStore());
 let modal = useModal();
 let route = useRoute();
@@ -20,64 +18,38 @@ let page = ref(Number(route.query.offset || 0) / limit.value + 1);
 let paramsAdd = computed(() => {
   return {
     query: {
-       offset: (page.value - 1) * limit.value,
-      limit: limit.value,
+      //  offset: (page.value - 1) * limit.value,
+      // limit: limit.value,
     },
   };
 });
-const { list, loading, search, fetchData, total } = useApiServiceAll<IUserListItem>(
-  UserService.getList,
+const { list, loading, search, fetchData, total } = useApiServiceAll<IBanner>(
+  BannerService.getList,
   paramsAdd
 );
-watch([search], () => {
-  page.value = 1;
-});
+
 onMounted(() => {
   fetchData();
 });
 
 let addShow = ref(false);
 let mode = ref<"create" | "update">("create");
-let currentItem = ref<IUserListItem | null>(null);
+let currentItem = ref<IBanner | null>(null);
 
-async function deleteItem(item: IUserListItem) {
+async function deleteItem(item: IBanner) {
   let isConfirmed = await confirmDelete(modal);
   if (isConfirmed) {
-    await UserService.delete(item.id!);
+    await BannerService.delete(item.id!);
     fetchData();
     toastSuccess();
   }
 }
 let excelLoading = ref(false);
-
-function railStyle({ focused, checked }: { focused: boolean; checked: boolean }) {
-  const style: any = {};
-  if (checked) {
-    style.background = "#40c040";
-    if (focused) {
-      style.boxShadow = "0 0 0 2px #40c04040";
-    }
-  } else {
-    style.background = "#ccc";
-    if (focused) {
-      style.boxShadow = "0 0 0 2px #ccc40";
-    }
-  }
-  return style;
-}
-async function toggleStatus(value: boolean, item: IUserListItem) {
-  try {
-    await UserService.toggleStatus(item.id);
-    toastSuccess();
-    fetchData();
-  } finally {
-  }
-}
 </script>
 
 <template>
   <div>
-    <AppTitle>Foydalanuvchilar</AppTitle>
+    <AppTitle>Banner</AppTitle>
 
     <n-spin :show="loading">
       <n-card class="base-card" :bordered="false">
@@ -85,19 +57,7 @@ async function toggleStatus(value: boolean, item: IUserListItem) {
           class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between"
         >
           <div class="flex flex-col sm:flex-row gap-2">
-            <div class="flex">
-              <n-input
-                v-model:value="search"
-                clearable
-                size="large"
-                :placeholder="$t('actions.search')"
-                class="search-input min-w-[200px]"
-              >
-                <template #prefix>
-                  <CIcon name="search" class="mr-4" />
-                </template>
-              </n-input>
-            </div>
+            <div class="flex"></div>
           </div>
           <div class="flex gap-2">
             <!-- <CButton
@@ -108,7 +68,7 @@ async function toggleStatus(value: boolean, item: IUserListItem) {
               <img class="mr-3" src="/@src/assets/img/excel.png" alt="" />Excelga
               ko'chirish</CButton
             > -->
-            <!-- <CButton
+            <CButton
               icon="plus"
               @click="
                 mode = 'create';
@@ -116,7 +76,7 @@ async function toggleStatus(value: boolean, item: IUserListItem) {
               "
             >
               {{ $t("actions.add") }}
-            </CButton> -->
+            </CButton>
           </div>
         </div>
         <div class="-m-6 pt-6">
@@ -125,36 +85,22 @@ async function toggleStatus(value: boolean, item: IUserListItem) {
               <thead>
                 <tr>
                   <th style="width: 80px">№</th>
-                  <th>Familiya, Ism</th>
-                  <th>Telefon</th>
-                  <th class="!text-center">Verifikatsiya</th>
+                  <th class="one-line">Rasm</th>
+                  <th>Tartib raqami</th>
                   <th class="w-[150px] text-right">Amallar</th>
                 </tr>
               </thead>
               <tbody v-if="list.length">
                 <tr v-for="(item, i) in list" :key="i">
-                  <td>{{ $paginate(i, page, limit) }}</td>
+                  <td>{{ i + 1 }}</td>
                   <td>
-                    <div class="flex gap-3 items-center text-base font-semibold">
-                      <n-image
-                        class="w-[60px] h-[80px] rounded-md flex-shrink-0 border border-gray-200"
-                        object-fit="cover"
-                        :src="$withBaseUrl2(item.avatar)"
-                      />
-                      {{ item.last_name }} {{ item.first_name }}
-                    </div>
+                    <n-image
+                      class="max-w-[300px] max-h-[300px]"
+                      :src="$withBaseUrl2(item.file)"
+                    />
                   </td>
-                  <td class="text-blue-500">{{ item.phone }}</td>
-                  <td class="!text-center">
-                    <n-switch
-                      :rail-style="railStyle"
-                      :value="item.is_verified"
-                      @update:value="toggleStatus($event, item)"
-                    >
-                      <template #checked> Checked </template>
-                      <template #unchecked> Unchecked </template>
-                    </n-switch>
-                  </td>
+                  <td class="!w-[80px]">{{ item.order }}</td>
+
                   <td>
                     <div class="grid grid-cols-3 gap-1">
                       <CTooltip>
@@ -172,6 +118,17 @@ async function toggleStatus(value: boolean, item: IUserListItem) {
                         </template>
                         <div>Tahrirlash</div>
                       </CTooltip>
+                      <CTooltip>
+                        <template #trigger>
+                          <CIconButton
+                            size="small"
+                            icon="delete"
+                            type="error"
+                            @click="deleteItem(item)"
+                          />
+                        </template>
+                        <div>O'chirish</div>
+                      </CTooltip>
                     </div>
                   </td>
                 </tr>
@@ -182,21 +139,21 @@ async function toggleStatus(value: boolean, item: IUserListItem) {
         </div>
       </n-card>
       <div class="mt-5 ml-4 mb-5">
-       <n-pagination
+        <!-- <n-pagination
             class="c-pagination"
             :page-count="Math.ceil(total / limit)"
             :page-size="limit"
             v-model:page="page"
-          />
+          /> -->
       </div>
     </n-spin>
 
     <CModal
       v-model:show="addShow"
-      :title="mode === 'create' ? 'Foydalanuvchi qo\'shish' : 'Foydalanuvchi tahrirlash'"
-      class="max-w-[500px]"
+      :title="mode === 'create' ? 'Banner qo\'shish' : 'Banner tahrirlash'"
+      class="max-w-[600px]"
     >
-      <AddUpUser
+      <AddUpBanner
         :mode="mode"
         :item="currentItem!"
         @close="addShow = false"

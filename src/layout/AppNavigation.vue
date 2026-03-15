@@ -22,6 +22,8 @@ let activeRoute = computed(() => {
   }
   if (route.fullPath.startsWith("/notification")) {
     return "notification";
+  } else if (route.fullPath.startsWith("/banner")) {
+    return "banner";
   } else if (route.fullPath.startsWith("/contact")) {
     return "contact";
   } else if (route.fullPath.startsWith("/service")) {
@@ -38,11 +40,9 @@ let activeRoute = computed(() => {
     return "user";
   } else if (route.fullPath.startsWith("/chat")) {
     return "chat";
-  }
-  else if (route.fullPath.startsWith("/version")) {
+  } else if (route.fullPath.startsWith("/version")) {
     return "version";
-  }
-  else {
+  } else {
     return "";
   }
 });
