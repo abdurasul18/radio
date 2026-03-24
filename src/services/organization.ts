@@ -37,6 +37,7 @@ export interface IOrganization {
     salary: string
     position: string
     salary_type: any
+    user : IUserListItem
 }
 
 export interface IComment {

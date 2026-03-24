@@ -65,6 +65,13 @@ let optionsComp = computed(() => {
   }
   return props.options;
 });
+function renderLabel(option: SelectOption) {
+  if (option.id == option[props.labelField!] && props.valueObj) {
+    return props.valueObj[props.labelField!];
+  } else {
+    return option[props.labelField!];
+  }
+}
 </script>
 <template>
   <div>
@@ -95,6 +102,7 @@ let optionsComp = computed(() => {
           value-field="id"
           :status="schema?.$error ? 'error' : ''"
           :render-option="renderOption"
+         :render-label="renderLabel"
           :id="id"
           :placeholder="simple ? label : ' '"
           @focus="focused = true"

@@ -10,6 +10,7 @@ import { useApiServiceAll } from "/@src/composable/getListAll";
 import { CategoryService, ICategory } from "/@src/services/category";
 import CTimepicker from "/@src/components/form/CTimepicker.vue";
 import { ifNullDeleteIt } from "/@src/services/api";
+import { IUser, IUserListItem } from "/@src/services/user";
 const defaultContent = `<p data-f-id="pbf" style="text-align: center; font-size: 14px; margin-top: 30px; opacity: 0.65; font-family: sans-serif;">Powered by <a href="https://www.froala.com/wysiwyg-editor?pb=1" title="Froala Editor">Froala Editor</a></p>`;
 
 const route = useRoute();
@@ -41,6 +42,7 @@ let form = ref({
   contact_name: "",
   lat: null as number | null,
   lon: null as number | null,
+  order : "",
 });
 const rules = {
   name: { required },
@@ -100,6 +102,8 @@ async function save() {
 let uploadedFiles = ref<IFile[]>([]);
 const editorRef = ref();
 let keyIndex = ref(0);
+const createdUser = ref<IUserListItem | null>(null);
+const serviceObj = ref();
 onMounted(async () => {
   if (route.query.id) {
     let res = await OrganizationService.getById(String(route.query.id));
@@ -123,7 +127,14 @@ onMounted(async () => {
     form.value.address = res.data.data.address;
     form.value.lat = res.data.data.lat ? Number(res.data.data.lat) : null;
     form.value.lon = res.data.data.lon ? Number(res.data.data.lon) : null;
+    form.value.status = res.data.data.status;
+    form.value.order = res.data.data.order;
     uploadedFiles.value = res.data.data.files.map((el) => el.file);
+    createdUser.value = res.data.data.user;
+    serviceObj.value = {
+      ...res.data.data.service,
+      name : res.data.data.service.name_uz
+    };
     await nextTick();
     keyIndex.value += 1;
   }
@@ -141,6 +152,19 @@ const CATEGORY_TYPE = computed(() => {
 <template>
   <div class="grid gap-4">
     <AppTitle> Yangi xizmat qo'shish </AppTitle>
+    <n-card class="base-card" :bordered="false" v-if="createdUser">
+      <div class="mb-4 flex items-center gap-4 justify-between">
+        <div class="flex items-center gap-2">
+          <n-avatar round :size="80" :src="$withBaseUrl2(createdUser.avatar)" />
+          <div>
+            <div class="font-semibold">
+              {{ createdUser.first_name }} {{ createdUser.last_name }}
+            </div>
+          </div>
+        </div>
+            <div class=" flex items-center gap-1 text-blue-500"> <CIcon class="info-svg" width="16" name="phone"/> {{ createdUser.phone }}</div>
+      </div>
+    </n-card>
     <n-card class="base-card" :bordered="false">
       <div>
         <div class="title mb-4">Kategoriya</div>
@@ -159,7 +183,7 @@ const CATEGORY_TYPE = computed(() => {
     <n-card class="base-card" :bordered="false">
       <div class="flex justify-between items-center">
         <div class="font-semibold text-lg">Holati</div>
-       <SelectStatus class="w-[250px]" v-model:value="form.status" :schema="v$.status" />
+        <SelectStatus class="w-[250px]" v-model:value="form.status" :schema="v$.status" />
       </div>
     </n-card>
     <n-card class="base-card" :bordered="false">
@@ -169,6 +193,7 @@ const CATEGORY_TYPE = computed(() => {
           v-model:value="form.service_id"
           :schema="v$.service_id"
           :category_id="form.category_id"
+          v-model:valueObj="serviceObj"
         />
         <CInput v-model:value="form.name" :schema="v$.name" label="Nomi" icon="draft" />
         <CInput
@@ -186,6 +211,13 @@ const CATEGORY_TYPE = computed(() => {
           icon="location"
         />
         <SelectRegion v-model:value="form.region_id" :schema="v$.region_id" />
+        <CInput
+          v-model:value="form.order"
+          :schema="v$.order"
+          label="Tartib raqami"
+          icon="hashtag"
+          type="number"
+        />
       </div>
     </n-card>
     <n-card class="base-card" :bordered="false">

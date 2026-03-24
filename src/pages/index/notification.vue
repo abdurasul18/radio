@@ -23,7 +23,7 @@ let type = ref(route.query.type ? Number(route.query.type) : null);
 let paramsAdd = computed(() => {
   return {
     query: {
-       offset: (page.value - 1) * limit.value,
+      offset: (page.value - 1) * limit.value,
       limit: limit.value,
       type: type.value,
     },
@@ -66,10 +66,7 @@ let excelLoading = ref(false);
         >
           <div class="flex flex-col sm:flex-row gap-2">
             <div class="flex">
-            <SelectNotificationType
-              v-model:value="type"
-              clearable
-            />
+              <SelectNotificationType v-model:value="type" clearable />
               <!-- <n-input
                 v-model:value="search"
                 clearable
@@ -137,10 +134,7 @@ let excelLoading = ref(false);
                   </td>
                   <!-- <td>{{item.updated_at ? ddmmyyyy( new Date(item.updated_at)) : '-' }}</td> -->
                   <td>
-                    <n-image
-                      class="max-w-[100px] max-h-[100px]"
-                      :src="$withBaseUrl(item.poster)"
-                    />
+                    <n-image class="max-w-[100px] max-h-[100px]" :src="item.poster" />
                   </td>
                   <td>
                     <CTag>{{ NotificationType[item.type] }}</CTag>
@@ -184,11 +178,11 @@ let excelLoading = ref(false);
       </n-card>
       <div class="mt-5 ml-4 mb-5">
         <n-pagination
-            class="c-pagination"
-            :page-count="Math.ceil(total / limit)"
-            :page-size="limit"
-            v-model:page="page"
-          />
+          class="c-pagination"
+          :page-count="Math.ceil(total / limit)"
+          :page-size="limit"
+          v-model:page="page"
+        />
       </div>
     </n-spin>
 
