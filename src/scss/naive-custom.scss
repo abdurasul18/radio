@@ -1,7 +1,7 @@
 .n-drawer-mask,
 .n-modal-mask {
-    background: #042E4DA8;
-    backdrop-filter: blur(5px)
+    background: rgba(4, 46, 77, 0.65);
+    backdrop-filter: blur(8px)
 }
 
 .no-mask {
@@ -14,10 +14,26 @@
 }
 
 .base-card {
-    border-radius: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid #EDEDF1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #ffffff;
 
     .n-card__content {
-        padding: 24px !important;
+        padding: 20px !important;
+    }
+}
+
+.base-card-hover {
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 123, 255, 0.08) !important;
+        border-color: #007BFF !important;
+
+        .group-hover-zoom {
+            transform: scale(1.05);
+        }
     }
 }
 
@@ -53,15 +69,15 @@
     .n-tabs-rail {
         background: #fff;
         padding: 6px;
-        border-radius: 8px;
+        border-radius: 12px;
         border: 1px solid #ededf1 !important;
     }
 
     .n-tabs-capsule {
-        background: #f6f7f9 !important;
-        border: 1px solid #2a87b4 !important;
+        background: #EBF5FF !important;
+        border: 1px solid #007BFF !important;
         box-shadow: none !important;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
     }
 
     &.full-tab {
@@ -91,7 +107,7 @@
     .n-input__border,
     .n-input__state-border {
         @apply border border-grey-100;
-        border-radius: 10px;
+        border-radius: 12px;
     }
 
     .n-input__input-el {
@@ -106,11 +122,11 @@
 
 .c-input-grey {
     @apply bg-grey-50;
-    border-radius: 10px;
+    border-radius: 12px;
     --n-border: 1px solid #EDEDF1 !important;
-    --n-border-focus: 1px solid #00aaff !important;
-    --n-box-shadow-focus: 0 0 0 3px #00aaff40 !important;
-    --n-border-hover: 1px solid #EDEDF1 !important;
+    --n-border-focus: 1px solid #007BFF !important;
+    --n-box-shadow-focus: 0 0 0 3px rgba(0, 123, 255, 0.15) !important;
+    --n-border-hover: 1px solid #D7D9E0 !important;
 }
 
 // 
@@ -118,11 +134,11 @@
 
     .n-input {
         background: #f6f7f9 !important;
-        border-radius: 10px;
+        border-radius: 12px;
         --n-border: 1px solid #EDEDF1 !important;
-        --n-border-focus: 1px solid #00aaff !important;
-        --n-box-shadow-focus: 0 0 0 3px #00aaff40 !important;
-        --n-border-hover: 1px solid #EDEDF1 !important;
+        --n-border-focus: 1px solid #007BFF !important;
+        --n-box-shadow-focus: 0 0 0 3px rgba(0, 123, 255, 0.15) !important;
+        --n-border-hover: 1px solid #D7D9E0 !important;
 
         &.n-input--focus {
             background: #fff !important;
@@ -132,7 +148,7 @@
     .n-input__border,
     .n-input__state-border {
         --n-border: 1px solid #EDEDF1 !important;
-        border-radius: 10px;
+        border-radius: 12px;
     }
 
     &.large {
@@ -144,25 +160,36 @@
 
 // 
 .n-checkbox-box {
-    border-radius: 5px !important;
+    border-radius: 6px !important;
 }
 
 // 
 .c-pagination {
     .n-pagination-item {
-        border-radius: 8px;
+        border-radius: 10px;
         @apply border border-grey-100;
         width: 40px;
         height: 40px;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: #007BFF;
+            color: #007BFF;
+        }
+
+        &.n-pagination-item--active {
+            background: #007BFF;
+            border-color: #007BFF;
+        }
     }
 }
 
 // 
 .c-select-grey {
-    @apply p-4 bg-grey-50 border border-grey-100 rounded-[10px];
+    @apply p-4 bg-grey-50 border border-grey-100 rounded-[12px];
 
     &:focus {
-        box-shadow: 0px 0px 0px 3px #00aaff40;
+        box-shadow: 0px 0px 0px 3px rgba(0, 123, 255, 0.15);
         @apply outline-1 outline-blue-500
     }
 
@@ -190,8 +217,8 @@
     &.n-select .n-base-selection--active,
     &.n-select .n-base-selection--focus {
         .n-base-selection__state-border {
-            border-color: #00aaff !important;
-            box-shadow: 0px 0px 0px 4px #00aaff40 !important;
+            border-color: #007BFF !important;
+            box-shadow: 0px 0px 0px 4px rgba(0, 123, 255, 0.15) !important;
         }
     }
 
@@ -226,7 +253,7 @@
     img {
         width: 80px;
         height: 90px;
-        border-radius: 4px;
+        border-radius: 8px;
         object-fit: cover !important;
         @apply border border-grey-100;
 
@@ -256,12 +283,12 @@
 
 
 .c-radiogroup.n-radio-group {
-   --n-button-color-active: #00AAFF !important;
-    --n-button-border-radius: 8px !important;
+   --n-button-color-active: #007BFF !important;
+    --n-button-border-radius: 10px !important;
     --n-button-border-color: #D7D9E0 !important;
-    --n-button-border-color-active: #00AAFF !important;
+    --n-button-border-color-active: #007BFF !important;
     --n-button-text-color-active: #fff !important;
-    --n-button-box-shadow-focus:inset 0 0 0 1px #00AAFF, 0 0 0 2px rgba(42, 135, 180, 0.3) !important;
+    --n-button-box-shadow-focus:inset 0 0 0 1px #007BFF, 0 0 0 2px rgba(0, 123, 255, 0.2) !important;
     display: flex;
     gap: 16px;
     .n-radio-group__splitor {
@@ -269,10 +296,10 @@
     }
 
     .n-radio-button {
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         @apply border border-grey-200;
         .n-radio-button__state-border {
-            border-radius: 8px !important;
+            border-radius: 10px !important;
         }
     }
 

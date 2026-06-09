@@ -94,58 +94,67 @@ async function deleteItem(item: IOrganization) {
        
       </div>
       <div class="pt-3">
-        <TransitionGroup name="list" tag="div" class="grid grid-cols-4 gap-5">
+        <TransitionGroup name="list" tag="div" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
           <n-card
-            class="base-card base-card-hover overflow-hidden hover:bg-blue-50 cursor-pointer"
+            class="base-card base-card-hover overflow-hidden cursor-pointer"
             v-for="(item, index) in list"
+            :key="item.id"
             @click="$router.push(`/organization/view/${item.id}`)"
           >
             <template #cover>
-              <div class="cursor-default" @click.stop>
-                <n-carousel show-arrow draggable :slides-per-view="1">
+              <div class="relative cursor-default overflow-hidden" @click.stop>
+                <n-carousel show-arrow draggable :slides-per-view="1" class="h-[180px]">
                   <img
                     v-for="(file, fileIndex) in item.files"
-                    class="w-full h-[200px] object-cover rounded-2xl overflow-hidden"
+                    :key="fileIndex"
+                    class="w-full h-[180px] object-cover transition-transform duration-500 group-hover-zoom"
                     :src="$withBaseUrl(file.file?.path)"
                   />
                 </n-carousel>
               </div>
             </template>
-            <div class="grid gap-2">
-              <div class="flex justify-between gap-4">
-                <div class="font-semibold leading-4 mb-4">
+            <div class="flex flex-col justify-between h-full min-h-[160px]">
+              <div class="grid gap-2">
+                <div class="flex items-center justify-between gap-2 mt-1">
+                  <span class="text-xs text-grey-400 font-semibold uppercase tracking-wider">Tashkilot</span>
+                  <StatusTag :status="item.status" size="small" />
+                </div>
+                <div class="font-bold text-base text-grey-900 leading-tight line-clamp-2 min-h-[42px] mb-2">
                   {{ item.name }}
                 </div>
-              </div>
 
-              <div class="flex gap-2">
-                <CIcon class="info-svg flex-shrink-0" width="16" name="location" />
-                {{ item.address }}
+                <div class="flex items-start gap-2 text-grey-500 text-sm">
+                  <CIcon class="info-svg flex-shrink-0 mt-0.5" width="16" name="location" />
+                  <span class="line-clamp-2 leading-tight">{{ item.address }}</span>
+                </div>
+                <div class="flex items-center gap-2 text-grey-500 text-sm">
+                  <CIcon class="info-svg flex-shrink-0" width="16" name="phone" />
+                  <span>{{ item.phone_number }}</span>
+                </div>
+                <div class="flex items-center gap-2 text-blue-500 text-sm font-semibold mt-1">
+                  <CIcon class="info-svg flex-shrink-0" width="16" name="category" />
+                  <span class="truncate">{{ item.service?.name_uz }}</span>
+                </div>
               </div>
-              <div class="flex gap-2">
-                <CIcon class="info-svg" width="16" name="phone" /> {{ item.phone_number }}
+              <div>
+                <n-divider class="my-3" />
+                <div class="flex justify-end gap-2">
+                  <CActionIcon
+                    @click.stop="deleteItem(item)"
+                    icon="delete"
+                    class="error-svg"
+                  />
+                  <CActionIcon
+                    @click.stop="$router.push(`/organization/add?id=${item.id}`)"
+                    class="info-svg"
+                    icon="edit"
+                  />
+                  <CActionIcon
+                    @click.stop="$router.push(`/organization/view/${item.id}`)"
+                    icon="eye"
+                  />
+                </div>
               </div>
-                <div class="flex gap-2 text-blue-500">
-                <CIcon class="info-svg" width="16" name="category" /> {{ item.service?.name_uz }}
-              </div>
-            <StatusTag :status="item.status" />
-            </div>
-            <n-divider />
-            <div class="flex justify-end gap-2">
-              <CActionIcon
-                @click.stop="deleteItem(item)"
-                icon="delete"
-                class="error-svg"
-              />
-              <CActionIcon
-                @click.stop="$router.push(`/organization/add?id=${item.id}`)"
-                class="info-svg"
-                icon="edit"
-              />
-              <CActionIcon
-                @click.stop="$router.push(`/organization/view/${item.id}`)"
-                icon="eye"
-              />
             </div>
           </n-card>
         </TransitionGroup>

@@ -1,11 +1,14 @@
-// fade-up
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.5s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.fade-enter-from,
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
 .fade-leave-to {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(-4px);
 }

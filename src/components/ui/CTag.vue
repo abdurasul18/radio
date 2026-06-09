@@ -37,6 +37,8 @@ let props = withDefaults(
 </template>
 <style lang="scss">
 .c-tag {
+  transition: all 0.2s ease;
+  
   &.n-tag--round {
     border-radius: 8px;
   }

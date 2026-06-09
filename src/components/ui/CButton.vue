@@ -25,7 +25,9 @@ let props = withDefaults(
 <style lang="scss">
 .base-button {
   padding: 28px;
-  border-radius: 10px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  
   &.n-button--ghost {
     .n-button__border {
       border: 1px solid #d7d9e0 !important;
@@ -43,6 +45,16 @@ let props = withDefaults(
       stroke: var(--n-text-color-focus) !important;
     }
   }
+  
+  &:not(.n-button--disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:not(.n-button--disabled):active {
+    transform: translateY(0);
+  }
+  
   // medium
   &.medium {
     padding: 24px;
@@ -53,6 +65,7 @@ let props = withDefaults(
   // small
   &.small {
     padding: 16px;
+    border-radius: 10px;
     .n-button__content {
       font-size: 12px;
       svg {

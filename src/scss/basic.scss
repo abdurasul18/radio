@@ -21,46 +21,62 @@ body {
     border-spacing: 0;
 
     th {
-        @apply border-t border-grey-100 bg-grey-50 font-semibold text-left;
+        @apply font-semibold text-left;
+        background: #F8FAFB;
+        color: #6B758C;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 14px 20px;
+        border-bottom: 2px solid #EDEDF1;
     }
 
     td:first-child,
     th:first-child {
-        @apply border-l border-r border-grey-100;
+        @apply border-l border-grey-100;
     }
 
     td,
     th {
-        @apply border-b border-r border-grey-100 px-3 py-4;
+        @apply border-b border-r border-grey-100;
+        padding: 16px 20px;
+    }
+
+    td {
+        transition: background-color 0.2s ease;
+    }
+
+    tbody tr:hover td {
+        background: rgba(0, 123, 255, 0.03);
     }
 
     tr:last-child {
         td:first-child {
-            border-radius: 0 0 0 20px;
+            border-radius: 0 0 0 16px;
             border-top: 0;
         }
 
         td:last-child {
-            border-radius: 0 0 20px 0;
+            border-radius: 0 0 16px 0;
             border-top: 0;
         }
     }
     &.all-rounded {
         tr:first-child {
             th:first-child {
-                border-radius: 20px 0 0 0;
+                border-radius: 16px 0 0 0;
                 border-top: 0;
             } 
     
             th:last-child {
-                border-radius: 0 20px 0  0;
+                border-radius: 0 16px 0  0;
                 border-top: 0;
             }
         }  
     }
 
     .app-not-found {
-        border-radius: 0 0 20px 20px;
+        border-radius: 0 0 16px 16px;
     }
 }
 
@@ -75,20 +91,30 @@ body {
 
         tr {
             th {
-                @apply bg-grey-50 font-semibold border border-grey-100 px-3 py-4;
+                @apply font-semibold border border-grey-100;
+                background: #F8FAFB;
+                color: #6B758C;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                padding: 14px 20px;
             }
         }
     }
 
     td,
     th {
-        @apply border border-grey-100 px-3 py-4;
+        @apply border border-grey-100;
+        padding: 16px 20px;
     }
 
     tbody {
-        // tr:hover {
-        //     @apply bg-grey-50;
-        // }
+        tr {
+            transition: background-color 0.2s ease;
+        }
+        tr:hover {
+            background: rgba(0, 123, 255, 0.03);
+        }
 
     }
 }
@@ -103,16 +129,25 @@ body {
     @apply w-full border-collapse;
 
     th {
-        @apply bg-grey-50;
+        background: #F8FAFB;
+        color: #6B758C;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
     td,
     th {
-        @apply border border-grey-100 px-3 py-2 text-left;
+        @apply border border-grey-100 text-left;
+        padding: 14px 16px;
+    }
+
+    tr {
+        transition: background-color 0.2s ease;
     }
 
     tr:hover {
-        @apply bg-blue-50 bg-opacity-50;
+        background: rgba(0, 123, 255, 0.04);
     }
 
     &.no-hoverable tr {

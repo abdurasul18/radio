@@ -86,7 +86,7 @@ let excelLoading = ref(false);
                 <tr>
                   <th style="width: 80px">№</th>
                   <th class="one-line">Rasm</th>
-                  <th>Tartib raqami</th>
+                  <th  class="one-line">Tartib raqami</th>
                   <th class="w-[150px] text-right">Amallar</th>
                 </tr>
               </thead>
