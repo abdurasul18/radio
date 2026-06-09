@@ -1,17 +1,19 @@
 <script lang="ts" setup>
 import { IOrganization, OrganizationService } from "/@src/services/organization";
-
+import { IUser, IUserListItem } from "/@src/services/user";
 let route = useRoute();
 let routeId = computed(() => {
   return route.params.id ? String(route.params.id) : "";
 });
 let loading = ref(false);
 let data = ref<IOrganization>();
+  const createdUser = ref<IUserListItem | null>(null);
 async function getData() {
   try {
     loading.value = true;
     let res = await OrganizationService.getById(routeId.value);
     data.value = res.data.data;
+     createdUser.value = res.data.data.user;
   } finally {
     loading.value = false;
   }
@@ -30,7 +32,19 @@ const salaryTypes = [
   <n-spin :show="loading">
     <AppTitle> {{ data?.name }} </AppTitle>
     <CButton type="default" @click="$router.back()">Orqaga</CButton>
-
+ <n-card class="base-card mt-2" :bordered="false" v-if="createdUser">
+      <div class="mb-4 flex items-center gap-4 justify-between">
+        <div class="flex items-center gap-2">
+          <n-avatar round :size="80" :src="$withBaseUrl2(createdUser.avatar)" />
+          <div>
+            <div class="font-semibold">
+              {{ createdUser.first_name }} {{ createdUser.last_name }}
+            </div>
+          </div>
+        </div>
+            <div class=" flex items-center gap-1 text-blue-500"> <CIcon class="info-svg" width="16" name="phone"/> {{ createdUser.phone }}</div>
+      </div>
+    </n-card>
     <div class="grid grid-cols-3 mt-4 gap-4">
       <n-card class="base-card col-span-2">
         <!-- Carousel -->
