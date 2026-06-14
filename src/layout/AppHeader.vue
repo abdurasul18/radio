@@ -69,7 +69,7 @@ let showMenu = ref(false);
     </div>
     <div class="flex justify-end items-center">
       <div class="flex gap-1 items-center">
-        <n-tooltip placement="bottom" trigger="click" :show-arrow="false" raw>
+        <n-tooltip class="my-tooltip" placement="bottom" trigger="click" :show-arrow="false" raw>
           <template #trigger>
             <button class="app-header-profile">
               <div class="app-header-avatar">
@@ -101,15 +101,25 @@ let showMenu = ref(false);
               </n-list-item> -->
               <n-list-item style="padding: 0" @click="logout">
                 <a href="javascript:void(0)" class="flex items-center gap-2 px-4 py-3 text-red-500 font-medium">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
                   <span>{{ $t("actions.logout") }}</span>
                 </a>
               </n-list-item>
             </n-list>
           </div>
         </n-tooltip>
-        <button @click="showMenu=true" class="app-header-burger md:!hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <button @click="showMenu = true" class="app-header-burger md:!hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
         </button>
       </div>
     </div>
@@ -119,11 +129,15 @@ let showMenu = ref(false);
   </CModal>
   <n-drawer v-model:show="showMenu" :width="280">
     <div class="w-[280px] h-full" @close="showMenu = false" :closable="true" title="Menyu">
-      <AppNavigation class="" @close="showMenu=false"/>
+      <AppNavigation class="" @close="showMenu = false" />
     </div>
   </n-drawer>
 </template>
 <style lang="scss">
+.my-tooltip {
+  --n-box-shadow: none !important;
+}
+
 .app-header {
   width: 100%;
   height: 72px;
@@ -229,6 +243,5 @@ let showMenu = ref(false);
   }
 }
 
-.notification-badge {
-}
+.notification-badge {}
 </style>

@@ -30,6 +30,12 @@ let activeRoute = computed(() => {
     return "service";
   } else if (route.fullPath.startsWith("/category")) {
     return "category";
+  } else if (route.fullPath.startsWith("/sub-category")) {
+    return "sub-category";
+  } else if (route.fullPath.startsWith("/makes")) {
+    return "makes";
+  } else if (route.fullPath.startsWith("/models")) {
+    return "models";
   } else if (route.fullPath.startsWith("/organization")) {
     return "organization";
   } else if (route.fullPath.startsWith("/region")) {
