@@ -11,7 +11,7 @@ let props = defineProps<{
 }>();
 
 let form = ref({
-  category: "car",
+  category: "",
   name: "",
   name_uz: "",
   name_ru: "",
@@ -35,7 +35,7 @@ let loading = ref(false);
 
 onMounted(() => {
   if (props.mode === "update" && props.item) {
-    form.value.category = props.item.category || "car";
+    form.value.category = props.item.category || "";
     form.value.name = props.item.name || "";
     form.value.name_uz = props.item.name_uz || "";
     form.value.name_ru = props.item.name_ru || "";
@@ -44,13 +44,6 @@ onMounted(() => {
     form.value.status = props.item.status ?? 1;
   }
 });
-
-let categoryOptions = [
-  { id: "car", name: "Avtomobil" },
-  { id: "real_estate", name: "Ko'chmas mulk" },
-  { id: "job", name: "Ish o'rinlari" },
-  { id: "service", name: "Xizmatlar" }
-];
 
 async function save() {
   if (await validate()) {
@@ -66,7 +59,7 @@ async function save() {
       } else {
         await SubcategoryService.create(payload);
       }
-      
+
       emits("success");
       toastSuccess();
     } finally {
@@ -79,36 +72,23 @@ async function save() {
 <template>
   <div>
     <div class="grid gap-4">
-      <CSelect
+      <SelectCategoryEnum
         v-model:value="form.category"
-        :options="categoryOptions"
         :schema="v$.category"
         label="Asosiy Kategoriya"
       />
+      <CInput icon="draft" v-model:value="form.name" :schema="v$.name" label="Nomi" />
+      <CInput icon="draft" v-model:value="form.name_uz" label="Nomi (O'zbekcha)" />
+      <CInput icon="draft" v-model:value="form.name_ru" label="Nomi (Ruscha)" />
+      <CInput icon="draft" v-model:value="form.name_en" label="Nomi (Inglizcha)" />
       <CInput
-        icon="draft"
-        v-model:value="form.name"
-        :schema="v$.name"
-        label="Nomi"
-      />
-      <CInput
-        v-model:value="form.name_uz"
-        label="Nomi (O'zbekcha)"
-      />
-      <CInput
-        v-model:value="form.name_ru"
-        label="Nomi (Ruscha)"
-      />
-      <CInput
-        v-model:value="form.name_en"
-        label="Nomi (Inglizcha)"
-      />
-      <CInput
+        icon="hashtag"
         v-model:value="form.order"
         label="Tartib raqami"
         type="number"
       />
       <CSelect
+        icon="category"
         v-model:value="form.status"
         label="Status"
         :options="[

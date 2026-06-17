@@ -12,9 +12,17 @@ let props = defineProps<{
 }>();
 let form = ref({
   order: "",
+  section: "",
+  title: "",
+  description: "",
+  link: "",
 });
 const rules = {
   order: { required },
+  section: {},
+  title: {},
+  description: {},
+  link: {},
 };
 let files = ref([]);
 const v$ = useVuelidate(rules, form.value);
@@ -25,7 +33,7 @@ let uploadedFile = ref();
 onMounted(() => {
   if (props.mode === "update") {
     form.value.order = props.item?.order || "";
-  uploadedFile.value = props.item?.file;
+    uploadedFile.value = props.item?.file;
 
   }
 });
@@ -38,7 +46,7 @@ async function save() {
       loading.value = true;
       let payload = {
         ...form.value,
-        order : Number(form.value.order),
+        order: Number(form.value.order),
         file_id: uploadedFile.value?.id || null,
       };
       if (files.value?.[0]) {
@@ -63,27 +71,20 @@ async function save() {
 <template>
   <div>
     <div class="grid gap-4">
-      <CInput
-        icon="hashtag"
-        v-model:value="form.order"
-        :schema="v$.order"
-        label="Tartib raqami"
-      />
-      <FileShow
-        v-if="uploadedFile"
-        :data="uploadedFile"
-        @delete="uploadedFile = null"
-      />
+      <CInput icon="draft" v-model:value="form.title" :schema="v$.title" label="Sarlavha" />
+      <CInput type="textarea" v-model:value="form.description" :schema="v$.description" label="Izoh" />
+      <CInput v-model:value="form.link" :schema="v$.link" label="Havola" />
+      <CInput v-model:value="form.section" :schema="v$.section" label="Section" />
+      <CInput icon="hashtag" v-model:value="form.order" :schema="v$.order" label="Tartib raqami" />
+      <FileShow v-if="uploadedFile" :data="uploadedFile" @delete="uploadedFile = null" />
       <DropFile v-else v-model:value="files" :not-multiple="true" />
     </div>
     <div class="mt-5">
       <div class="flex justify-end">
         <CButton type="default" @click="emits('close')">
-          {{ $t("actions.close") }}</CButton
-        >
+          {{ $t("actions.close") }}</CButton>
         <CButton @click="save" :loading="loading" class="ml-4">
-          {{ $t("actions.save") }}</CButton
-        >
+          {{ $t("actions.save") }}</CButton>
       </div>
     </div>
   </div>

@@ -79,23 +79,20 @@ onMounted(() => {
 
         <!-- Navigation -->
         <nav class="sidebar-nav">
-          <ul class="flex flex-col gap-1">
-            <li
-              v-for="(item, index) in routes"
-              :key="index"
-            >
-              <RouterLink
-                :to="item.to"
-                class="nav-link"
-                :class="{ 'nav-link-active': activeRoute == item.name }"
-                @click="emits('close')"
-              >
-                <div class="nav-link-indicator"></div>
-                <CIcon :name="item.icon" />
-                <span>{{ item.text }}</span>
-              </RouterLink>
-            </li>
-          </ul>
+          <n-scrollbar style="max-height: calc(100vh - 300px);" trigger="none">
+            <ul class="flex flex-col gap-1">
+              <li v-for="(item, index) in routes" :key="index">
+                <RouterLink :to="item.to" class="nav-link" :class="{ 'nav-link-active': activeRoute == item.name }"
+                  @click="emits('close')">
+                  <div class="nav-link-indicator"></div>
+                  <CIcon :name="item.icon" />
+                  <span>{{ item.text }}</span>
+                </RouterLink>
+                <n-divider v-if="item.name=='version'"/>
+              </li>
+            </ul>
+
+          </n-scrollbar>
         </nav>
       </div>
 
@@ -169,7 +166,9 @@ onMounted(() => {
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    path, circle {
+
+    path,
+    circle {
       stroke: rgba(255, 255, 255, 0.45) !important;
       transition: stroke 0.25s ease;
     }
@@ -179,7 +178,8 @@ onMounted(() => {
     color: rgba(255, 255, 255, 0.9);
     background: rgba(255, 255, 255, 0.06);
 
-    svg path, svg circle {
+    svg path,
+    svg circle {
       stroke: rgba(255, 255, 255, 0.8) !important;
     }
   }
@@ -192,7 +192,8 @@ onMounted(() => {
       height: 24px;
     }
 
-    svg path, svg circle {
+    svg path,
+    svg circle {
       stroke: #1DBF73 !important;
     }
 

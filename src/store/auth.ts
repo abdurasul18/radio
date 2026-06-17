@@ -1,43 +1,41 @@
-import { defineStore } from 'pinia'
-import { AuthService } from '../services/auth'
-import ApiService from '../services/api'
-import { IconName } from '../components/ui/CIcon.vue'
-import { UserService } from '../services/user'
+import { defineStore } from "pinia";
+import { AuthService } from "../services/auth";
+import ApiService from "../services/api";
+import { IconName } from "../components/ui/CIcon.vue";
+import { UserService } from "../services/user";
 import { jwtDecode } from "jwt-decode";
 interface IUser {
   token: string;
-  exp: string
-  first_name: string
-  iat: string
-  id: string
-  last_name: string
-  username: string
+  exp: string;
+  first_name: string;
+  iat: string;
+  id: string;
+  last_name: string;
+  username: string;
 }
-export const useAuthStore = defineStore('auth', () => {
-  const user = useStorage<Partial<IUser>>('user', {})
-  const token = useStorage("access_token", "")
-  const employee = useStorage<any>("employee", null)
-  const isAuthenticated = computed(() => !!token.value)
+export const useAuthStore = defineStore("auth", () => {
+  const user = useStorage<Partial<IUser>>("user", {});
+  const token = useStorage("access_token", "");
+  const employee = useStorage<any>("employee", null);
+  const isAuthenticated = computed(() => !!token.value);
   const login = (data: any) => {
-    user.value = jwtDecode(data.token)
-    token.value = data.token
-  }
+    user.value = jwtDecode(data.token);
+    token.value = data.token;
+  };
   const logout = () => {
-    user.value = undefined
-    token.value = ""
-    ApiService.removeHeader()
-  }
+    user.value = undefined;
+    token.value = "";
+    ApiService.removeHeader();
+  };
   async function getCurrentUser() {
     try {
-      let { data } = await UserService.getCurrentUser()
-      user.value = data?.data || {}
-      token.value = data?.data?.access_token || ""
-    }
-    finally {
-
+      let { data } = await UserService.getCurrentUser();
+      user.value = data?.data || {};
+      token.value = data?.data?.access_token || "";
+    } finally {
     }
   }
-  // 
+  //
   const routes: {
     name: string;
     icon: IconName;
@@ -52,92 +50,98 @@ export const useAuthStore = defineStore('auth', () => {
       roles?: number[];
     }[];
   }[] = [
-      {
-        name: "notification",
-        icon: "notification",
-        text: "Bildirishnomalar",
-        to: "/notification",
-      },
-       {
-        name: "banner",
-        icon: "file",
-        text: "Banner",
-        to: "/banner",
-      },
-      {
-        name: "contact",
-        icon: "users",
-        text: "Kontaktlar",
-        to: "/contact",
-      },
-      {
-        name: "category",
-        icon: "category",
-        text: "Kategoriyalar",
-        to: "/category",
-      },
-      {
-        name: "sub-category",
-        icon: "geometric",
-        text: "Quyi Kategoriyalar",
-        to: "/sub-category",
-      },
-      {
-        name: "makes",
-        icon: "sertificate",
-        text: "Avto Markalar",
-        to: "/makes",
-      },
-      {
-        name: "models",
-        icon: "cube",
-        text: "Avto Modellar",
-        to: "/models",
-      },
-      //  {
-      //   name: "service",
-      //   icon: "geometric",
-      //   text: "Xizmat turlari",
-      //   to: "/service",
-      // },
-       {
-        name: "organization",
-        icon: "folder",
-        text: "Moderatsiya",
-        to: "/organization/all",
-      },
-      {
-        name: "education",
-        icon: "education",
-        text: "Ta'lim",
-        to: "/education",
-      },
-      {
-        name: "region",
-        icon: "location",
-        text: "Shtatlar",
-        to: "/region",
-      },
-      {
-        name : "user",
-        icon : "users",
-        text : "Foydalanuvchilar",
-        to : "/user",
-      },
-       {
-        name : "chat",
-        icon : "comment",
-        text : "Chat",
-        to : "/chat",
-      },
-       {
-        name : "version",
-        icon : "list-number",
-        text : "Versiya",
-        to : "/version",
-      }
-    ];
-  // 
+    {
+      name: "notification",
+      icon: "notification",
+      text: "Bildirishnomalar",
+      to: "/notification",
+    },
+    {
+      name: "banner",
+      icon: "file",
+      text: "Banner",
+      to: "/banner",
+    },
+    {
+      name: "contact",
+      icon: "users",
+      text: "Kontaktlar",
+      to: "/contact",
+    },
+    {
+      name: "category",
+      icon: "category",
+      text: "Kategoriyalar",
+      to: "/category",
+    },
+    //  {
+    //   name: "service",
+    //   icon: "geometric",
+    //   text: "Xizmat turlari",
+    //   to: "/service",
+    // },
+    {
+      name: "organization",
+      icon: "folder",
+      text: "Moderatsiya",
+      to: "/organization/all",
+    },
+    {
+      name: "education",
+      icon: "education",
+      text: "Ta'lim",
+      to: "/education",
+    },
+    {
+      name: "region",
+      icon: "location",
+      text: "Shtatlar",
+      to: "/region",
+    },
+    {
+      name: "user",
+      icon: "users",
+      text: "Foydalanuvchilar",
+      to: "/user",
+    },
+    {
+      name: "chat",
+      icon: "comment",
+      text: "Chat",
+      to: "/chat",
+    },
+    {
+      name: "version",
+      icon: "list-number",
+      text: "Versiya",
+      to: "/version",
+    },
+    {
+      name: "sub-category",
+      icon: "geometric",
+      text: "Quyi Kategoriyalar",
+      to: "/sub-category",
+    },
+    {
+      name: "makes",
+      icon: "sertificate",
+      text: "Avto Markalar",
+      to: "/makes",
+    },
+    {
+      name: "models",
+      icon: "cube",
+      text: "Avto Modellar",
+      to: "/models",
+    },
+    {
+      name: "listings",
+      icon: 'hrm',
+      text: "Servislar",
+      to: "/listings",
+    },
+  ];
+  //
   const educations = [
     {
       name: "DMV practice test",
@@ -161,7 +165,7 @@ export const useAuthStore = defineStore('auth', () => {
     },
   ];
 
-  // 
+  //
   const testTypes = [
     {
       name: "Belgilar orqali test ishlash",
@@ -178,7 +182,7 @@ export const useAuthStore = defineStore('auth', () => {
       code: "3",
       img: "/img/t3.png",
     },
-  ]
+  ];
   return {
     user,
     token,
@@ -189,7 +193,6 @@ export const useAuthStore = defineStore('auth', () => {
     testTypes,
     getCurrentUser,
     employee,
-    routes
-
-  }
-})
+    routes,
+  };
+});

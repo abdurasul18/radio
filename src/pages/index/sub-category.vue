@@ -42,12 +42,6 @@ watch([category], () => {
   page.value = 1;
 });
 
-let categoryOptions = [
-  { id: "car", name: "Avtomobil" },
-  { id: "real_estate", name: "Ko'chmas mulk" },
-  { id: "job", name: "Ish o'rinlari" },
-  { id: "service", name: "Xizmatlar" }
-];
 
 let addShow = ref(false);
 let mode = ref<"create" | "update">("create");
@@ -74,25 +68,22 @@ async function deleteItem(item: ISubcategory) {
         >
           <div class="flex flex-col sm:flex-row gap-2">
             <div class="flex gap-2 items-center">
-              <CSelect
-                v-model:value="category"
-                :options="categoryOptions"
-                clearable
-                label="Kategoriya"
-                class="min-w-[200px]"
-              />
               <n-input
                 v-model:value="search"
                 clearable
                 size="large"
                 :placeholder="$t('actions.search')"
                 class="search-input min-w-[200px]"
-                style="margin-top: 15px;"
               >
                 <template #prefix>
                   <CIcon name="search" class="mr-4" />
                 </template>
               </n-input>
+              <SelectCategoryEnum
+                v-model:value="category"
+                class="min-w-[400px]"
+              />
+            
             </div>
           </div>
           <div class="flex gap-2">

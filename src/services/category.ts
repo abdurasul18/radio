@@ -10,6 +10,30 @@ export const categoryTypes = [
     { id: 4, name: "Avtotransport xizmati" },
     { id: 5, name: "Bo'sh ish o'rni" },
 ]
+export type CategoryCode = 'halal_food' | 'auto_service' | 'car' | 'truck' | 'real_estate'
+
+export const CATEGORY_ENUM : { name: string; id: CategoryCode }[] = [
+    {
+        name : 'Halol taomlar',
+        id : 'halal_food',
+    },
+    {
+        name : 'Avtoservislar',
+        id : 'auto_service',
+    },
+    {
+        name : 'Avtomashinalar',
+        id : 'car'
+    },
+    {
+        name : 'Traklar',
+        id : 'truck'
+    },
+    {
+        name : 'Ko\'chmas mulk',
+        id : 'real_estate'
+    }
+]
 export interface ICategory {
     file_id: string
     id: string

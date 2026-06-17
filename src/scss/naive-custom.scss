@@ -103,7 +103,7 @@
 
 .search-input {
     --n-height: 48px !important;
-
+    border-radius: 12px;
     .n-input__border,
     .n-input__state-border {
         @apply border border-grey-100;
