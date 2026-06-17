@@ -49,6 +49,7 @@ declare module 'vue' {
     Editor: typeof import('./src/components/main/Editor.vue')['default']
     FileShow: typeof import('./src/components/form/FileShow.vue')['default']
     FroalaEditor: typeof import('./src/components/main/FroalaEditor.vue')['default']
+    ListingComment: typeof import('./src/components/pages/ListingComment.vue')['default']
     ProductComment: typeof import('./src/components/pages/ProductComment.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -89,8 +89,10 @@ async function deleteItem(item: IListing) {
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6"
         >
           <div
-            class="w-full max-w-sm bg-white rounded-[28px] shadow-lg overflow-hidden border border-gray-100"
+            class="w-full max-w-sm bg-white rounded-[28px] shadow-lg overflow-hidden border border-gray-100 cursor-pointer hover:shadow-xl transition-all duration-300"
             v-for="item in list"
+            :key="item.id"
+            @click="$router.push(`/listings/view/${item.id}`)"
           >
             <div class="relative h-48" >
               <n-carousel show-arrow draggable :slides-per-view="1" class="h-48">

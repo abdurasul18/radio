@@ -172,34 +172,23 @@ const countOptions = [
 </script>
 <template>
   <n-spin :show="loading">
-    <div class="flex items-center justify-between gap-4">
-      <AppTitle>
-          {{ $route.query.id ? "Servisni tahrirlash" : "Yangi servis qo'shish" }} |
+    <div class="flex items-center gap-4 mb-4">
+      <AppTitle style="margin-bottom: 0;">
+        <CIconButton icon="right" style="transform: rotate(180deg);" @click="$router.back()" />
+        {{ $route.query.id ? "Servisni tahrirlash" : "Yangi servis qo'shish" }} |
         {{ category }}
       </AppTitle>
     </div>
     <!-- Creator Info -->
-    <n-card
-      class="base-card mb-2"
-      title="Yaratuvchi"
-      :segmented="{ content: true }"
-      v-if="createdUser"
-    >
+    <n-card class="base-card mb-2" title="Yaratuvchi" :segmented="{ content: true }" v-if="createdUser">
       <div class="flex items-center gap-3">
-        <n-avatar
-          round
-          :size="54"
-          :src="$withBaseUrl2(createdUser.avatar)"
-          class="border border-grey-100 shadow-sm"
-        />
+        <n-avatar round :size="54" :src="$withBaseUrl2(createdUser.avatar)" class="border border-grey-100 shadow-sm" />
         <div class="overflow-hidden">
           <div class="font-bold text-base text-grey-800 truncate">
             {{ createdUser.first_name }} {{ createdUser.last_name }}
           </div>
-          <a
-            :href="`tel:${createdUser.phone}`"
-            class="flex items-center gap-1.5 text-sm text-blue-500 hover:text-blue-600 font-semibold mt-1"
-          >
+          <a :href="`tel:${createdUser.phone}`"
+            class="flex items-center gap-1.5 text-sm text-blue-500 hover:text-blue-600 font-semibold mt-1">
             <CIcon class="info-svg" width="14" name="phone" />
             <span>{{ createdUser.phone }}</span>
           </a>
@@ -214,121 +203,45 @@ const countOptions = [
         <n-card class="base-card">
           <div class="title mb-4">Umumiy ma'lumotlar</div>
           <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <CSelect
-              v-if="isVisible(['car', 'truck', 'real_estate'])"
-              icon="category"
-              v-model:value="form.type"
-              :options="TypesEnum"
-              label="Purpose of ads"
-              :schema="v$.type"
-            />
-            <SelectSubCategory
-              :key="category"
-              :category="category"
-              label="Type of product"
-              v-model:value="form.sub_category_id"
-              :schema="v$.sub_category_id"
-            />
-              <CSelect
-              v-if="isVisible(['real_estate'])"
-              icon="category"
-              label="Property Type"
-              v-model:value="form.property_type"
-              :schema="v$.property_type"
-              :options="PropertyTypesEnum"
-            />
-            <SelectMake
-              v-if="isVisible(['car', 'truck'])"
-              label="Make"
-              v-model:value="form.make_id"
-              :schema="v$.make_id"
-            />
-            <SelectCarModel
-              v-if="isVisible(['car', 'truck'])"
-              label="Model"
-              v-model:value="form.model_id"
-              :schema="v$.model_id"
-            />
-            <CYearPicker
-              v-if="isVisible(['car', 'truck'])"
-              v-model:value="form.year"
-              label="Year of manufacture"
-              :schema="v$.year"
-            />
-            <CInput
-              type="number"
-              v-if="isVisible(['car', 'truck'])"
-              v-model:value="form.mileage"
-              :schema="v$.mileage"
-              label="Mileage"
-              icon="hashtag"
-            >
+            <CSelect v-if="isVisible(['car', 'truck', 'real_estate'])" icon="category" v-model:value="form.type"
+              :options="TypesEnum" label="Purpose of ads" :schema="v$.type" />
+            <SelectSubCategory :key="category" :category="category" label="Type of product"
+              v-model:value="form.sub_category_id" :schema="v$.sub_category_id" />
+            <CSelect v-if="isVisible(['real_estate'])" icon="category" label="Property Type"
+              v-model:value="form.property_type" :schema="v$.property_type" :options="PropertyTypesEnum" />
+            <SelectMake v-if="isVisible(['car', 'truck'])" label="Make" v-model:value="form.make_id"
+              :schema="v$.make_id" />
+            <SelectCarModel v-if="isVisible(['car', 'truck'])" label="Model" v-model:value="form.model_id"
+              :schema="v$.model_id" />
+            <CYearPicker v-if="isVisible(['car', 'truck'])" v-model:value="form.year" label="Year of manufacture"
+              :schema="v$.year" />
+            <CInput type="number" v-if="isVisible(['car', 'truck'])" v-model:value="form.mileage" :schema="v$.mileage"
+              label="Mileage" icon="hashtag">
               <template #suffix>
                 <span class="text-grey-500 text-sm">km</span>
               </template>
             </CInput>
-            <div
-              class="flex items-center gap-1"
-              v-if="isVisible(['car', 'truck', 'real_estate'])"
-            >
-              <CInput
-                type="number"
-                class="flex-1"
-                v-model:value="form.price"
-                :schema="v$.price"
-                label="Price"
-                icon="money"
-              />
+            <div class="flex items-center gap-1" v-if="isVisible(['car', 'truck', 'real_estate'])">
+              <CInput type="number" class="flex-1" v-model:value="form.price" :schema="v$.price" label="Price"
+                icon="money" />
 
               <select v-model="form.currency" class="c-select-grey">
                 <option value="USD">USD</option>
                 <option value="UZS">UZS</option>
               </select>
             </div>
-           
-            <CInput
-              class="col-span-full"
-              v-model:value="form.title"
-              :schema="v$.title"
-              label="Description"
-              type="textarea"
-            />
-            <CSelect
-              v-if="isVisible(['real_estate'])"
-              icon="category"
-              v-model:value="form.bedrooms_count"
-              :schema="v$.bedrooms_count"
-              label="Bedrooms Count"
-              :options="countOptions"
-            />
-            <CSelect
-              v-if="isVisible(['real_estate'])"
-              icon="category"
-              v-model:value="form.bathrooms_count"
-              :schema="v$.bathrooms_count"
-              label="Bathrooms"
-              :options="countOptions"
-            />
-            <CInput
-              v-if="isVisible(['real_estate'])"
-              type="number"
-              icon="hashtag"
-              label="Area"
-              v-model:value="form.area"
-              :schema="v$.area"
-            />
-          
-            <SelectRegion
-              label="Region"
-              v-model:value="form.region_id"
-              :schema="v$.region_id"
-            />
-            <CInput
-              icon="location"
-              label="Address"
-              v-model:value="form.address"
-              :schema="v$.address"
-            />
+
+            <CInput class="col-span-full" v-model:value="form.title" :schema="v$.title" label="Description"
+              type="textarea" />
+            <CSelect v-if="isVisible(['real_estate'])" icon="category" v-model:value="form.bedrooms_count"
+              :schema="v$.bedrooms_count" label="Bedrooms Count" :options="countOptions" />
+            <CSelect v-if="isVisible(['real_estate'])" icon="category" v-model:value="form.bathrooms_count"
+              :schema="v$.bathrooms_count" label="Bathrooms" :options="countOptions" />
+            <CInput v-if="isVisible(['real_estate'])" type="number" icon="hashtag" label="Area"
+              v-model:value="form.area" :schema="v$.area" />
+
+            <SelectRegion label="Region" v-model:value="form.region_id" :schema="v$.region_id" />
+            <CInput icon="location" label="Address" v-model:value="form.address" :schema="v$.address" />
           </div>
         </n-card>
 
@@ -336,24 +249,9 @@ const countOptions = [
         <n-card class="base-card">
           <div class="title mb-4">Kontakt ma'lumotlari</div>
           <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <CInput
-              v-model:value="form.phone"
-              :schema="v$.phone"
-              label="Phone number"
-              icon="phone"
-            />
-            <CInput
-              v-model:value="form.email"
-              :schema="v$.email"
-              label="Email (Optional)"
-              icon="mail"
-            />
-            <CInput
-              v-model:value="form.website"
-              :schema="v$.website"
-              label="Website (Optional)"
-              icon="info"
-            />
+            <CInput v-model:value="form.phone" :schema="v$.phone" label="Phone number" icon="phone" />
+            <CInput v-model:value="form.email" :schema="v$.email" label="Email (Optional)" icon="mail" />
+            <CInput v-model:value="form.website" :schema="v$.website" label="Website (Optional)" icon="info" />
           </div>
         </n-card>
 
@@ -361,12 +259,7 @@ const countOptions = [
         <n-card class="base-card" v-slot:header-extra>
           <div class="title mb-4">Ish haqi (Maosh)</div>
           <div class="grid gap-4 grid-cols-1 md:grid-cols-2 items-center">
-            <CInput
-              icon="money"
-              label="Narxi"
-              v-model:value="form.price"
-              :schema="v$.price"
-            />
+            <CInput icon="money" label="Narxi" v-model:value="form.price" :schema="v$.price" />
           </div>
         </n-card>
       </div>
@@ -378,14 +271,9 @@ const countOptions = [
           <div class="title mb-3">Fayllar</div>
           <DropFile v-model:value="files" label="Rasmlar yoki hujjatlar" icon="draft" />
           <div class="mt-4 flex flex-col gap-2">
-            <FileShow
-              v-for="value in uploadedFiles"
-              :key="value.id"
-              :data="value"
-              @delete="
-                uploadedFiles = uploadedFiles.filter((file) => file.id !== value.id)
-              "
-            />
+            <FileShow v-for="value in uploadedFiles" :key="value.id" :data="value" @delete="
+              uploadedFiles = uploadedFiles.filter((file) => file.id !== value.id)
+              " />
           </div>
         </n-card>
 
@@ -396,18 +284,8 @@ const countOptions = [
             <SelectLocation v-model:lat="form.lat" v-model:lon="form.lon" />
           </div>
           <div class="grid grid-cols-2 gap-3 mt-4">
-            <CInput
-              v-model:value="form.lat"
-              label="Kenglik (Lat)"
-              type="number"
-              icon="hashtag"
-            />
-            <CInput
-              v-model:value="form.lon"
-              label="Uzunlik (Lon)"
-              type="number"
-              icon="hashtag"
-            />
+            <CInput v-model:value="form.lat" label="Kenglik (Lat)" type="number" icon="hashtag" />
+            <CInput v-model:value="form.lon" label="Uzunlik (Lon)" type="number" icon="hashtag" />
           </div>
         </n-card>
       </div>
