@@ -48,7 +48,14 @@ let activeRoute = computed(() => {
     return "chat";
   } else if (route.fullPath.startsWith("/version")) {
     return "version";
-  } else {
+  } else if (route.fullPath.startsWith("/listings/moderate")) {
+    return "moderate-listings";
+  }
+   else if (route.fullPath.startsWith("/listings")) {
+    return "listings";
+  }
+  
+  else {
     return "";
   }
 });
@@ -88,7 +95,7 @@ onMounted(() => {
                   <CIcon :name="item.icon" />
                   <span>{{ item.text }}</span>
                 </RouterLink>
-                <n-divider v-if="item.name=='version'"/>
+                <n-divider v-if="item.name == 'organization' || item.name == 'moderate-listings'" />
               </li>
             </ul>
 

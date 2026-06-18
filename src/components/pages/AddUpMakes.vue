@@ -13,6 +13,7 @@ let props = defineProps<{
 
 let form = ref({
   name: "",
+  sub_category_id: null as any,
   sort: 0,
   status: 1,
 });
@@ -34,6 +35,7 @@ let loading = ref(false);
 onMounted(() => {
   if (props.mode === "update" && props.item) {
     form.value.name = props.item.name || "";
+    form.value.sub_category_id = props.item.sub_category_id || null;
     form.value.sort = props.item.sort ?? 0;
     form.value.status = props.item.status ?? 1;
     uploadedImage.value = props.item.image;
@@ -72,6 +74,12 @@ async function save() {
 <template>
   <div>
     <div class="grid gap-4">
+    <SelectSubCategory
+    v-model:value="form.sub_category_id"
+    :schema="v$.sub_category_id"
+    label="Sub kategoriya"
+    category=""
+  />
       <CInput
         icon="draft"
         v-model:value="form.name"

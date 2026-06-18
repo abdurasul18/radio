@@ -72,6 +72,12 @@ export const ListingService = {
     getById(id: string): AxiosPromise<{ data: IListing }> {
         return ApiService.get(`/admin/listings/view/${id}`)
     },
+    approve(id: string) {
+        return ApiService.post(`admin/listings/approve/${id}`, {})
+    },
+    reject(id: string, data: any) {
+        return ApiService.post(`admin/listings/reject/${id}`, data)
+    },
     // 
     getComments(query: QueryType) {
         return ApiService.get(`admin/comment/index?${createQuery(query)}`);

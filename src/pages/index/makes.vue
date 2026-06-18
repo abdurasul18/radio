@@ -91,6 +91,7 @@ async function deleteItem(item: IMake) {
                 <tr>
                   <th style="width: 80px">№</th>
                   <th>Nomi</th>
+                  <th>Sub kategoriya</th>
                   <th>Slug</th>
                   <th>Rasm</th>
                   <th>Modellar soni</th>
@@ -103,6 +104,7 @@ async function deleteItem(item: IMake) {
                 <tr v-for="(item, i) in list" :key="i">
                   <td>{{ $paginate(i, page, limit) }}</td>
                   <td>{{ item.name }}</td>
+                  <td>{{ item?.sub_category?.name }}</td>
                   <td>{{ item.slug }}</td>
                   <td>
                     <n-image

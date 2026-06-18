@@ -16,6 +16,7 @@ export interface IMake {
   sort: number;
   status: number;
   models_count: number;
+  sub_category_id: number | null;
 }
 
 export const MakesService = {

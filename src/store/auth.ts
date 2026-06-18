@@ -87,6 +87,36 @@ export const useAuthStore = defineStore("auth", () => {
       to: "/organization/all",
     },
     {
+      name: "sub-category",
+      icon: "geometric",
+      text: "Quyi Kategoriyalar",
+      to: "/sub-category",
+    },
+    {
+      name: "makes",
+      icon: "sertificate",
+      text: "Avto Markalar",
+      to: "/makes",
+    },
+    {
+      name: "models",
+      icon: "cube",
+      text: "Avto Modellar",
+      to: "/models",
+    },
+    {
+      name: "listings",
+      icon: "hrm",
+      text: "Servislar",
+      to: "/listings",
+    },
+    {
+      name: "moderate-listings",
+      icon: "hrm",
+      text: "Moderatsiya",
+      to: "/listings/moderate",
+    },
+    {
       name: "education",
       icon: "education",
       text: "Ta'lim",
@@ -115,30 +145,6 @@ export const useAuthStore = defineStore("auth", () => {
       icon: "list-number",
       text: "Versiya",
       to: "/version",
-    },
-    {
-      name: "sub-category",
-      icon: "geometric",
-      text: "Quyi Kategoriyalar",
-      to: "/sub-category",
-    },
-    {
-      name: "makes",
-      icon: "sertificate",
-      text: "Avto Markalar",
-      to: "/makes",
-    },
-    {
-      name: "models",
-      icon: "cube",
-      text: "Avto Modellar",
-      to: "/models",
-    },
-    {
-      name: "listings",
-      icon: 'hrm',
-      text: "Servislar",
-      to: "/listings",
     },
   ];
   //

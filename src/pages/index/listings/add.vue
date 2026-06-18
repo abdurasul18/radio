@@ -16,14 +16,15 @@ const category = computed(() => {
 });
 const router = useRouter();
 const TypesEnum = [
-  {
-    id: "sale",
-    name: "Sale",
-  },
-  {
-    id: "rent",
-    name: "Rent",
-  },
+//  Type must be one of: sale, rent, restaurant, home_food, grocery, car_wash, tire_shop, repair_shop
+  { id: "sale", name: "Sale" },
+  { id: "rent", name: "Rent" },
+  { id: "restaurant", name: "Restaurant" },
+  { id: "home_food", name: "Home Food" },
+  { id: "grocery", name: "Grocery" },
+  { id: "car_wash", name: "Car Wash" },
+  { id: "tire_shop", name: "Tire Shop" },
+  { id: "repair_shop", name: "Repair Shop" },
 ];
 const PropertyTypesEnum = [
   // house, apartment, townhome, villa, village_house
@@ -119,7 +120,6 @@ const createdUser = ref<IUserListItem | null>(null);
 onMounted(async () => {
   if (route.query.id) {
     let res = await ListingService.getById(String(route.query.id));
-    form.value.description = res.data.data.description;
     form.value.title = res.data.data.title;
     form.value.type = res.data.data.type;
     form.value.price = res.data.data.price;
@@ -203,9 +203,9 @@ const countOptions = [
         <n-card class="base-card">
           <div class="title mb-4">Umumiy ma'lumotlar</div>
           <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <CSelect v-if="isVisible(['car', 'truck', 'real_estate'])" icon="category" v-model:value="form.type"
-              :options="TypesEnum" label="Purpose of ads" :schema="v$.type" />
-            <SelectSubCategory :key="category" :category="category" label="Type of product"
+            <CSelect label="Type" icon="category" v-model:value="form.type"
+              :options="TypesEnum"  :schema="v$.type" />
+            <SelectSubCategory :key="category" :category="category" label="Category of product"
               v-model:value="form.sub_category_id" :schema="v$.sub_category_id" />
             <CSelect v-if="isVisible(['real_estate'])" icon="category" label="Property Type"
               v-model:value="form.property_type" :schema="v$.property_type" :options="PropertyTypesEnum" />
