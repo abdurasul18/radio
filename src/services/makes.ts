@@ -17,11 +17,14 @@ export interface IMake {
   status: number;
   models_count: number;
   sub_category_id: number | null;
+  category: string;
 }
 
 export const MakesService = {
   getList(query: QueryType) {
-    return ApiService.get(`admin/vehicles/makes?${createQuery(query)}&expand=image`);
+    return ApiService.get(
+      `admin/vehicles/makes?${createQuery(query)}&expand=image`,
+    );
   },
   create(data: any) {
     return ApiService.post(`admin/vehicles/makes/create`, data);

@@ -84,7 +84,9 @@ async function deleteItem(item: IListing) {
                   class="w-full h-full object-cover" />
               </n-carousel>
 
-              <n-tag round size="small" class="absolute  top-3 left-3 shadow-sm">
+              <n-tag
+                :type="item.moderation_status == 'rejected' ? 'error' : item.moderation_status == 'approved' ? 'success' : 'default'"
+                round size="small" class="absolute  top-3 left-3 shadow-sm bg-white">
                 {{ item.moderation_status }}
               </n-tag>
 

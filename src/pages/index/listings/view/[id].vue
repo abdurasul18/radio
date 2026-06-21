@@ -4,6 +4,7 @@ import { IUserListItem } from "/@src/services/user";
 import ListingComment from "/@src/components/pages/ListingComment.vue";
 import { useClipboard } from "@vueuse/core";
 import { toastSuccess } from "/@src/plugins/toast";
+import { CategoryCode } from "/@src/services/category";
 
 const route = useRoute();
 const routeId = computed(() => {
@@ -21,6 +22,11 @@ function copyAddress() {
     copy(data.value.address);
     toastSuccess();
   }
+}
+
+/** add.vue dagi isVisible() funksiyasiga mos */
+function isVisible(categories: CategoryCode[]) {
+  return categories.includes((data.value?.category ?? "") as CategoryCode);
 }
 
 async function getData() {
@@ -56,13 +62,12 @@ onMounted(getData);
               <n-image v-for="(item, index) in data.images" :key="index" class="w-full h-full object-cover"
                 :src="$withBaseUrl(item.file?.path)" />
             </n-carousel>
-            <div class="absolute top-4 left-4 z-10 hidden md:block">
-              <!-- optional back button inside image for mobile, but we have it in header -->
-            </div>
             <div class="absolute top-4 right-4 z-10">
-              <CTag :type="data.moderation_status == 'approved' ? 'success' : 'warning'" round size="small">
+              <n-tag
+                :type="data.moderation_status == 'rejected' ? 'error' : data.moderation_status == 'approved' ? 'success' : 'default'"
+                round size="small" class="shadow-sm bg-white">
                 {{ data.moderation_status }}
-              </CTag>
+              </n-tag>
             </div>
           </div>
 
@@ -70,7 +75,6 @@ onMounted(getData);
             <!-- Badges: Rating, Views -->
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-1.5 text-yellow-500 font-bold">
-                <CIcon name="star" class="w-4 h-4" /> <!-- Assuming star exists, or use star char -->
                 ★ <span class="text-gray-800 text-sm ml-1">{{ data?.rating || '0' }}</span>
               </div>
               <div class="flex items-center gap-1.5 text-gray-400 text-sm">
@@ -79,9 +83,36 @@ onMounted(getData);
               </div>
             </div>
 
-            <!-- Name -->
+            <!-- Title -->
             <div v-if="data?.title" class="font-bold text-2xl text-grey-900 leading-tight">
               {{ data.title }}
+            </div>
+
+            <!-- Category & Type -->
+            <div class="flex flex-wrap items-center gap-2">
+              <n-tag v-if="data?.category" type="info" size="small" round>
+                {{ data.category }}
+              </n-tag>
+              <n-tag v-if="data?.type" type="success" size="small" round>
+                {{ data.type }}
+              </n-tag>
+              <n-tag v-if="data?.status" size="small" round>
+                status: {{ data.status }}
+              </n-tag>
+            </div>
+
+            <!-- Sub Category -->
+            <div v-if="data?.sub_category"
+              class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+              <div
+                class="flex items-center justify-center w-10 h-10 rounded-full bg-green-50 text-green-500 flex-shrink-0">
+                <CIcon class="success-svg" width="20" name="category" />
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-grey-800">{{ (data.sub_category as any)?.name_uz ??
+                  data.sub_category }}</span>
+                <span class="text-xs text-grey-400 font-medium">Turkum</span>
+              </div>
             </div>
 
             <!-- Address -->
@@ -93,6 +124,18 @@ onMounted(getData);
               </button>
             </div>
 
+            <!-- Region -->
+            <div v-if="data?.region" class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+              <div
+                class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex-shrink-0">
+                <CIcon class="info-svg" width="20" name="location" />
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-grey-800">{{ data.region?.name }}</span>
+                <span class="text-xs text-grey-400 font-medium">Viloyat / Hudud</span>
+              </div>
+            </div>
+
             <!-- Description -->
             <div v-if="data?.description" class="mt-2 text-sm text-gray-600 leading-relaxed">
               <div v-html="data.description"></div>
@@ -100,22 +143,145 @@ onMounted(getData);
 
             <n-divider class="!my-2" />
 
-            <!-- Details Grid -->
+            <!-- ===== Details Grid ===== -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Sub category / Type of business -->
-              <div v-if="data?.sub_category"
+
+              <!-- Price (real_estate | car | truck) -->
+              <div v-if="isVisible(['real_estate', 'car', 'truck']) && data?.price"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-green-50 text-green-500 flex-shrink-0">
+                  <CIcon class="success-svg" width="20" name="money" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">
+                    {{ data.price }} {{ data.currency }}
+                  </span>
+                  <span class="text-xs text-grey-400 font-medium">Narx</span>
+                </div>
+              </div>
+
+              <!-- Make (car | truck) -->
+              <div v-if="isVisible(['car', 'truck']) && data?.details?.make_id"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex-shrink-0">
+                  <CIcon class="info-svg" width="20" name="cube" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.make?.name || data.details.make_name
+                  }}</span>
+                  <span class="text-xs text-grey-400 font-medium">Marka (Make)</span>
+                </div>
+              </div>
+
+              <!-- Model (car | truck) -->
+              <div v-if="isVisible(['car', 'truck']) && data?.details?.model_id"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex-shrink-0">
+                  <CIcon class="info-svg" width="20" name="cube" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.model?.name ||
+                    data.details.model_name
+                    }}</span>
+                  <span class="text-xs text-grey-400 font-medium">Model</span>
+                </div>
+              </div>
+
+              <!-- Year (car | truck | real_estate) -->
+              <div v-if="isVisible(['car', 'truck', 'real_estate']) && data?.details?.year"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex-shrink-0">
+                  <CIcon class="warning-svg" width="20" name="clock" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.year }}</span>
+                  <span class="text-xs text-grey-400 font-medium">Yil</span>
+                </div>
+              </div>
+
+              <!-- Mileage (car | truck) -->
+              <div v-if="isVisible(['car', 'truck']) && data?.details?.mileage"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex-shrink-0">
+                  <CIcon class="warning-svg" width="20" name="hashtag" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.mileage }} km</span>
+                  <span class="text-xs text-grey-400 font-medium">Millage</span>
+                </div>
+              </div>
+
+              <!-- Property Type (real_estate) -->
+              <div v-if="isVisible(['real_estate']) && data?.details?.property_type"
                 class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
                 <div
                   class="flex items-center justify-center w-10 h-10 rounded-full bg-green-50 text-green-500 flex-shrink-0">
                   <CIcon class="success-svg" width="20" name="category" />
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-sm font-semibold text-grey-800">{{ data.sub_category.name_uz }}</span>
-                  <span class="text-xs text-grey-400 font-medium">Turkum</span>
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.property_type }}</span>
+                  <span class="text-xs text-grey-400 font-medium">Mulk turi</span>
                 </div>
               </div>
 
-              <!-- Phone -->
+              <!-- Bedrooms Count (real_estate) -->
+              <div v-if="isVisible(['real_estate']) && data?.details?.bedrooms_count"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex-shrink-0">
+                  <CIcon class="primary-svg" width="20" name="hashtag" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.bedrooms_count }}</span>
+                  <span class="text-xs text-grey-400 font-medium">Yotoqxonalar soni</span>
+                </div>
+              </div>
+
+              <!-- Bathrooms Count (real_estate) -->
+              <div v-if="isVisible(['real_estate']) && data?.details?.bathrooms_count"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex-shrink-0">
+                  <CIcon class="primary-svg" width="20" name="hashtag" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.bathrooms_count }}</span>
+                  <span class="text-xs text-grey-400 font-medium">Hammomlar soni</span>
+                </div>
+              </div>
+
+              <!-- Area (real_estate) -->
+              <div v-if="isVisible(['real_estate']) && data?.details?.area"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex-shrink-0">
+                  <CIcon class="primary-svg" width="20" name="hashtag" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.area }} m²</span>
+                  <span class="text-xs text-grey-400 font-medium">Maydon</span>
+                </div>
+              </div>
+
+              <!-- Floor (real_estate) -->
+              <div v-if="isVisible(['real_estate']) && data?.details?.floor"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex-shrink-0">
+                  <CIcon class="primary-svg" width="20" name="hashtag" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">{{ data.details.floor }}</span>
+                  <span class="text-xs text-grey-400 font-medium">Qavat</span>
+                </div>
+              </div>
+
+              <!-- Phone (all categories) -->
               <div v-if="data?.phone"
                 class="flex items-center justify-between p-3 rounded-xl bg-grey-50 border border-grey-100">
                 <div class="flex items-center gap-3">
@@ -134,23 +300,19 @@ onMounted(getData);
                 </a>
               </div>
 
-              <!-- Work time -->
-              <div v-if="data?.is_24_7 || data?.work_time_from || data?.work_time_to"
-                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+              <!-- Email (all categories) -->
+              <div v-if="data?.email" class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
                 <div
-                  class="flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex-shrink-0">
-                  <CIcon class="warning-svg" width="20" name="clock" />
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex-shrink-0">
+                  <CIcon class="info-svg" width="20" name="mail" />
                 </div>
-                <div class="flex flex-col">
-                  <span class="text-sm font-semibold text-grey-800">
-                    <span v-if="data?.is_24_7">Ochiq - 24/7</span>
-                    <span v-else>Ochiq - {{ data.work_time_from ?? "" }} – {{ data.work_time_to ?? "" }}</span>
-                  </span>
-                  <span class="text-xs text-grey-400 font-medium">Ish vaqti</span>
+                <div class="flex flex-col overflow-hidden">
+                  <span class="text-sm font-semibold text-grey-800 truncate">{{ data.email }}</span>
+                  <span class="text-xs text-grey-400 font-medium">Email</span>
                 </div>
               </div>
 
-              <!-- Website -->
+              <!-- Website (all categories) -->
               <div v-if="data?.website"
                 class="flex items-center justify-between p-3 rounded-xl bg-grey-50 border border-grey-100">
                 <div class="flex items-center gap-3">
@@ -168,7 +330,25 @@ onMounted(getData);
                   <CIcon class="info-svg" width="16" name="info" />
                 </a>
               </div>
+
+              <!-- Work time (all categories) -->
+              <div v-if="data?.is_24_7 || data?.work_time_from || data?.work_time_to"
+                class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex-shrink-0">
+                  <CIcon class="warning-svg" width="20" name="clock" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-grey-800">
+                    <span v-if="data?.is_24_7">Ochiq - 24/7</span>
+                    <span v-else>Ochiq - {{ data.work_time_from ?? "" }} – {{ data.work_time_to ?? "" }}</span>
+                  </span>
+                  <span class="text-xs text-grey-400 font-medium">Ish vaqti</span>
+                </div>
+              </div>
+
             </div>
+            <!-- end Details Grid -->
 
             <!-- Map -->
             <div v-if="data?.lat && data?.lon" class="mt-4 relative">
@@ -180,6 +360,120 @@ onMounted(getData);
                 <CIcon name="location" class="w-4 h-4 mr-2" /> Open in Maps
               </a>
             </div>
+
+            <!-- Extra details fields (condition, fuel, transmission, etc.) -->
+            <template v-if="data?.details">
+              <n-divider class="!my-2" />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- Condition -->
+                <div v-if="data.details.condition"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-green-50 text-green-500 flex-shrink-0">
+                    <CIcon class="success-svg" width="20" name="star" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-grey-800">{{ data.details.condition }}</span>
+                    <span class="text-xs text-grey-400 font-medium">Holat</span>
+                  </div>
+                </div>
+
+                <!-- Engine Volume -->
+                <div v-if="data.details.engine_volume"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex-shrink-0">
+                    <CIcon class="warning-svg" width="20" name="hashtag" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-grey-800">{{ data.details.engine_volume }} L</span>
+                    <span class="text-xs text-grey-400 font-medium">Dvigatel hajmi</span>
+                  </div>
+                </div>
+
+                <!-- Fuel Type -->
+                <div v-if="data.details.fuel_type"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex-shrink-0">
+                    <CIcon class="warning-svg" width="20" name="hashtag" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-grey-800">{{ data.details.fuel_type }}</span>
+                    <span class="text-xs text-grey-400 font-medium">Yoqilg'i turi</span>
+                  </div>
+                </div>
+
+                <!-- Transmission -->
+                <div v-if="data.details.transmission"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex-shrink-0">
+                    <CIcon class="info-svg" width="20" name="category" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-grey-800">{{ data.details.transmission }}</span>
+                    <span class="text-xs text-grey-400 font-medium">Transmissiya</span>
+                  </div>
+                </div>
+
+                <!-- Floors Count -->
+                <div v-if="data.details.floors_count"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex-shrink-0">
+                    <CIcon class="primary-svg" width="20" name="hashtag" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-grey-800">{{ data.details.floors_count }}</span>
+                    <span class="text-xs text-grey-400 font-medium">Qavatlar soni</span>
+                  </div>
+                </div>
+
+                <!-- Lot Area -->
+                <div v-if="data.details.lot_area"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex-shrink-0">
+                    <CIcon class="primary-svg" width="20" name="hashtag" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-grey-800">{{ data.details.lot_area }} m²</span>
+                    <span class="text-xs text-grey-400 font-medium">Er maydoni</span>
+                  </div>
+                </div>
+
+
+                <!-- Heating Type -->
+                <div v-if="data.details.heating_type"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-red-50 text-red-500 flex-shrink-0">
+                    <CIcon class="error-svg" width="20" name="hashtag" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-grey-800">{{ data.details.heating_type }}</span>
+                    <span class="text-xs text-grey-400 font-medium">Isitish turi</span>
+                  </div>
+                </div>
+
+                <!-- Parking Spaces -->
+                <div v-if="data.details.parking_spaces"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-grey-50 border border-grey-100">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex-shrink-0">
+                    <CIcon class="info-svg" width="20" name="hashtag" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-semibold text-grey-800">{{ data.details.parking_spaces }}</span>
+                    <span class="text-xs text-grey-400 font-medium">Parking joylari</span>
+                  </div>
+                </div>
+
+              </div>
+            </template>
+
           </div>
         </n-card>
       </div>
@@ -207,6 +501,57 @@ onMounted(getData);
             <button class="text-gray-400 hover:text-gray-600 p-2">
               <CIcon name="more" width="20" />
             </button>
+          </div>
+        </n-card>
+
+        <!-- Meta Info Card -->
+        <n-card class="base-card" :bordered="false">
+          <div class="title mb-3 text-base font-bold">Meta ma'lumotlar</div>
+          <div class="flex flex-col gap-2 text-sm">
+            <div v-if="data?.id" class="flex justify-between">
+              <span class="text-grey-400">ID</span>
+              <span class="font-semibold text-grey-800 truncate ml-2">{{ data.id }}</span>
+            </div>
+            <div v-if="data?.user_id" class="flex justify-between">
+              <span class="text-grey-400">User ID</span>
+              <span class="font-semibold text-grey-800 truncate ml-2">{{ data.user_id }}</span>
+            </div>
+            <div v-if="data?.region_id" class="flex justify-between">
+              <span class="text-grey-400">Region ID</span>
+              <span class="font-semibold text-grey-800 truncate ml-2">{{ data.region_id }}</span>
+            </div>
+            <div v-if="data?.sub_category_id" class="flex justify-between">
+              <span class="text-grey-400">Sub Category ID</span>
+              <span class="font-semibold text-grey-800 truncate ml-2">{{ data.sub_category_id }}</span>
+            </div>
+            <div v-if="data?.moderation_status" class="flex justify-between">
+              <span class="text-grey-400">Moderation</span>
+              <n-tag
+                :type="data.moderation_status == 'rejected' ? 'error' : data.moderation_status == 'approved' ? 'success' : 'default'"
+                round size="small">
+                {{ data.moderation_status }}
+              </n-tag>
+            </div>
+            <div v-if="data?.rejection_reason" class="flex justify-between">
+              <span class="text-grey-400">Rad etish sababi</span>
+              <span class="font-semibold text-red-500 truncate ml-2">{{ data.rejection_reason }}</span>
+            </div>
+            <div v-if="data?.created_at" class="flex justify-between">
+              <span class="text-grey-400">Yaratilgan</span>
+              <span class="font-semibold text-grey-800 ml-2">
+                {{ new Date(data.created_at).toLocaleDateString('uz-UZ') }}
+              </span>
+            </div>
+            <div v-if="data?.updated_at" class="flex justify-between">
+              <span class="text-grey-400">Yangilangan</span>
+              <span class="font-semibold text-grey-800 ml-2">
+                {{ new Date(data.updated_at).toLocaleDateString('uz-UZ') }}
+              </span>
+            </div>
+            <div v-if="data?.deleted_at" class="flex justify-between">
+              <span class="text-grey-400">O'chirilgan</span>
+              <span class="font-semibold text-red-500 ml-2">{{ data.deleted_at }}</span>
+            </div>
           </div>
         </n-card>
 
@@ -241,7 +586,4 @@ onMounted(getData);
   </n-spin>
 </template>
 
-<style lang="scss">
-// Make sure base-card has no border or shadow inside this page if we want flat design,
-// but the project seems to use .base-card for standard cards.
-</style>
+<style lang="scss"></style>

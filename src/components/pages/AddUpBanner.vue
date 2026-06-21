@@ -74,7 +74,10 @@ async function save() {
       <CInput icon="draft" v-model:value="form.title" :schema="v$.title" label="Sarlavha" />
       <CInput type="textarea" v-model:value="form.description" :schema="v$.description" label="Izoh" />
       <CInput v-model:value="form.link" :schema="v$.link" label="Havola" />
-      <CInput v-model:value="form.section" :schema="v$.section" label="Section" />
+      <CSelect v-model:value="form.section" :schema="v$.section" label="Section" icon="category" :options="[
+        { name: 'sale', id: 'sale' },
+        { name: 'finder', id: 'finder' },
+      ]" />
       <CInput icon="hashtag" v-model:value="form.order" :schema="v$.order" label="Tartib raqami" />
       <FileShow v-if="uploadedFile" :data="uploadedFile" @delete="uploadedFile = null" />
       <DropFile v-else v-model:value="files" :not-multiple="true" />

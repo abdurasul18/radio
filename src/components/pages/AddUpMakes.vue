@@ -4,6 +4,7 @@ import { required } from "@vuelidate/validators";
 import { toastSuccess } from "/@src/plugins/toast";
 import { IMake, MakesService } from "/@src/services/makes";
 import { FileService } from "/@src/services/file";
+import { ifNullDeleteIt } from "/@src/services/api";
 
 let emits = defineEmits(["success", "close"]);
 let props = defineProps<{
@@ -13,6 +14,7 @@ let props = defineProps<{
 
 let form = ref({
   name: "",
+  category: "",
   sub_category_id: null as any,
   sort: 0,
   status: 1,
@@ -20,6 +22,7 @@ let form = ref({
 
 const rules = {
   name: { required },
+  category: { required }
 };
 
 const v$ = useVuelidate(rules, form.value);
@@ -35,6 +38,7 @@ let loading = ref(false);
 onMounted(() => {
   if (props.mode === "update" && props.item) {
     form.value.name = props.item.name || "";
+    form.value.category = props.item.category
     form.value.sub_category_id = props.item.sub_category_id || null;
     form.value.sort = props.item.sort ?? 0;
     form.value.status = props.item.status ?? 1;
@@ -55,13 +59,13 @@ async function save() {
       if (files.value?.[0]) {
         payload.image_id = (await FileService.upload(files.value)).data?.data?.[0]?.id;
       }
-
+      payload = ifNullDeleteIt(payload);
       if (props.mode === "update") {
         await MakesService.update(props.item?.id!, payload);
       } else {
         await MakesService.create(payload);
       }
-      
+
       emits("success");
       toastSuccess();
     } finally {
@@ -74,40 +78,20 @@ async function save() {
 <template>
   <div>
     <div class="grid gap-4">
-    <SelectSubCategory
-    v-model:value="form.sub_category_id"
-    :schema="v$.sub_category_id"
-    label="Sub kategoriya"
-    category=""
-  />
-      <CInput
-        icon="draft"
-        v-model:value="form.name"
-        :schema="v$.name"
-        label="Nomi"
-      />
-      <CInput
-        v-model:value="form.sort"
-        label="Tartib raqami"
-        type="number"
-      />
-      <CSelect
-        v-model:value="form.status"
-        label="Status"
-        :options="[
-          { name: 'Faol', id: 1 },
-          { name: 'Nofaol', id: 0 },
-        ]"
-      />
+      <SelectCategoryEnum :is-transport="true" v-model:value="form.category" :schema="v$.category" label="Category" />
+      <SelectSubCategory v-model:value="form.sub_category_id" :schema="v$.sub_category_id" label="Sub kategoriya"
+        :category="form.category" />
+      <CInput icon="draft" v-model:value="form.name" :schema="v$.name" label="Nomi" />
+      <CInput v-model:value="form.sort" label="Tartib raqami" type="number" />
+      <CSelect v-model:value="form.status" label="Status" :options="[
+        { name: 'Faol', id: 1 },
+        { name: 'Nofaol', id: 0 },
+      ]" />
 
       <!-- Image upload -->
       <div>
         <div class="mb-1 text-sm font-medium opacity-70">Rasm</div>
-        <FileShow
-          v-if="uploadedImage"
-          :data="uploadedImage"
-          @delete="uploadedImage = null"
-        />
+        <FileShow v-if="uploadedImage" :data="uploadedImage" @delete="uploadedImage = null" />
         <DropFile v-else v-model:value="files" :not-multiple="true" />
       </div>
     </div>

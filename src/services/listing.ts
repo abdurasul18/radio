@@ -6,84 +6,103 @@ import { IService } from "./service";
 import { IRegion } from "./region";
 import { ICategory } from "./category";
 export const ProductStatus = {
-    1: 'WAITING',
-    2: 'ACTIVE',
-    3: 'REJECT',
-}
+  1: "WAITING",
+  2: "ACTIVE",
+  3: "REJECT",
+};
 export interface IListing {
-    address:string
-    category:string
-    created_at:string
-    currency:string
-    deleted_at:string
-    description:string
-    details:string
-    id:string
-    images:{
-        file : IFile
-        id:string
-        listing_id:string
-        type:string    
-    }[]
-    lat:string
-    lon:string
-    moderation_status:string
-    phone:string
-    price:string
-    rating:string
-    region:IRegion
-    region_id:string
-    rejection_reason:string
-    reviews_count:string
-    status:string
-    sub_category:string
-    sub_category_id:string
-    title:string
-    type:string
-    updated_at:string
-    user:IUserListItem
-    user_id:string
-    views_count:string
-    
+  address: string;
+  category: string;
+  created_at: string;
+  currency: string;
+  deleted_at: string;
+  description: string;
+  details: {
+    area: string;
+    bathrooms_count: string;
+    bedrooms_count: string;
+    condition: string;
+    engine_volume: string;
+    floor: string;
+    floors_count: string;
+    fuel_type: string;
+    furnished: string;
+    heating_type: string;
+    id: string;
+    listing_id: string;
+    lot_area: string;
+    make_id: string;
+    mileage: string;
+    model_id: string;
+    parking_spaces: string;
+    property_type: string;
+    transmission: string;
+    year: string;
+  };
+  id: string;
+  images: {
+    file: IFile;
+    id: string;
+    listing_id: string;
+    type: string;
+  }[];
+  lat: string;
+  lon: string;
+  moderation_status: string;
+  phone: string;
+  price: string;
+  rating: string;
+  region: IRegion;
+  region_id: string;
+  rejection_reason: string;
+  reviews_count: string;
+  status: string;
+  sub_category: string;
+  sub_category_id: any;
+  title: string;
+  type: string;
+  updated_at: string;
+  user: IUserListItem;
+  user_id: string;
+  views_count: string;
 }
 
 export interface IComment {
-    id: string,
-    text: string,
-    created_at: string,
-    user: IUserListItem
+  id: string;
+  text: string;
+  created_at: string;
+  user: IUserListItem;
 }
 export const ListingService = {
-    getList(query: QueryType) {
-        return ApiService.get(`admin/listings/index?${createQuery(query)}`);
-    },
-    getListAll(query: QueryType) {
-        return ApiService.get(`admin/listings/moderate?${createQuery(query)}`);
-    },
-    delete(id: string) {
-        return ApiService.delete(`admin/listings/delete/${id}`);
-    },
-    create(data: any) {
-        return ApiService.post(`admin/listings/create`, data)
-    },
-    update(id: string, data: any) {
-        return ApiService.post(`admin/listings/update/${id}`, data)
-    },
-    getById(id: string): AxiosPromise<{ data: IListing }> {
-        return ApiService.get(`/admin/listings/view/${id}`)
-    },
-    approve(id: string) {
-        return ApiService.post(`admin/listings/approve/${id}`, {})
-    },
-    reject(id: string, data: any) {
-        return ApiService.post(`admin/listings/reject/${id}`, data)
-    },
-    // 
-    getComments(query: QueryType) {
-        return ApiService.get(`admin/comment/index?${createQuery(query)}`);
-    },
-    deleteComment(id: string) {
-        return ApiService.delete(`admin/comment/delete/${id}`);
-    }
-
+  getList(query: QueryType) {
+    return ApiService.get(`admin/listings/index?${createQuery(query)}`);
+  },
+  getListAll(query: QueryType) {
+    return ApiService.get(`admin/listings/moderate?${createQuery(query)}`);
+  },
+  delete(id: string) {
+    return ApiService.delete(`admin/listings/delete/${id}`);
+  },
+  create(data: any) {
+    return ApiService.post(`admin/listings/create`, data);
+  },
+  update(id: string, data: any) {
+    return ApiService.post(`admin/listings/update/${id}`, data);
+  },
+  getById(id: string): AxiosPromise<{ data: IListing }> {
+    return ApiService.get(`/admin/listings/view/${id}`);
+  },
+  approve(id: string) {
+    return ApiService.post(`admin/listings/approve/${id}`, {});
+  },
+  reject(id: string, data: any) {
+    return ApiService.post(`admin/listings/reject/${id}`, data);
+  },
+  //
+  getComments(query: QueryType) {
+    return ApiService.get(`admin/comment/index?${createQuery(query)}`);
+  },
+  deleteComment(id: string) {
+    return ApiService.delete(`admin/comment/delete/${id}`);
+  },
 };

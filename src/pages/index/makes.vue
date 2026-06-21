@@ -54,18 +54,11 @@ async function deleteItem(item: IMake) {
 
     <n-spin :show="loading">
       <n-card class="base-card" :bordered="false">
-        <div
-          class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between"
-        >
+        <div class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between">
           <div class="flex flex-col sm:flex-row gap-2">
             <div class="flex">
-              <n-input
-                v-model:value="search"
-                clearable
-                size="large"
-                :placeholder="$t('actions.search')"
-                class="search-input min-w-[200px]"
-              >
+              <n-input v-model:value="search" clearable size="large" :placeholder="$t('actions.search')"
+                class="search-input min-w-[200px]">
                 <template #prefix>
                   <CIcon name="search" class="mr-4" />
                 </template>
@@ -73,13 +66,10 @@ async function deleteItem(item: IMake) {
             </div>
           </div>
           <div class="flex gap-2">
-            <CButton
-              icon="plus"
-              @click="
-                mode = 'create';
-                addShow = true;
-              "
-            >
+            <CButton icon="plus" @click="
+              mode = 'create';
+            addShow = true;
+            ">
               {{ $t("actions.add") }}
             </CButton>
           </div>
@@ -91,10 +81,10 @@ async function deleteItem(item: IMake) {
                 <tr>
                   <th style="width: 80px">№</th>
                   <th>Nomi</th>
+                  <th>Kategoriya</th>
                   <th>Sub kategoriya</th>
                   <th>Slug</th>
                   <th>Rasm</th>
-                  <th>Modellar soni</th>
                   <th>Status</th>
                   <th>Tartib</th>
                   <th class="min-w-[120px] text-right">Amallar</th>
@@ -104,17 +94,14 @@ async function deleteItem(item: IMake) {
                 <tr v-for="(item, i) in list" :key="i">
                   <td>{{ $paginate(i, page, limit) }}</td>
                   <td>{{ item.name }}</td>
+                  <td>{{ item?.category }}</td>
                   <td>{{ item?.sub_category?.name }}</td>
                   <td>{{ item.slug }}</td>
                   <td>
-                    <n-image
-                      v-if="item.image"
-                      class="max-w-[80px] max-h-[80px] rounded-lg object-cover"
-                      :src="`${item.image.base_url}/${item.image.path}`"
-                    />
+                    <n-image v-if="item.image" class="max-w-[80px] max-h-[80px] rounded-lg object-cover"
+                      :src="`${item.image.base_url}/${item.image.path}`" />
                     <span v-else class="text-gray-400">-</span>
                   </td>
-                  <td>{{ item.models_count }}</td>
                   <td>
                     <n-tag :type="item.status === 1 ? 'success' : 'error'">
                       {{ item.status === 1 ? 'Faol' : 'Nofaol' }}
@@ -125,27 +112,17 @@ async function deleteItem(item: IMake) {
                     <div class="flex justify-end gap-2">
                       <CTooltip>
                         <template #trigger>
-                          <CIconButton
-                            size="small"
-                            @click="
-                              mode = 'update';
-                              addShow = true;
-                              currentItem = item;
-                            "
-                            icon="edit"
-                            type="info"
-                          />
+                          <CIconButton size="small" @click="
+                            mode = 'update';
+                          addShow = true;
+                          currentItem = item;
+                          " icon="edit" type="info" />
                         </template>
                         <div>Tahrirlash</div>
                       </CTooltip>
                       <CTooltip>
                         <template #trigger>
-                          <CIconButton
-                            size="small"
-                            icon="delete"
-                            type="error"
-                            @click="deleteItem(item)"
-                          />
+                          <CIconButton size="small" icon="delete" type="error" @click="deleteItem(item)" />
                         </template>
                         <div>O'chirish</div>
                       </CTooltip>
@@ -159,29 +136,17 @@ async function deleteItem(item: IMake) {
         </div>
       </n-card>
       <div class="mt-5 ml-4 mb-5">
-        <n-pagination
-          class="c-pagination"
-          :page-count="Math.ceil(total / limit)"
-          :page-size="limit"
-          v-model:page="page"
-        />
+        <n-pagination class="c-pagination" :page-count="Math.ceil(total / limit)" :page-size="limit"
+          v-model:page="page" />
       </div>
     </n-spin>
 
-    <CModal
-      v-model:show="addShow"
-      :title="mode === 'create' ? 'Marka qo\'shish' : 'Markani tahrirlash'"
-      class="max-w-[600px]"
-    >
-      <AddUpMakes
-        :mode="mode"
-        :item="currentItem!"
-        @close="addShow = false"
-        @success="
-          addShow = false;
-          fetchData();
-        "
-      />
+    <CModal v-model:show="addShow" :title="mode === 'create' ? 'Marka qo\'shish' : 'Markani tahrirlash'"
+      class="max-w-[600px]">
+      <AddUpMakes :mode="mode" :item="currentItem!" @close="addShow = false" @success="
+        addShow = false;
+      fetchData();
+      " />
     </CModal>
   </div>
 </template>

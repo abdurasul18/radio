@@ -24,7 +24,7 @@ let paramsAdd = computed(() => {
     query: {
       offset: (page.value - 1) * limit.value,
       limit: limit.value,
-      make_id: make_id.value,
+      make_id: make_id.value || null,
     },
   };
 });
@@ -34,27 +34,12 @@ const { list, loading, search, fetchData, total } = useApiServiceAll<IModel>(
   paramsAdd
 );
 
-let makesList = ref<IMake[]>([]);
-let makesLoading = ref(false);
+onMounted(() => {
+  fetchData()
+})
 
-onMounted(async () => {
-  fetchData();
-  
-  try {
-    makesLoading.value = true;
-    const res = await MakesService.getList({ query: { limit: 100 } });
-    makesList.value = res.data?.data || [];
-  } finally {
-    makesLoading.value = false;
-  }
-});
 
-let makeOptions = computed(() => {
-  return makesList.value.map((m) => ({
-    label: m.name,
-    value: m.id,
-  }));
-});
+
 
 watch([make_id], () => {
   page.value = 1;
@@ -80,41 +65,24 @@ async function deleteItem(item: IModel) {
 
     <n-spin :show="loading">
       <n-card class="base-card" :bordered="false">
-        <div
-          class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between"
-        >
+        <div class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between">
           <div class="flex flex-col sm:flex-row gap-2">
             <div class="flex gap-2">
-              <n-select
-                v-model:value="make_id"
-                :options="makeOptions"
-                :loading="makesLoading"
-                filterable
-                clearable
-                placeholder="Markani tanlang"
-                class="min-w-[200px]"
-              />
-              <n-input
-                v-model:value="search"
-                clearable
-                size="large"
-                :placeholder="$t('actions.search')"
-                class="search-input min-w-[200px]"
-              >
+
+              <n-input v-model:value="search" clearable size="large" :placeholder="$t('actions.search')"
+                class="search-input min-w-[200px]">
                 <template #prefix>
                   <CIcon name="search" class="mr-4" />
                 </template>
               </n-input>
+              <SelectMake v-model:value="make_id" label="Markani tanlang" />
             </div>
           </div>
           <div class="flex gap-2">
-            <CButton
-              icon="plus"
-              @click="
-                mode = 'create';
-                addShow = true;
-              "
-            >
+            <CButton icon="plus" @click="
+              mode = 'create';
+            addShow = true;
+            ">
               {{ $t("actions.add") }}
             </CButton>
           </div>
@@ -149,27 +117,17 @@ async function deleteItem(item: IModel) {
                     <div class="flex justify-end gap-2">
                       <CTooltip>
                         <template #trigger>
-                          <CIconButton
-                            size="small"
-                            @click="
-                              mode = 'update';
-                              addShow = true;
-                              currentItem = item;
-                            "
-                            icon="edit"
-                            type="info"
-                          />
+                          <CIconButton size="small" @click="
+                            mode = 'update';
+                          addShow = true;
+                          currentItem = item;
+                          " icon="edit" type="info" />
                         </template>
                         <div>Tahrirlash</div>
                       </CTooltip>
                       <CTooltip>
                         <template #trigger>
-                          <CIconButton
-                            size="small"
-                            icon="delete"
-                            type="error"
-                            @click="deleteItem(item)"
-                          />
+                          <CIconButton size="small" icon="delete" type="error" @click="deleteItem(item)" />
                         </template>
                         <div>O'chirish</div>
                       </CTooltip>
@@ -183,29 +141,17 @@ async function deleteItem(item: IModel) {
         </div>
       </n-card>
       <div class="mt-5 ml-4 mb-5">
-        <n-pagination
-          class="c-pagination"
-          :page-count="Math.ceil(total / limit)"
-          :page-size="limit"
-          v-model:page="page"
-        />
+        <n-pagination class="c-pagination" :page-count="Math.ceil(total / limit)" :page-size="limit"
+          v-model:page="page" />
       </div>
     </n-spin>
 
-    <CModal
-      v-model:show="addShow"
-      :title="mode === 'create' ? 'Model qo\'shish' : 'Modelni tahrirlash'"
-      class="max-w-[600px]"
-    >
-      <AddUpModels
-        :mode="mode"
-        :item="currentItem!"
-        @close="addShow = false"
-        @success="
-          addShow = false;
-          fetchData();
-        "
-      />
+    <CModal v-model:show="addShow" :title="mode === 'create' ? 'Model qo\'shish' : 'Modelni tahrirlash'"
+      class="max-w-[600px]">
+      <AddUpModels :mode="mode" :item="currentItem!" @close="addShow = false" @success="
+        addShow = false;
+      fetchData();
+      " />
     </CModal>
   </div>
 </template>

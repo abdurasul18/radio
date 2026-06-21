@@ -15,17 +15,24 @@ const category = computed(() => {
   return (route.query.category ? String(route.query.category) : "") as CategoryCode;
 });
 const router = useRouter();
-const TypesEnum = [
-//  Type must be one of: sale, rent, restaurant, home_food, grocery, car_wash, tire_shop, repair_shop
-  { id: "sale", name: "Sale" },
-  { id: "rent", name: "Rent" },
-  { id: "restaurant", name: "Restaurant" },
-  { id: "home_food", name: "Home Food" },
-  { id: "grocery", name: "Grocery" },
-  { id: "car_wash", name: "Car Wash" },
-  { id: "tire_shop", name: "Tire Shop" },
-  { id: "repair_shop", name: "Repair Shop" },
-];
+const TypesEnum: {
+  id: string;
+  name: string;
+  categories: CategoryCode[];
+}[] = [
+    //  Type must be one of: sale, rent, restaurant, home_food, grocery, car_wash, tire_shop, repair_shop
+    { id: "sale", name: "Sale", categories: ['real_estate', 'car', 'truck'] },
+    { id: "rent", name: "Rent", categories: ['real_estate', 'car', 'truck'] },
+    { id: "restaurant", name: "Restaurant", categories: ['halal_food'] },
+    { id: "home_food", name: "Home Food", categories: ['halal_food'] },
+    { id: "grocery", name: "Grocery", categories: ['halal_food'] },
+    { id: "car_wash", name: "Car Wash", categories: ['auto_service'] },
+    { id: "tire_shop", name: "Tire Shop", categories: ['auto_service'] },
+    { id: "repair_shop", name: "Repair Shop", categories: ['auto_service'] },
+  ];
+const TypesEnumFiltered = computed(() => {
+  return TypesEnum.filter((item) => item.categories.includes(category.value))
+})
 const PropertyTypesEnum = [
   // house, apartment, townhome, villa, village_house
   { id: 'house', name: "House" },
@@ -37,6 +44,7 @@ const PropertyTypesEnum = [
 let form = ref({
   type: "",
   title: "",
+  description: "",
   phone: "",
   address: "",
   price: "",
@@ -44,17 +52,17 @@ let form = ref({
   region_id: "",
   lat: null as number | null,
   lon: null as number | null,
-  make_id: null as number | null,
-  model_id: null as number | null,
-  year: null as number | null,
-  mileage: null as number | null,
-  sub_category_id: null as number | null,
+  make_id: null as string | null,
+  model_id: null as string | null,
+  year: null as string | null,
+  mileage: null as string | null,
+  sub_category_id: null as string | null,
   //
   property_type: null as string | null,
-  bedrooms_count: null as number | null,
-  bathrooms_count: null as number | null,
-  area: null as number | null,
-  floor: null as number | null,
+  bedrooms_count: null as string | null,
+  bathrooms_count: null as string | null,
+  area: null as string | null,
+  floor: null as string | null,
   //
   website: "",
   work_time_from: "",
@@ -117,23 +125,20 @@ let uploadedFiles = ref<IFile[]>([]);
 const editorRef = ref();
 let keyIndex = ref(0);
 const createdUser = ref<IUserListItem | null>(null);
+let isStopWatching = ref(false);
 onMounted(async () => {
   if (route.query.id) {
+    isStopWatching.value = true;
+
     let res = await ListingService.getById(String(route.query.id));
     form.value.title = res.data.data.title;
+    form.value.description = res.data.data.description;
     form.value.type = res.data.data.type;
     form.value.price = res.data.data.price;
     form.value.currency = res.data.data.currency;
-    form.value.make_id = res.data.data.make_id;
-    form.value.model_id = res.data.data.model_id;
-    form.value.year = res.data.data.year;
-    form.value.mileage = res.data.data.mileage;
+
     form.value.sub_category_id = res.data.data.sub_category_id;
-    form.value.property_type = res.data.data.property_type;
-    form.value.bedrooms_count = res.data.data.bedrooms_count;
-    form.value.bathrooms_count = res.data.data.bathrooms_count;
-    form.value.area = res.data.data.area;
-    form.value.floor = res.data.data.floor;
+
     form.value.address = res.data.data.address;
     form.value.lat = res.data.data.lat ? Number(res.data.data.lat) : null;
     form.value.lon = res.data.data.lon ? Number(res.data.data.lon) : null;
@@ -147,11 +152,24 @@ onMounted(async () => {
     form.value.address = res.data.data.address;
     form.value.lat = res.data.data.lat ? Number(res.data.data.lat) : null;
     form.value.lon = res.data.data.lon ? Number(res.data.data.lon) : null;
-    form.value.status = res.data.data.status;
+    // 
+    if (res.data.data.details) {
+      form.value.make_id = res.data.data.details.make_id;
+      form.value.model_id = res.data.data.details.model_id;
+      form.value.year = String(res.data.data.details.year ?? "");
+      form.value.mileage = res.data.data.details.mileage;
+      form.value.property_type = res.data.data.details.property_type;
+      form.value.bedrooms_count = res.data.data.details.bedrooms_count;
+      form.value.bathrooms_count = res.data.data.details.bathrooms_count;
+      form.value.area = res.data.data.details.area;
+      form.value.floor = res.data.data.details.floor;
+    }
+    // 
     uploadedFiles.value = res.data.data.images.map((el) => el.file);
     createdUser.value = res.data.data.user;
     await nextTick();
     keyIndex.value += 1;
+    isStopWatching.value = false
   }
 });
 const salaryTypes = [
@@ -169,6 +187,11 @@ const countOptions = [
   { id: 4, name: "4" },
   { id: 5, name: "5+" },
 ];
+watch(() => form.value.make_id, (value) => {
+  if (value && !isStopWatching.value) {
+    form.value.model_id = null;
+  }
+})
 </script>
 <template>
   <n-spin :show="loading">
@@ -203,18 +226,19 @@ const countOptions = [
         <n-card class="base-card">
           <div class="title mb-4">Umumiy ma'lumotlar</div>
           <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <CSelect label="Type" icon="category" v-model:value="form.type"
-              :options="TypesEnum"  :schema="v$.type" />
-            <SelectSubCategory :key="category" :category="category" label="Category of product"
-              v-model:value="form.sub_category_id" :schema="v$.sub_category_id" />
+            <CSelect label="Type" icon="category" v-model:value="form.type" :options="TypesEnumFiltered"
+              :schema="v$.type" />
+            <SelectSubCategory v-if="['auto_service', 'car', 'truck', 'real_estate'].includes(category)" :key="category"
+              :category="category" label="Category of product" v-model:value="form.sub_category_id"
+              :schema="v$.sub_category_id" />
             <CSelect v-if="isVisible(['real_estate'])" icon="category" label="Property Type"
               v-model:value="form.property_type" :schema="v$.property_type" :options="PropertyTypesEnum" />
             <SelectMake v-if="isVisible(['car', 'truck'])" label="Make" v-model:value="form.make_id"
               :schema="v$.make_id" />
             <SelectCarModel v-if="isVisible(['car', 'truck'])" label="Model" v-model:value="form.model_id"
-              :schema="v$.model_id" />
-            <CYearPicker v-if="isVisible(['car', 'truck'])" v-model:value="form.year" label="Year of manufacture"
-              :schema="v$.year" />
+              :schema="v$.model_id" :make_id="form.make_id" />
+            <CYearPicker v-if="isVisible(['car', 'truck', 'real_estate'])" v-model:value="form.year"
+              label="Year of manufacture" :schema="v$.year" />
             <CInput type="number" v-if="isVisible(['car', 'truck'])" v-model:value="form.mileage" :schema="v$.mileage"
               label="Mileage" icon="hashtag">
               <template #suffix>
@@ -230,8 +254,9 @@ const countOptions = [
                 <option value="UZS">UZS</option>
               </select>
             </div>
+            <CInput icon="draft" class="col-span-full" v-model:value="form.title" :schema="v$.title" label="Title" />
 
-            <CInput class="col-span-full" v-model:value="form.title" :schema="v$.title" label="Description"
+            <CInput class="col-span-full" v-model:value="form.description" :schema="v$.description" label="Description"
               type="textarea" />
             <CSelect v-if="isVisible(['real_estate'])" icon="category" v-model:value="form.bedrooms_count"
               :schema="v$.bedrooms_count" label="Bedrooms Count" :options="countOptions" />
