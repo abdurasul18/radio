@@ -53,7 +53,9 @@ let excelLoading = ref(false);
 
     <n-spin :show="loading">
       <n-card class="base-card" :bordered="false">
-        <div class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between">
+        <div
+          class="px-2 sm:px-9 flex flex-col-reverse sm:flex-row gap-4 mb-4 items-center justify-between"
+        >
           <div class="flex flex-col sm:flex-row gap-2">
             <div class="flex"></div>
           </div>
@@ -66,10 +68,13 @@ let excelLoading = ref(false);
               <img class="mr-3" src="/@src/assets/img/excel.png" alt="" />Excelga
               ko'chirish</CButton
             > -->
-            <CButton icon="plus" @click="
-              mode = 'create';
-            addShow = true;
-            ">
+            <CButton
+              icon="plus"
+              @click="
+                mode = 'create';
+                addShow = true;
+              "
+            >
               {{ $t("actions.add") }}
             </CButton>
           </div>
@@ -81,11 +86,12 @@ let excelLoading = ref(false);
                 <tr>
                   <th style="width: 80px">№</th>
                   <th class="one-line">Rasm</th>
-                  <th>Sarlavha</th>
+                  <th class="one-line">Sarlavha</th>
                   <th class="one-line">Izoh</th>
                   <th class="one-line">Havola</th>
+                  <th class="one-line">Telefon</th>
                   <th class="one-line">Section</th>
-                  <th class="one-line">Tartib raqami</th>
+                  <th class="one-line">T/R</th>
                   <th class="w-[150px] text-right">Amallar</th>
                 </tr>
               </thead>
@@ -93,28 +99,46 @@ let excelLoading = ref(false);
                 <tr v-for="(item, i) in list" :key="i">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    <n-image class="max-w-[300px] max-h-[300px]" :src="$withBaseUrl2(item.file)" />
+                    <n-image
+                      class="max-w-[300px] max-h-[300px]"
+                      :src="$withBaseUrl2(item.file)"
+                    />
                   </td>
                   <td>{{ item.title }}</td>
                   <td>{{ item.description }}</td>
                   <td>{{ item.link }}</td>
+                  <td>
+                    <a v-if="item.phone" :href="`tel:${item.phone}`" class="text-blue-500 flex w-max">
+                      <CIcon width="16" class="mr-2 info-svg" name="phone" /> {{ item.phone }}</a
+                    >
+                  </td>
                   <td>{{ item.section }}</td>
                   <td class="!w-[80px]">{{ item.order }}</td>
                   <td>
                     <div class="grid grid-cols-3 gap-1">
                       <CTooltip>
                         <template #trigger>
-                          <CIconButton size="small" @click="
-                            mode = 'update';
-                          addShow = true;
-                          currentItem = item;
-                          " icon="edit" type="info" />
+                          <CIconButton
+                            size="small"
+                            @click="
+                              mode = 'update';
+                              addShow = true;
+                              currentItem = item;
+                            "
+                            icon="edit"
+                            type="info"
+                          />
                         </template>
                         <div>Tahrirlash</div>
                       </CTooltip>
                       <CTooltip>
                         <template #trigger>
-                          <CIconButton size="small" icon="delete" type="error" @click="deleteItem(item)" />
+                          <CIconButton
+                            size="small"
+                            icon="delete"
+                            type="error"
+                            @click="deleteItem(item)"
+                          />
                         </template>
                         <div>O'chirish</div>
                       </CTooltip>
@@ -137,12 +161,20 @@ let excelLoading = ref(false);
       </div>
     </n-spin>
 
-    <CModal v-model:show="addShow" :title="mode === 'create' ? 'Banner qo\'shish' : 'Banner tahrirlash'"
-      class="max-w-[600px]">
-      <AddUpBanner :mode="mode" :item="currentItem!" @close="addShow = false" @success="
-        addShow = false;
-      fetchData();
-      " />
+    <CModal
+      v-model:show="addShow"
+      :title="mode === 'create' ? 'Banner qo\'shish' : 'Banner tahrirlash'"
+      class="max-w-[600px]"
+    >
+      <AddUpBanner
+        :mode="mode"
+        :item="currentItem!"
+        @close="addShow = false"
+        @success="
+          addShow = false;
+          fetchData();
+        "
+      />
     </CModal>
   </div>
 </template>

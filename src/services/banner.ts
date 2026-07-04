@@ -11,6 +11,7 @@ export interface IBanner {
   title: string;
   description: string;
   link: string;
+  phone: string;
 }
 
 export const BannerService = {

@@ -16,6 +16,7 @@ let form = ref({
   title: "",
   description: "",
   link: "",
+  phone: "",
 });
 const rules = {
   order: { required },
@@ -23,6 +24,7 @@ const rules = {
   title: {},
   description: {},
   link: {},
+  phone: {},
 };
 let files = ref([]);
 const v$ = useVuelidate(rules, form.value);
@@ -74,6 +76,7 @@ async function save() {
       <CInput icon="draft" v-model:value="form.title" :schema="v$.title" label="Sarlavha" />
       <CInput type="textarea" v-model:value="form.description" :schema="v$.description" label="Izoh" />
       <CInput v-model:value="form.link" :schema="v$.link" label="Havola" />
+      <CInput icon="phone" v-model:value="form.phone" :schema="v$.phone" label="Telefon" />
       <CSelect v-model:value="form.section" :schema="v$.section" label="Section" icon="category" :options="[
         { name: 'sale', id: 'sale' },
         { name: 'finder', id: 'finder' },
