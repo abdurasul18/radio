@@ -102,6 +102,8 @@ async function save() {
       lat: form.value.lat ? String(form.value.lat) : null,
       lon: form.value.lon ? String(form.value.lon) : null,
       file_ids: uploadedFiles.value.map((el) => el.id),
+      bedrooms_count: form.value.bedrooms_count ? Number(form.value.bedrooms_count) : null,
+      bathrooms_count: form.value.bathrooms_count ? Number(form.value.bathrooms_count) : null,
     };
     payload = ifNullDeleteIt(payload);
     if (files.value.length > 0) {
@@ -231,7 +233,7 @@ watch(() => form.value.make_id, (value) => {
             <SelectSubCategory v-if="['auto_service', 'car', 'truck', 'real_estate'].includes(category)" :key="category"
               :category="category" label="Category of product" v-model:value="form.sub_category_id"
               :schema="v$.sub_category_id" />
-            <CSelect v-if="isVisible(['real_estate'])" icon="category" label="Property Type"
+            <CSelect v-if="isVisible([''])" icon="category" label="Property Type"
               v-model:value="form.property_type" :schema="v$.property_type" :options="PropertyTypesEnum" />
             <SelectMake v-if="isVisible(['car', 'truck'])" label="Make" v-model:value="form.make_id"
               :schema="v$.make_id" />
@@ -258,10 +260,10 @@ watch(() => form.value.make_id, (value) => {
 
             <CInput class="col-span-full" v-model:value="form.description" :schema="v$.description" label="Description"
               type="textarea" />
-            <CSelect v-if="isVisible(['real_estate'])" icon="category" v-model:value="form.bedrooms_count"
-              :schema="v$.bedrooms_count" label="Bedrooms Count" :options="countOptions" />
-            <CSelect v-if="isVisible(['real_estate'])" icon="category" v-model:value="form.bathrooms_count"
-              :schema="v$.bathrooms_count" label="Bathrooms" :options="countOptions" />
+            <CInput type="number" v-if="isVisible(['real_estate'])" icon="category" v-model:value="form.bedrooms_count"
+              :schema="v$.bedrooms_count" label="Bedrooms Count"  />
+            <CInput type="number" v-if="isVisible(['real_estate'])" icon="category" v-model:value="form.bathrooms_count"
+              :schema="v$.bathrooms_count" label="Bathrooms"  />
             <CInput v-if="isVisible(['real_estate'])" type="number" icon="hashtag" label="Area"
               v-model:value="form.area" :schema="v$.area" />
 

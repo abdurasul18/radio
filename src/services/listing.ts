@@ -65,6 +65,10 @@ export interface IListing {
   user: IUserListItem;
   user_id: string;
   views_count: string;
+  sold_at: string;
+  website: string;
+  work_time_to: string;
+  work_time_from: string;
 }
 
 export interface IComment {

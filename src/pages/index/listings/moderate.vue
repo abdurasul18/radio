@@ -101,14 +101,22 @@ async function acceptItem(item: IListing) {
                   class="w-full h-full object-cover" />
               </n-carousel>
 
+              <!-- Sold overlay -->
+              <div v-if="item.sold_at !== null && item.sold_at !== undefined"
+                class="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center z-10 pointer-events-none">
+                <div class="bg-red-500/90 text-white font-bold text-sm px-4 py-1.5 rounded-full shadow-lg tracking-wide rotate-[-8deg] border-2 border-white/50">
+                  ✓ SOLD
+                </div>
+              </div>
+
               <n-tag round size="small" :type="item.moderation_status == 'rejected' ? 'error' : 'default'"
-                class="absolute top-3 left-3 shadow-sm bg-white">
+                class="absolute top-3 left-3 shadow-sm bg-white z-20">
                 {{ item.moderation_status }}
               </n-tag>
 
               <!-- Rating badge -->
               <div
-                class="absolute top-3 right-3 flex items-center gap-1 bg-white/95 text-gray-900 text-xs font-bold px-2.5 py-1.5 rounded-full shadow-sm">
+                class="absolute top-3 right-3 flex items-center gap-1 bg-white/95 text-gray-900 text-xs font-bold px-2.5 py-1.5 rounded-full shadow-sm z-20">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"
                   viewBox="0 0 24 24" stroke="none">
                   <polygon
@@ -131,6 +139,25 @@ async function acceptItem(item: IListing) {
               </div>
 
               <div class="border-t border-dashed border-gray-200 my-3"></div>
+
+              <!-- Sold / Active badge -->
+              <div class="flex items-center gap-2 mb-2">
+                <template v-if="item.sold_at !== null && item.sold_at !== undefined">
+                  <span class="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 text-xs font-semibold px-3 py-1 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Sold
+                  </span>
+                  <span class="text-xs text-gray-400">
+                    {{ new Date(item.sold_at).toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) }}
+                  </span>
+                </template>
+                <template v-else>
+                  <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-semibold px-3 py-1 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Active
+                  </span>
+                </template>
+              </div>
 
               <div class="flex items-center justify-between">
                 <span class="bg-emerald-700 text-white text-xs font-semibold px-4 py-1.5 rounded-full">

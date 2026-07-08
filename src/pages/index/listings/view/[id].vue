@@ -62,7 +62,21 @@ onMounted(getData);
               <n-image v-for="(item, index) in data.images" :key="index" class="w-full h-full object-cover"
                 :src="$withBaseUrl(item.file?.path)" />
             </n-carousel>
-            <div class="absolute top-4 right-4 z-10">
+
+            <!-- Sold overlay on image -->
+            <div v-if="data?.sold_at !== null && data?.sold_at !== undefined"
+              class="absolute inset-0 bg-black/45 backdrop-blur-[1.5px] flex items-center justify-center z-10 pointer-events-none">
+              <div class="flex flex-col items-center gap-2">
+                <div class="bg-red-500/95 text-white font-bold text-lg px-6 py-2 rounded-full shadow-xl tracking-widest rotate-[-6deg] border-2 border-white/60">
+                  ✓ SOLD
+                </div>
+                <div class="bg-white/90 text-gray-700 text-xs font-medium px-3 py-1 rounded-full">
+                  {{ data.sold_at ? new Date(data.sold_at).toLocaleString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '' }}
+                </div>
+              </div>
+            </div>
+
+            <div class="absolute top-4 right-4 z-20">
               <n-tag
                 :type="data.moderation_status == 'rejected' ? 'error' : data.moderation_status == 'approved' ? 'success' : 'default'"
                 round size="small" class="shadow-sm bg-white">
@@ -99,6 +113,18 @@ onMounted(getData);
               <n-tag v-if="data?.status" size="small" round>
                 status: {{ data.status }}
               </n-tag>
+
+              <!-- Sold / Active badge (inline with tags) -->
+              <span v-if="data?.sold_at !== null && data?.sold_at !== undefined"
+                class="inline-flex items-center gap-1.5 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                SOLD
+              </span>
+              <span v-else
+                class="inline-flex items-center gap-1.5 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                ACTIVE
+              </span>
             </div>
 
             <!-- Sub Category -->
@@ -535,6 +561,29 @@ onMounted(getData);
             <div v-if="data?.rejection_reason" class="flex justify-between">
               <span class="text-grey-400">Rad etish sababi</span>
               <span class="font-semibold text-red-500 truncate ml-2">{{ data.rejection_reason }}</span>
+            </div>
+
+            <!-- Sold status in meta card -->
+            <div class="flex justify-between items-center pt-1 border-t border-dashed border-gray-100">
+              <span class="text-grey-400">Status</span>
+              <template v-if="data?.sold_at !== null && data?.sold_at !== undefined">
+                <span class="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 text-xs font-semibold px-3 py-1 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  Sold
+                </span>
+              </template>
+              <template v-else>
+                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-semibold px-3 py-1 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Active
+                </span>
+              </template>
+            </div>
+            <div v-if="data?.sold_at" class="flex justify-between">
+              <span class="text-grey-400">Sold at</span>
+              <span class="font-semibold text-red-500 ml-2 text-xs">
+                {{ new Date(data.sold_at).toLocaleString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
+              </span>
             </div>
             <div v-if="data?.created_at" class="flex justify-between">
               <span class="text-grey-400">Yaratilgan</span>
